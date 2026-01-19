@@ -62,12 +62,12 @@ export default function Module5({ theme = 'dark' }) {
         border: 'border-white/30',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
-        shadow: 'shadow-2xl shadow-emerald-500/10',
-        accent: 'text-emerald-600',
-        accentBg: 'bg-emerald-50/80',
-        accentBorder: 'border-emerald-200/50',
-        accentHover: 'hover:bg-emerald-100/80',
-        gradientText: 'bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent',
+        shadow: 'shadow-2xl shadow-cyan-500/10',
+        accent: 'text-cyan-600',
+        accentBg: 'bg-cyan-50/80',
+        accentBorder: 'border-cyan-200/50',
+        accentHover: 'hover:bg-cyan-100/80',
+        gradientText: 'bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent',
         transition: 'transition-all duration-300 ease-in-out'
       };
     }
@@ -75,17 +75,17 @@ export default function Module5({ theme = 'dark' }) {
       bg: 'bg-transparent',
       cardBg: 'bg-black/65',
       text: 'text-white',
-      textSecondary: 'text-gray-200',
-      textTertiary: 'text-gray-300',
+      textSecondary: 'text-white',
+      textTertiary: 'text-gray-100',
       border: 'border-white/10',
       hover: 'hover:bg-white/10',
       inputBg: 'bg-white/5',
       shadow: 'shadow-xl',
-      accent: 'text-emerald-400',
-      accentBg: 'bg-emerald-500/20',
-      accentBorder: 'border-emerald-400/30',
-      accentHover: 'hover:bg-emerald-500/30',
-      gradientText: 'text-emerald-400',
+      accent: 'text-cyan-400',
+      accentBg: 'bg-cyan-500/20',
+      accentBorder: 'border-cyan-400/30',
+      accentHover: 'hover:bg-cyan-500/30',
+      gradientText: 'text-cyan-400',
       transition: 'transition-all duration-300 ease-in-out'
     };
   };
@@ -351,9 +351,9 @@ export default function Module5({ theme = 'dark' }) {
           className="absolute inset-0 transition-all duration-500"
           style={{
             background: theme === 'light'
-              ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.65) 0%, rgba(5, 150, 105, 0.59) 100%)'
-              : 'rgba(0, 0, 0, 0.3)',
-            backdropFilter: theme === 'dark' ? 'blur(4px)' : 'blur(2px)',
+              ? 'linear-gradient(135deg, rgba(6, 181, 212, 0.52) 0%, rgba(20, 184, 166, 0.59) 100%)'
+              : 'linear-gradient(135deg, rgba(0, 0, 0, 0.27) 0%, rgba(6, 181, 212, 0.39) 50%, rgba(20, 184, 166, 0.35) 100%)',
+            backdropFilter: theme === 'dark' ? 'blur(2px)' : 'blur(2px)',
           }}
         />
       </div>
@@ -363,7 +363,7 @@ export default function Module5({ theme = 'dark' }) {
         {/* Module Hero Container */}
         <div
           className={`rounded-[40px] overflow-hidden mb-6 relative ${theme === 'light'
-            ? 'bg-white/95 shadow-2xl shadow-emerald-500/10 border border-white/30'
+            ? 'bg-white/95 shadow-2xl shadow-cyan-500/10 border border-white/30'
             : 'bg-black/75 backdrop-blur-xl border border-white/10 shadow-xl'
             } ${styles.transition}`}
           data-aos="fade-up"
@@ -371,15 +371,15 @@ export default function Module5({ theme = 'dark' }) {
           <div className="p-6 md:p-8">
             <div className="flex items-center space-x-4 md:space-x-6">
               <div className={`inline-block p-4 rounded-full ${theme === 'light'
-                ? 'bg-gradient-to-br from-emerald-400 to-green-500'
-                : 'bg-emerald-500/30 border border-emerald-400/40'
+                ? 'bg-gradient-to-br from-cyan-400 to-teal-500'
+                : 'bg-cyan-500/30 border border-cyan-400/40'
                 } ${styles.transition} flex-shrink-0`}>
-                <Banknote className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-emerald-300'} ${styles.transition}`} />
+                <Banknote className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-cyan-300'} ${styles.transition}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <h1 className={`text-2xl md:text-3xl font-bold leading-tight ${theme === 'light'
-                  ? 'bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent bg-origin-padding'
-                  : 'text-emerald-400'
+                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent bg-origin-padding'
+                  : 'text-cyan-400'
                   } ${styles.transition}`}>
                   Capital Adequacy Analysis
                 </h1>
@@ -394,7 +394,7 @@ export default function Module5({ theme = 'dark' }) {
 
         {/* TAB NAVIGATION */}
         <div className="mb-8" data-aos="fade-up">
-          <div className={`border-b ${theme === 'light' ? 'border-emerald-200' : 'border-gray-500'} ${styles.transition}`}>
+          <div className={`border-b ${theme === 'light' ? 'border-cyan-200' : 'border-gray-500'} ${styles.transition}`}>
             <nav className="flex space-x-8">
               {['overview', 'course', 'assignments', 'quiz'].map((tab) => (
                 <button
@@ -402,11 +402,11 @@ export default function Module5({ theme = 'dark' }) {
                   onClick={() => switchTab(tab)}
                   className={`pb-4 text-sm font-medium border-b-2 transition-all duration-200 ${activeTab === tab
                     ? theme === 'light'
-                      ? 'border-white text-white font-semibold bg-emerald-600/20 px-3 py-1 rounded-t-lg'
-                      : 'border-emerald-400 text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-t-lg'
+                      ? 'border-white text-white font-semibold bg-cyan-600/20 px-3 py-1 rounded-t-lg'
+                      : 'border-cyan-400 text-white font-semibold bg-cyan-400/20 px-3 py-1 rounded-t-lg'
                     : theme === 'light'
                       ? 'border-transparent text-white/80 hover:text-white hover:border-white px-1'
-                      : 'border-transparent text-gray-300 hover:text-gray-200 hover:border-gray-300 px-1'
+                      : 'border-transparent text-white hover:text-white hover:bg-cyan-500/30 hover:border-cyan-400 px-1'
                     } ${styles.transition}`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -424,8 +424,8 @@ export default function Module5({ theme = 'dark' }) {
               <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
                 Module Objective
                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-emerald-600 to-green-600'
-                  : 'bg-gradient-to-r from-emerald-400 to-green-500'
+                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600'
+                  : 'bg-gradient-to-r from-cyan-400 to-teal-500'
                   } transform translate-y-1 ${styles.transition}`}></span>
               </h3>
               <p className={`${styles.textSecondary} mb-6 text-sm md:text-base ${styles.transition}`}>
@@ -435,8 +435,8 @@ export default function Module5({ theme = 'dark' }) {
               <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
                 Learning Outcomes
                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-emerald-600 to-green-600'
-                  : 'bg-gradient-to-r from-emerald-400 to-green-500'
+                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600'
+                  : 'bg-gradient-to-r from-cyan-400 to-teal-500'
                   } transform translate-y-1 ${styles.transition}`}></span>
               </h3>
               <ol className={`list-decimal pl-5 ${styles.textSecondary} space-y-2 mb-6 text-sm md:text-base ${styles.transition}`}>
@@ -450,8 +450,8 @@ export default function Module5({ theme = 'dark' }) {
               <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
                 Activities and Exercises
                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-emerald-600 to-green-600'
-                  : 'bg-gradient-to-r from-emerald-400 to-green-500'
+                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600'
+                  : 'bg-gradient-to-r from-cyan-400 to-teal-500'
                   } transform translate-y-1 ${styles.transition}`}></span>
               </h3>
               <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>
@@ -461,8 +461,8 @@ export default function Module5({ theme = 'dark' }) {
                 href="/Training Modules/Module-5-Capital-Adequacy/Module-5_Exercises_Capital-Adequacy.docx"
                 download="Module 5 Exercises - Capital Adequacy.docx"
                 className={`inline-flex items-center gap-2 mt-3 px-4 py-2 ${theme === 'light'
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                  : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                  ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
+                  : 'bg-cyan-500 hover:bg-cyan-600 text-white'
                   } rounded-lg transition ${styles.transition}`}
               >
                 <Download className="w-4 h-4" />
@@ -483,7 +483,7 @@ export default function Module5({ theme = 'dark' }) {
                 {/* Resource Card */}
                 <div className={`rounded-2xl ${styles.accentBg} border ${styles.accentBorder} p-4 md:p-6 flex items-center justify-between ${styles.accentHover} ${styles.transition}`}>
                   <div className="flex items-center space-x-3 md:space-x-4">
-                    <div className={`p-3 ${theme === 'light' ? 'bg-emerald-200' : 'bg-emerald-600/40'} rounded-xl ${styles.transition}`}>
+                    <div className={`p-3 ${theme === 'light' ? 'bg-cyan-200' : 'bg-cyan-600/40'} rounded-xl ${styles.transition}`}>
                       📄
                     </div>
                     <div>
@@ -497,8 +497,8 @@ export default function Module5({ theme = 'dark' }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
-                      ? 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 shadow-lg hover:shadow-xl'
-                      : 'bg-emerald-500 hover:bg-emerald-600'
+                      ? 'bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 shadow-lg hover:shadow-xl'
+                      : 'bg-cyan-500 hover:bg-cyan-600'
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
                     <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -577,7 +577,7 @@ export default function Module5({ theme = 'dark' }) {
                       className={`h-2 rounded-full transition-all duration-300`}
                       style={{
                         width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`,
-                        backgroundColor: theme === 'light' ? '#10B981' : '#34D399'
+                        backgroundColor: theme === 'light' ? '#06b6d4' : '#22d3ee'
                       }}
                     />
                   </div>
@@ -593,8 +593,8 @@ export default function Module5({ theme = 'dark' }) {
                           key={option}
                           className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${quizAnswers[quizQuestions[currentQuestionIndex].id] === option
                             ? theme === 'light'
-                              ? 'bg-emerald-100 border-2 border-emerald-500'
-                              : 'bg-emerald-500/30 border-2 border-emerald-400'
+                              ? 'bg-cyan-100 border-2 border-cyan-500'
+                              : 'bg-cyan-500/30 border-2 border-cyan-400'
                             : theme === 'light'
                               ? 'bg-white border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                               : 'bg-white/5 border-2 border-white/10 hover:bg-white/10 hover:border-white/20'
@@ -636,8 +636,8 @@ export default function Module5({ theme = 'dark' }) {
                       <button
                         onClick={goToNextQuestion}
                         className={`px-4 md:px-6 py-3 ${theme === 'light'
-                          ? 'bg-emerald-600 hover:bg-emerald-700 shadow-lg hover:shadow-xl'
-                          : 'bg-[#10B981] hover:bg-[#0DA271] shadow-lg hover:shadow-xl'
+                          ? 'bg-cyan-600 hover:bg-cyan-700 shadow-lg hover:shadow-xl'
+                          : 'bg-cyan-500 hover:bg-cyan-600 shadow-lg hover:shadow-xl'
                           } text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                       >
                         Next
@@ -660,12 +660,12 @@ export default function Module5({ theme = 'dark' }) {
               ) : (
                 <div className="space-y-6 md:space-y-8">
                   <div className={`${theme === 'light'
-                    ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200'
-                    : 'bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-400/30'
+                    ? 'bg-gradient-to-br from-cyan-50 to-teal-100 border border-cyan-200'
+                    : 'bg-gradient-to-br from-cyan-500/20 to-teal-500/20 border border-cyan-400/30'
                     } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
-                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} mx-auto mb-4`} />
+                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-cyan-600' : 'text-cyan-400'} mx-auto mb-4`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
-                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} mb-2`}>
+                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-cyan-600' : 'text-cyan-400'} mb-2`}>
                       {calculateScore().correct}/{calculateScore().total}
                     </div>
                     <p className={`text-base md:text-lg ${styles.textTertiary} ${styles.transition}`}>
@@ -733,9 +733,9 @@ export default function Module5({ theme = 'dark' }) {
 
                               <div className={`p-3 md:p-4 ${theme === 'light'
                                 ? 'bg-blue-50 border border-blue-200'
-                                : 'bg-emerald-500/10 border border-emerald-400/20'
+                                : 'bg-cyan-500/10 border border-cyan-400/20'
                                 } rounded-lg ${styles.transition}`}>
-                                <p className={`${theme === 'light' ? 'text-blue-700' : 'text-emerald-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
+                                <p className={`${theme === 'light' ? 'text-cyan-700' : 'text-cyan-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
                                 <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>{q.explanation}</p>
                               </div>
                             </div>
@@ -753,8 +753,8 @@ export default function Module5({ theme = 'dark' }) {
                         setCurrentQuestionIndex(0);
                       }}
                       className={`px-6 md:px-8 py-3 ${theme === 'light'
-                        ? 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 shadow-lg hover:shadow-xl'
-                        : 'bg-emerald-600 hover:bg-emerald-700'
+                        ? 'bg-gradient-to-r from-cyan-600 to-green-600 hover:from-cyan-700 hover:to-green-700 shadow-lg hover:shadow-xl'
+                        : 'bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700'
                         } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                     >
                       Retake Quiz
@@ -772,7 +772,7 @@ export default function Module5({ theme = 'dark' }) {
 
               {/* Data Files Subsection */}
               <div className="space-y-4">
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-cyan-600' : 'text-cyan-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Database className="w-6 h-6" />
                   Data Files
                 </h4>
@@ -782,11 +782,11 @@ export default function Module5({ theme = 'dark' }) {
 
                 <div className="space-y-4">
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
-                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
+                    ? 'bg-cyan-50 border-cyan-200 hover:bg-cyan-100'
+                    : 'bg-cyan-500/20 border-cyan-400/30 hover:bg-cyan-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-cyan-200' : 'bg-cyan-600/40'} rounded-xl ${styles.transition}`}>
                         📊
                       </div>
                       <div>
@@ -800,8 +800,8 @@ export default function Module5({ theme = 'dark' }) {
                         'Sample Balance Sheet_GI.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : 'bg-blue-500 hover:bg-blue-600'
+                        ? 'bg-cyan-600 hover:bg-cyan-700'
+                        : 'bg-cyan-500 hover:bg-cyan-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -810,11 +810,11 @@ export default function Module5({ theme = 'dark' }) {
                   </div>
 
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
-                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
+                    ? 'bg-purple-50 border-purple-200 hover:bg-purple-100'
+                    : 'bg-purple-500/20 border-purple-400/30 hover:bg-purple-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-purple-200' : 'bg-purple-600/40'} rounded-xl ${styles.transition}`}>
                         📊
                       </div>
                       <div>
@@ -828,8 +828,8 @@ export default function Module5({ theme = 'dark' }) {
                         'Sample Balance Sheet_Life.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : 'bg-blue-500 hover:bg-blue-600'
+                        ? 'bg-purple-600 hover:bg-purple-700'
+                        : 'bg-purple-500 hover:bg-purple-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -878,17 +878,17 @@ export default function Module5({ theme = 'dark' }) {
                     </button>
                   </div>
 
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-orange-50 border-orange-200 hover:bg-orange-100'
-                    : 'bg-orange-500/20 border-orange-400/30 hover:bg-orange-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-orange-200' : 'bg-orange-600/40'} rounded-xl ${styles.transition}`}>
+                  <div className={`rounded-[30px] ${theme === 'light'
+                    ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
+                    : 'bg-yellow-500/20 border-yellow-400/30 hover:bg-yellow-500/30'
+                    } border p-6 flex items-center justify-between ${styles.transition}`}>
+                    <div className="flex items-center space-x-4">
+                      <div className={`p-4 ${theme === 'light' ? 'bg-yellow-200' : 'bg-yellow-600/40'} rounded-2xl ${styles.transition}`}>
                         🛠️
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Life Insurance CAR Template</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>IFRS 17 CAR Template_Life.xlsx • Comprehensive calculation workbook</p>
+                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Life Insurance CAR Template</h4>
+                        <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>IFRS 17 CAR Template_Life.xlsx • Comprehensive calculation workbook</p>
                       </div>
                     </div>
                     <button
@@ -896,81 +896,12 @@ export default function Module5({ theme = 'dark' }) {
                         '/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS-17-CAR-Template_Life.xlsx',
                         'IFRS 17 CAR Template_Life.xlsx'
                       )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-orange-600 hover:bg-orange-700'
-                        : 'bg-orange-500 hover:bg-orange-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
+                      className={`px-6 py-2 ${theme === 'light'
+                        ? 'bg-yellow-500 hover:bg-yellow-600'
+                        : 'bg-yellow-500 hover:bg-yellow-600'
+                        } rounded-lg text-white transition flex items-center gap-2`}
                     >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Files Subsection */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Award className="w-6 h-6" />
-                  Results Files
-                </h4>
-                <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download completed templates to compare your calculations with model answers:
-                </p>
-
-                <div className="space-y-4">
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
-                    : 'bg-emerald-500/20 border-emerald-400/30 hover:bg-emerald-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-emerald-200' : 'bg-emerald-600/40'} rounded-xl ${styles.transition}`}>
-                        ✅
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Life Insurance Results File</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>IFRS 17 CAR Template_Life - Results File.xlsx • Model answers</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Results Files/IFRS-17-CAR-Template_Life-Results-File.xlsx',
-                        'IFRS 17 CAR Template_Life - Results File.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-emerald-600 hover:bg-emerald-700'
-                        : 'bg-emerald-500 hover:bg-emerald-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
-                    : 'bg-emerald-500/20 border-emerald-400/30 hover:bg-emerald-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-emerald-200' : 'bg-emerald-600/40'} rounded-xl ${styles.transition}`}>
-                        ✅
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>General Insurance Results File</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>IFRS 17 CAR Template_GI_Results File.xlsx • Model answers</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Results Files/IFRS-17-CAR-Template_GI_Results-File.xlsx',
-                        'IFRS 17 CAR Template_GI_Results File.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-emerald-600 hover:bg-emerald-700'
-                        : 'bg-emerald-500 hover:bg-emerald-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
+                      <Download className="w-4 h-4" />
                       Download
                     </button>
                   </div>
@@ -979,7 +910,7 @@ export default function Module5({ theme = 'dark' }) {
 
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -988,14 +919,14 @@ export default function Module5({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-purple-50 border-purple-200'
-                  : 'bg-purple-500/10 border-purple-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-purple-300 hover:border-purple-400'
-                    : 'border-purple-400/30 hover:border-purple-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Completed Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your files here, or click to browse
@@ -1010,8 +941,8 @@ export default function Module5({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-purple-600 hover:bg-purple-700'
-                        : 'bg-purple-500 hover:bg-purple-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -1046,8 +977,8 @@ export default function Module5({ theme = 'dark' }) {
 
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg'
-                          : 'bg-purple-500 hover:bg-purple-600 shadow-lg hover:shadow-purple-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit All Files for Review
                         </button>

@@ -12,13 +12,13 @@ import Modules from "./Modules";
 import Module1 from "./Module1";
 import Module2 from "./Module2";
 import Module3 from "./Module3";
-// import Module4 from "./Module4";
-// import Module5 from "./Module5";
-// import Module6 from "./Module6";
-// import Module7 from "./Module7";
-// import Module8 from "./Module8";
-// import Module9 from "./Module9";
-// import Module10 from "./Module10";
+import Module4 from "./Module4";
+import Module5 from "./Module5";
+import Module6 from "./Module6";
+import Module7 from "./Module7";
+import Module8 from "./Module8";
+import Module9 from "./Module9";
+import Module10 from "./Module10";
 // import Module11 from "./Module11";
 // import Module12 from "./Module12";
 // import Module13 from "./Module13";
@@ -44,7 +44,7 @@ function App() {
     // Check for existing Supabase session
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      
+
       if (session?.user) {
         // User is logged in via Supabase
         const userData = {
@@ -76,7 +76,7 @@ function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth event:', event);
-        
+
         if (event === 'SIGNED_IN' && session?.user) {
           const userData = {
             id: session.user.id,
@@ -87,7 +87,7 @@ function App() {
           };
           setUser(userData);
           localStorage.setItem('user', JSON.stringify(userData));
-          
+
           // If user just signed in from auth modal, redirect to home
           if (window.location.pathname.includes('/auth')) {
             window.location.href = '/';
@@ -113,7 +113,7 @@ function App() {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      
+
       setUser(null);
       localStorage.removeItem('user');
     } catch (error) {
@@ -144,46 +144,46 @@ function App() {
         <div className="min-h-screen bg-var(--bg-primary) text-var(--text-primary) transition-colors duration-300">
           {/* Theme Toggle - Bottom Right Corner (visible for everyone now) */}
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-          
+
           {/* Navbar with theme prop */}
           <Navbar user={user} onLogout={handleLogout} theme={theme} />
-          
+
           <Routes>
             {/* Auth Callback Route for OAuth */}
-            <Route 
-              path="/auth/callback" 
-              element={<AuthCallback theme={theme} />} 
+            <Route
+              path="/auth/callback"
+              element={<AuthCallback theme={theme} />}
             />
-            
+
             {/* Auth Page with theme prop */}
-            <Route 
-              path="/auth" 
+            <Route
+              path="/auth"
               element={
                 user ? <Navigate to="/" replace /> : <Auth onAuthSuccess={handleAuthSuccess} theme={theme} />
-              } 
+              }
             />
-            
+
             {/* Home - LandingPage with theme prop if not logged in, HomePage if logged in */}
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
                 user ? <HomePage theme={theme} /> : <LandingPage theme={theme} />
-              } 
+              }
             />
-            
+
             {/* Protected Routes - pass theme to other pages as needed */}
-            <Route 
-              path="/qas-reports" 
+            <Route
+              path="/qas-reports"
               element={
                 user ? (
                   <div className="pt-20">
                     <QASReports theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            <Route 
-              path="/modules" 
+            <Route
+              path="/modules"
               element={
                 user ? (
                   <div className="pt-20">
@@ -191,42 +191,42 @@ function App() {
                     <ModulesTutorial />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            <Route 
-              path="/training-links" 
+            <Route
+              path="/training-links"
               element={
                 user ? (
                   <div className="pt-20">
                     <TrainingLinks theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            <Route 
-              path="/file-saving-format" 
+            <Route
+              path="/file-saving-format"
               element={
                 user ? (
                   <div className="pt-20">
                     <FileSavingFormat theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            <Route 
-              path="/admin" 
+            <Route
+              path="/admin"
               element={
                 isAdmin ? (
                   <div className="pt-20">
                     <AdminDashboard theme={theme} />
                   </div>
                 ) : <Navigate to="/" replace />
-              } 
+              }
             />
-            
+
             {/* Module Routes - Only for modules that exist */}
-            <Route 
-              path="/modules/1" 
+            <Route
+              path="/modules/1"
               element={
                 user ? (
                   <div className="pt-20">
@@ -234,75 +234,75 @@ function App() {
                     <Module1Tutorial />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            
-            <Route 
-              path="/modules/2" 
+
+            <Route
+              path="/modules/2"
               element={
                 user ? (
                   <div className="pt-20">
                     <Module2 theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            
-            <Route 
-              path="/modules/3" 
+
+            <Route
+              path="/modules/3"
               element={
                 user ? (
                   <div className="pt-20">
                     <Module3 theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            
+
             {/* Comment out routes for modules that don't exist yet */}
-            {/* 
-            <Route 
-              path="/modules/4" 
+
+            <Route
+              path="/modules/4"
               element={
                 user ? (
                   <div className="pt-20">
                     <Module4 theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            
-            <Route 
-              path="/modules/5" 
+
+            <Route
+              path="/modules/5"
               element={
                 user ? (
                   <div className="pt-20">
                     <Module5 theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            
-            <Route 
-              path="/modules/6" 
+
+            <Route
+              path="/modules/6"
               element={
                 user ? (
                   <div className="pt-20">
                     <Module6 theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
-            
-            <Route 
-              path="/modules/7" 
+
+            <Route
+              path="/modules/7"
               element={
                 user ? (
                   <div className="pt-20">
                     <Module7 theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
             
             <Route 
@@ -315,7 +315,7 @@ function App() {
                 ) : <Navigate to="/auth" replace />
               } 
             />
-            
+             
             <Route 
               path="/modules/9" 
               element={
@@ -337,7 +337,7 @@ function App() {
                 ) : <Navigate to="/auth" replace />
               } 
             />
-            
+            {/*
             <Route 
               path="/modules/11" 
               element={
@@ -415,16 +415,16 @@ function App() {
               } 
             />
             */}
-            
-            <Route 
-              path="/profile" 
+
+            <Route
+              path="/profile"
               element={
                 user ? (
                   <div className="pt-20">
                     <UserProfile theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
-              } 
+              }
             />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

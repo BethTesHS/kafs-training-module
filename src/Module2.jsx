@@ -77,8 +77,8 @@ export default function Module2({ theme = 'dark' }) {
       bg: 'bg-transparent',
       cardBg: 'bg-black/65',
       text: 'text-white',
-      textSecondary: 'text-gray-200',
-      textTertiary: 'text-gray-300',
+      textSecondary: 'text-white',
+      textTertiary: 'text-gray-100',
       border: 'border-white/10',
       hover: 'hover:bg-white/10',
       inputBg: 'bg-white/5',
@@ -330,7 +330,7 @@ export default function Module2({ theme = 'dark' }) {
           className="absolute inset-0 transition-all duration-500"
           style={{
             background: theme === 'light'
-              ? 'linear-gradient(135deg, rgba(59, 131, 246, 0.52) 0%, rgba(59, 131, 246, 0.53) 100%)'
+              ? 'linear-gradient(135deg, rgba(59, 131, 246, 0.35) 0%, rgba(59, 131, 246, 0.36) 100%)'
               : 'rgba(0, 0, 0, 0.3)',
             backdropFilter: theme === 'dark' ? 'blur(3px)' : 'blur(2px)',
           }}
@@ -382,10 +382,10 @@ export default function Module2({ theme = 'dark' }) {
                   className={`pb-4 text-sm font-medium border-b-2 transition-all duration-200 ${activeTab === tab
                     ? theme === 'light'
                       ? 'border-white text-white font-semibold bg-blue-600/20 px-3 py-1 rounded-t-lg'
-                      : 'border-blue-400 text-blue-400 bg-blue-400/20 px-3 py-1 rounded-t-lg'
+                      : 'border-blue-400 text-white font-semibold bg-blue-400/20 px-3 py-1 rounded-t-lg'
                     : theme === 'light'
                       ? 'border-transparent text-white/80 hover:text-white hover:border-white px-1'
-                      : 'border-transparent text-gray-300 hover:text-gray-200 hover:border-gray-300 px-1'
+                      : 'border-transparent text-white hover:text-white hover:bg-blue-500/30 hover:border-blue-400 px-1'
                     } ${styles.transition}`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -493,7 +493,7 @@ export default function Module2({ theme = 'dark' }) {
                 <>
                   {/* Quiz Header */}
                   <div className="flex justify-between items-center mb-6">
-                    <h3 className={`text-lg md:text-xl font-bold ${styles.text} ${styles.transition}`}>Quiz: Data Requirements & Checks</h3>
+                    <h3 className={`text-lg md:text-xl font-bold ${styles.text} ${styles.transition}`}>Quiz: Frequency & Severity</h3>
                     <div className={`${styles.textTertiary} text-sm md:text-base ${styles.transition}`}>
                       Question {currentQuestionIndex + 1} of {quizQuestions.length}
                     </div>
@@ -505,7 +505,7 @@ export default function Module2({ theme = 'dark' }) {
                       className={`h-2 rounded-full transition-all duration-300`}
                       style={{
                         width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`,
-                        backgroundColor: theme === 'light' ? '#3B82F6' : '#0eb5cf'
+                        backgroundColor: theme === 'light' ? '#3B82F6' : '#38bdf8'
                       }}
                     />
                   </div>
@@ -567,7 +567,7 @@ export default function Module2({ theme = 'dark' }) {
                         onClick={goToNextQuestion}
                         className={`px-4 md:px-6 py-3 ${theme === 'light'
                           ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
-                          : 'bg-[#00B7D4] hover:bg-[#0097B2] shadow-lg hover:shadow-xl'
+                          : 'bg-sky-400 hover:bg-sky-500 shadow-lg hover:shadow-xl'
                           } text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                       >
                         Next
@@ -700,7 +700,7 @@ export default function Module2({ theme = 'dark' }) {
           {/* ASSIGNMENTS TAB - Matching Module 1 structure */}
           {activeTab === 'assignments' && (
             <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 space-y-8 ${styles.transition}`} data-aos="fade-up">
-              <h3 className={`text-2xl font-bold ${styles.text} mb-6 ${styles.transition}`}>Assignments</h3>
+              <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 ${styles.transition}`}>Assignments</h3>
 
               {/* Data Files Subsection */}
               <div className="space-y-4">
@@ -744,11 +744,11 @@ export default function Module2({ theme = 'dark' }) {
 
                   {/* Premium Data */}
                   <div className={`rounded-[30px] ${theme === 'light'
-                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
-                    : 'bg-green-500/20 border-green-400/30 hover:bg-green-500/30'
+                    ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
+                    : 'bg-yellow-500/20 border-yellow-400/30 hover:bg-yellow-500/30'
                     } border p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-4">
-                      <div className={`p-4 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-2xl ${styles.transition}`}>
+                      <div className={`p-4 ${theme === 'light' ? 'bg-yellow-200' : 'bg-yellow-600/40'} rounded-2xl ${styles.transition}`}>
                         📈
                       </div>
                       <div>
@@ -762,8 +762,8 @@ export default function Module2({ theme = 'dark' }) {
                         'Premium Data.xlsx'
                       )}
                       className={`px-6 py-2 ${theme === 'light'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-green-500 hover:bg-green-600'
+                        ? 'bg-yellow-500 hover:bg-yellow-600'
+                        : 'bg-yellow-500 hover:bg-yellow-600'
                         } rounded-lg text-white transition flex items-center gap-2`}
                     >
                       <Download className="w-4 h-4" />

@@ -3,17 +3,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import {
   ArrowLeft,
-  BarChart2,
-  Bell,
-  User,
   Book,
-  Clock,
-  Calendar,
   FileText,
   Award,
   Download,
   Eye,
-  CheckCircle,
   Check,
   ExternalLink,
   Upload,
@@ -70,24 +64,51 @@ export default function Module1({ theme = 'dark' }) {
     }
     return {
       bg: 'bg-transparent',
-      cardBg: 'bg-black/65',
+      cardBg: 'bg-black/75',
       text: 'text-white',
       textSecondary: 'text-gray-200',
       textTertiary: 'text-gray-300',
-      border: 'border-white/10',
+      border: 'border-white/30',
       hover: 'hover:bg-white/10',
       inputBg: 'bg-white/5',
-      shadow: 'shadow-xl',
-      accent: 'text-sky-400',
-      accentBg: 'bg-sky-500/20',
-      accentBorder: 'border-sky-400/30',
-      accentHover: 'hover:bg-sky-500/30',
-      gradientText: 'text-sky-400',
+      shadow: 'shadow-2xl shadow-purple-500/20',
+      accent: 'text-purple-400',
+      accentBg: 'bg-purple-500/20',
+      accentBorder: 'border-purple-400/30',
+      accentHover: 'hover:bg-purple-500/30',
+      gradientText: 'bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent',
       transition: 'transition-all duration-300 ease-in-out'
     };
   };
 
   const styles = getThemeStyles();
+
+  // Helper functions for section display
+  const getCurrentSection = (questionIndex) => {
+    const question = quizQuestions[questionIndex];
+    return question.section;
+  };
+
+  const getSectionProgress = (questionIndex) => {
+    const currentSection = getCurrentSection(questionIndex);
+    const sectionQuestions = quizQuestions.filter(q => q.section === currentSection);
+    const sectionIndex = quizQuestions.findIndex(q => q.section === currentSection);
+    const currentInSection = questionIndex - sectionIndex + 1;
+    return `${currentInSection} of ${sectionQuestions.length} questions`;
+  };
+
+  const shouldShowSectionHeader = (questionIndex) => {
+    if (questionIndex === 0) return true;
+    const currentSection = getCurrentSection(questionIndex);
+    const prevSection = getCurrentSection(questionIndex - 1);
+    return currentSection !== prevSection;
+  };
+
+  const getCurrentSectionNumber = (questionIndex) => {
+    const sections = ["Data Requirements", "Data Checks", "Data Handling & Reporting"];
+    const currentSection = getCurrentSection(questionIndex);
+    return sections.indexOf(currentSection) + 1;
+  };
 
   const downloadFile = (url, filename) => {
     const a = document.createElement('a');
@@ -150,8 +171,10 @@ export default function Module1({ theme = 'dark' }) {
   };
 
   const quizQuestions = [
+    // Section 1: Data Requirements
     {
       id: 1,
+      section: "Data Requirements",
       question: "Which of the following is not a required data item in the Premium Register?",
       options: [
         "a) Unique policy identifier",
@@ -164,6 +187,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 2,
+      section: "Data Requirements",
       question: "The Exposure File is primarily used for the computation of:",
       options: [
         "a) Loss Ratio",
@@ -176,6 +200,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 3,
+      section: "Data Requirements",
       question: "Paid claims information should cover:",
       options: [
         "a) At least 3 years",
@@ -188,6 +213,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 4,
+      section: "Data Requirements",
       question: "Which of the following must be confirmed in Paid Claims data?",
       options: [
         "a) That only settled claims are included",
@@ -200,6 +226,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 5,
+      section: "Data Requirements",
       question: "Outstanding claims are defined as:",
       options: [
         "a) Claims fully settled in the current year",
@@ -212,6 +239,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 6,
+      section: "Data Requirements",
       question: "Which financial statements are required for general insurance valuation?",
       options: [
         "a) Management accounts only",
@@ -222,8 +250,11 @@ export default function Module1({ theme = 'dark' }) {
       correctAnswer: "b) Audited accounts and management accounts",
       explanation: "Both audited accounts and management accounts are needed for valuation."
     },
+  
+    // Section 2: Data Checks
     {
       id: 7,
+      section: "Data Checks",
       question: "Which of the following is not a data check type described in the manual?",
       options: [
         "a) Reasonability & Appropriateness",
@@ -236,6 +267,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 8,
+      section: "Data Checks",
       question: "An example of a reasonability check is:",
       options: [
         "a) Checking if policy start-date is after policy end-date",
@@ -248,6 +280,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 9,
+      section: "Data Checks",
       question: "Which date sequence is correct according to the checks?",
       options: [
         "a) Claim reporting date → Claim loss-date → Claim payment date",
@@ -260,6 +293,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 10,
+      section: "Data Checks",
       question: "A movement analysis in Outstanding Claims involves:",
       options: [
         "a) Reconciling opening, reported, and paid claims",
@@ -272,6 +306,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 11,
+      section: "Data Checks",
       question: "Completeness checks require comparing GI data with:",
       options: [
         "a) Regulatory capital requirements",
@@ -284,6 +319,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 12,
+      section: "Data Checks",
       question: "When data errors occur, one valid approach is:",
       options: [
         "a) Always deleting the records",
@@ -294,8 +330,11 @@ export default function Module1({ theme = 'dark' }) {
       correctAnswer: "c) Correcting errors with client validation",
       explanation: "Corrections must be validated with the client for auditability."
     },
+  
+    // Section 3: Data Handling & Reporting
     {
       id: 13,
+      section: "Data Handling & Reporting",
       question: "Which factor should not guide how to treat data errors?",
       options: [
         "a) Purpose of the data",
@@ -308,6 +347,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 14,
+      section: "Data Handling & Reporting",
       question: "Assumptions made when filling in missing data must:",
       options: [
         "a) Be approved by the reinsurer",
@@ -320,6 +360,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 15,
+      section: "Data Handling & Reporting",
       question: "Failed data checks and queries should be:",
       options: [
         "a) Corrected immediately without client involvement",
@@ -332,6 +373,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 16,
+      section: "Data Handling & Reporting",
       question: "Summaries per class of business must include:",
       options: [
         "a) Claims and premiums by loss year/quarter",
@@ -344,6 +386,7 @@ export default function Module1({ theme = 'dark' }) {
     },
     {
       id: 17,
+      section: "Data Handling & Reporting",
       question: "Premium register summaries should present:",
       options: [
         "a) Gross and net written premium per underwriting year",
@@ -385,9 +428,9 @@ export default function Module1({ theme = 'dark' }) {
           className="absolute inset-0 transition-all duration-500"
           style={{
             background: theme === 'light'
-              ? 'linear-gradient(135deg, rgba(77, 98, 190, 0.65) 0%, rgba(148, 64, 232, 0.59) 100%)'
-              : 'rgba(0, 0, 0, 0.3)',
-            backdropFilter: theme === 'dark' ? 'blur(4px)' : 'blur(2px)',
+              ? 'linear-gradient(135deg, rgba(77, 98, 190, 0.56) 0%, rgba(148, 64, 232, 0.53) 100%)'
+              : 'linear-gradient(135deg, rgba(31, 43, 95, 0.5) 0%, rgba(94, 51, 138, 0.61) 100%)',
+            backdropFilter: theme === 'dark' ? 'blur(2px)' : 'blur(2px)',
           }}
         />
       </div>
@@ -406,14 +449,14 @@ export default function Module1({ theme = 'dark' }) {
             <div className="flex items-center space-x-4 md:space-x-6">
               <div className={`inline-block p-4 rounded-full ${theme === 'light'
                 ? 'bg-gradient-to-br from-purple-400 to-blue-500'
-                : 'bg-sky-500/30 border border-sky-400/40'
+                : 'bg-gradient-to-br from-purple-500/40 to-blue-500/40 border border-purple-400/40'
                 } ${styles.transition} flex-shrink-0`}>
-                <Book className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-sky-300'} ${styles.transition}`} />
+                <Book className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-white'} ${styles.transition}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <h1 className={`text-2xl md:text-3xl font-bold leading-tight ${theme === 'light'
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent bg-origin-padding'
-                  : 'text-sky-400'
+                  ? 'bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent bg-origin-padding'
+                  : 'bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent'
                   } ${styles.transition}`}>
                   Data Cleaning and Validation
                 </h1>
@@ -439,10 +482,10 @@ export default function Module1({ theme = 'dark' }) {
                   className={`pb-4 text-sm font-medium border-b-2 transition-all duration-200 ${activeTab === tab
                     ? theme === 'light'
                       ? 'border-white text-white font-semibold bg-blue-600/20 px-3 py-1 rounded-t-lg'
-                      : 'border-sky-400 text-sky-400 bg-sky-400/10 px-3 py-1 rounded-t-lg'
+                      : 'border-purple-400 text-white font-semibold bg-purple-400/10 px-3 py-1 rounded-t-lg'
                     : theme === 'light'
                       ? 'border-transparent text-white/80 hover:text-white hover:border-white px-1'
-                      : 'border-transparent text-gray-300 hover:text-gray-200 hover:border-gray-300 px-1'
+                      : 'border-transparent text-gray-200 hover:text-white hover:border-purple-300 hover:bg-purple-500/10 px-1'
                     } ${styles.transition}`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -461,7 +504,7 @@ export default function Module1({ theme = 'dark' }) {
                 Module Objective
                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
                   ? 'bg-gradient-to-r from-purple-600 to-blue-600'
-                  : 'bg-gradient-to-r from-sky-400 to-blue-500'
+                  : 'bg-gradient-to-r from-purple-400 to-blue-400'
                   } transform translate-y-1 ${styles.transition}`}></span>
               </h3>
               <p className={`${styles.textSecondary} mb-6 text-sm md:text-base ${styles.transition}`}>
@@ -480,7 +523,7 @@ export default function Module1({ theme = 'dark' }) {
                 Learning Outcomes
                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
                   ? 'bg-gradient-to-r from-purple-600 to-blue-600'
-                  : 'bg-gradient-to-r from-sky-400 to-blue-500'
+                  : 'bg-gradient-to-r from-purple-400 to-blue-400'
                   } transform translate-y-1 ${styles.transition}`}></span>
               </h3>
               <ul className={`list-disc pl-5 ${styles.textSecondary} space-y-2 mb-6 text-sm md:text-base ${styles.transition}`}>
@@ -507,7 +550,7 @@ export default function Module1({ theme = 'dark' }) {
                 {/* Resource Card */}
                 <div className={`rounded-2xl ${styles.accentBg} border ${styles.accentBorder} p-4 md:p-6 flex items-center justify-between ${styles.accentHover} ${styles.transition}`}>
                   <div className="flex items-center space-x-3 md:space-x-4">
-                    <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-sky-600/40'} rounded-xl ${styles.transition}`}>
+                    <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-purple-500/40'} rounded-xl ${styles.transition}`}>
                       📄
                     </div>
                     <div>
@@ -522,7 +565,7 @@ export default function Module1({ theme = 'dark' }) {
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
                       ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
-                      : 'bg-sky-500 hover:bg-sky-600'
+                      : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-xl'
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
                     <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -565,14 +608,39 @@ export default function Module1({ theme = 'dark' }) {
                   </div>
 
                   {/* Progress Bar */}
-                  <div className={`w-full ${theme === 'light' ? 'bg-gray-200' : 'bg-white/10'} rounded-full h-2 mb-8 ${styles.transition}`}>
+                  <div className={`w-full ${theme === 'light' ? 'bg-gray-200' : 'bg-white/10'} rounded-full h-2 mb-6 ${styles.transition}`}>
                     <div
                       className={`h-2 rounded-full transition-all duration-300`}
                       style={{
                         width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`,
-                        backgroundColor: theme === 'light' ? '#3B82F6' : '#0eb5cf'
+                        backgroundColor: '#6366f1'
                       }}
                     />
+                  </div>
+
+                  {/* Section Progress Indicator */}
+                  <div className="mb-6">
+                    <div className={`p-4 rounded-lg border-2 shadow-md ${theme === 'light'
+                      ? 'bg-white/80 border-gray-300'
+                      : 'bg-white/10 border-white/20'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>
+                            {quizQuestions[currentQuestionIndex].section}
+                          </p>
+                          <p className={`text-xs font-medium ${styles.textSecondary} mt-1 ${styles.transition}`}>
+                            {getSectionProgress(currentQuestionIndex)}
+                          </p>
+                        </div>
+                        <div className={`text-xs font-semibold px-3 py-1.5 rounded ${theme === 'light'
+                          ? 'bg-gray-200 text-gray-800'
+                          : 'bg-white/15 text-white'
+                          }`}>
+                          Section {getCurrentSectionNumber(currentQuestionIndex)}/3
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Question Card */}
@@ -587,8 +655,8 @@ export default function Module1({ theme = 'dark' }) {
                           key={option}
                           className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${quizAnswers[quizQuestions[currentQuestionIndex].id] === option
                             ? theme === 'light'
-                              ? 'bg-blue-100 border-2 border-blue-500'
-                              : 'bg-sky-500/30 border-2 border-sky-400'
+                              ? 'bg-indigo-100 border-2 border-indigo-500'
+                              : 'bg-indigo-500/30 border-2 border-indigo-400'
                             : theme === 'light'
                               ? 'bg-white border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                               : 'bg-white/5 border-2 border-white/10 hover:bg-white/10 hover:border-white/20'
@@ -630,10 +698,7 @@ export default function Module1({ theme = 'dark' }) {
                     {currentQuestionIndex < quizQuestions.length - 1 ? (
                       <button
                         onClick={goToNextQuestion}
-                        className={`px-4 md:px-6 py-3 ${theme === 'light'
-                          ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
-                          : 'bg-[#00B7D4] hover:bg-[#0097B2] shadow-lg hover:shadow-xl'
-                          } text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                        className={`px-4 md:px-6 py-3 bg-indigo-600 hover:bg-indigo-700 shadow-lg hover:shadow-xl text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                       >
                         Next
                         <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 rotate-180" />
@@ -657,12 +722,12 @@ export default function Module1({ theme = 'dark' }) {
                 <div className="space-y-6 md:space-y-8">
                   {/* Score Card */}
                   <div className={`${theme === 'light'
-                    ? 'bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200'
-                    : 'bg-gradient-to-br from-sky-500/20 to-blue-500/20 border border-sky-400/30'
+                    ? 'bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200'
+                    : 'bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-400/30'
                     } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
-                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-purple-600' : 'text-sky-400'} mx-auto mb-4`} />
+                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mx-auto mb-4`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
-                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-purple-600' : 'text-sky-400'} mb-2`}>
+                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mb-2`}>
                       {calculateScore().correct}/{calculateScore().total}
                     </div>
                     <p className={`text-base md:text-lg ${styles.textTertiary} ${styles.transition}`}>
@@ -680,66 +745,89 @@ export default function Module1({ theme = 'dark' }) {
                   {/* Answer Review */}
                   <div>
                     <h4 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 md:mb-6 ${styles.transition}`}>Answer Review</h4>
-                    <div className="space-y-4 md:space-y-6">
-                      {quizQuestions.map((q, index) => (
-                        <div
-                          key={q.id}
-                          className={`rounded-xl p-4 md:p-6 border-2 ${isAnswerCorrect(q.id)
-                            ? theme === 'light'
-                              ? 'bg-green-50 border-green-400'
-                              : 'bg-green-500/10 border-green-400/30'
-                            : theme === 'light'
-                              ? 'bg-red-50 border-red-400'
-                              : 'bg-red-500/10 border-red-400/30'
-                            } ${styles.transition}`}
-                        >
-                          <div className="flex items-start gap-3 mb-4">
-                            <div className={`flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${isAnswerCorrect(q.id)
-                              ? theme === 'light'
-                                ? 'bg-green-200 text-green-700'
-                                : 'bg-green-500/30 text-green-400'
-                              : theme === 'light'
-                                ? 'bg-red-200 text-red-700'
-                                : 'bg-red-500/30 text-red-400'
-                              } ${styles.transition}`}>
-                              {isAnswerCorrect(q.id) ? (
-                                <Check className="w-3 h-3 md:w-4 md:h-4" />
-                              ) : (
-                                <span className="text-base md:text-lg font-bold">✗</span>
-                              )}
-                            </div>
-                            <div className="flex-1">
-                              <h5 className={`text-base md:text-lg font-semibold ${styles.text} mb-3 ${styles.transition}`}>
-                                Question {index + 1}: {q.question}
-                              </h5>
-
-                              {!isAnswerCorrect(q.id) && (
-                                <div className={`mb-3 p-3 ${theme === 'light' ? 'bg-red-100' : 'bg-red-500/20'
-                                  } rounded-lg ${styles.transition}`}>
-                                  <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-red-800' : 'text-red-300'} ${styles.transition}`}>
-                                    <span className="font-semibold">Your answer:</span> {quizAnswers[q.id]}
-                                  </p>
+                    <div className="space-y-4">
+                      {(() => {
+                        let currentSection = null;
+                        return quizQuestions.map((q, index) => {
+                          const showSectionHeader = q.section !== currentSection;
+                          currentSection = q.section;
+                          
+                          return (
+                            <div key={q.id} className="space-y-3">
+                              {showSectionHeader && (
+                                <div className={`py-3 px-5 rounded-lg bg-gradient-to-r from-purple-600/30 to-blue-600/30 backdrop-blur-sm border ${theme === 'light'
+                                  ? 'border-purple-400/20'
+                                  : 'border-purple-400/15'
+                                  } shadow-sm`}>
+                                  <div className="flex items-center gap-3">
+                                    <h5 className={`font-semibold text-base md:text-lg tracking-wide ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                      Section {["Data Requirements", "Data Checks", "Data Handling & Reporting"].indexOf(q.section) + 1}: {q.section}
+                                    </h5>
+                                    <span className={`text-xs ml-auto font-medium ${theme === 'light' ? 'text-gray-700' : 'text-white/70'}`}>
+                                      {quizQuestions.filter(item => item.section === q.section).length} questions
+                                    </span>
+                                  </div>
                                 </div>
                               )}
+                              
+                              <div className={`rounded-xl p-4 md:p-6 border-2 ${isAnswerCorrect(q.id)
+                                ? theme === 'light'
+                                  ? 'bg-green-50 border-green-400'
+                                  : 'bg-green-500/10 border-green-400/30'
+                                : theme === 'light'
+                                  ? 'bg-red-50 border-red-400'
+                                  : 'bg-red-500/10 border-red-400/30'
+                                } ${styles.transition}`}>
+                                <div className="flex items-start gap-3 mb-4">
+                                  <div className={`flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${isAnswerCorrect(q.id)
+                                    ? theme === 'light'
+                                      ? 'bg-green-200 text-green-700'
+                                      : 'bg-green-500/30 text-green-400'
+                                    : theme === 'light'
+                                      ? 'bg-red-200 text-red-700'
+                                      : 'bg-red-500/30 text-red-400'
+                                    } ${styles.transition}`}>
+                                    {isAnswerCorrect(q.id) ? (
+                                      <Check className="w-3 h-3 md:w-4 md:h-4" />
+                                    ) : (
+                                      <span className="text-base md:text-lg font-bold">✗</span>
+                                    )}
+                                  </div>
+                                  <div className="flex-1">
+                                    <h5 className={`text-base md:text-lg font-semibold ${styles.text} mb-3 ${styles.transition}`}>
+                                      Question {index + 1}: {q.question}
+                                    </h5>
 
-                              <div className={`mb-3 p-3 ${theme === 'light' ? 'bg-green-100' : 'bg-green-500/20'
-                                } rounded-lg ${styles.transition}`}>
-                                <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-green-800' : 'text-green-300'} ${styles.transition}`}>
-                                  <span className="font-semibold">Correct answer:</span> {q.correctAnswer}
-                                </p>
-                              </div>
+                                    {!isAnswerCorrect(q.id) && (
+                                      <div className={`mb-3 p-3 ${theme === 'light' ? 'bg-red-100' : 'bg-red-500/20'
+                                        } rounded-lg ${styles.transition}`}>
+                                        <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-red-800' : 'text-red-300'} ${styles.transition}`}>
+                                          <span className="font-semibold">Your answer:</span> {quizAnswers[q.id]}
+                                        </p>
+                                      </div>
+                                    )}
 
-                              <div className={`p-3 md:p-4 ${theme === 'light'
-                                ? 'bg-blue-50 border border-blue-200'
-                                : 'bg-sky-500/10 border border-sky-400/20'
-                                } rounded-lg ${styles.transition}`}>
-                                <p className={`${theme === 'light' ? 'text-blue-700' : 'text-sky-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
-                                <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>{q.explanation}</p>
+                                    <div className={`mb-3 p-3 ${theme === 'light' ? 'bg-green-100' : 'bg-green-500/20'
+                                      } rounded-lg ${styles.transition}`}>
+                                      <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-green-800' : 'text-green-300'} ${styles.transition}`}>
+                                        <span className="font-semibold">Correct answer:</span> {q.correctAnswer}
+                                      </p>
+                                    </div>
+
+                                    <div className={`p-3 md:p-4 ${theme === 'light'
+                                      ? 'bg-blue-50 border border-blue-200'
+                                      : 'bg-purple-500/10 border border-purple-400/20'
+                                      } rounded-lg ${styles.transition}`}>
+                                      <p className={`${theme === 'light' ? 'text-blue-700' : 'text-purple-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
+                                      <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>{q.explanation}</p>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
+                          );
+                        });
+                      })()}
                     </div>
                   </div>
 
@@ -753,7 +841,7 @@ export default function Module1({ theme = 'dark' }) {
                       }}
                       className={`px-6 md:px-8 py-3 ${theme === 'light'
                         ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
-                        : 'bg-sky-600 hover:bg-sky-700'
+                        : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-xl'
                         } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                     >
                       Retake Quiz
