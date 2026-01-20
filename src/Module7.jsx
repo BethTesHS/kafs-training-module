@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -57,7 +58,7 @@ export default function Module7({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-blue-500/10',
@@ -369,6 +370,17 @@ export default function Module7({ theme = 'dark' }) {
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
@@ -459,27 +471,6 @@ export default function Module7({ theme = 'dark' }) {
                 <li>Produce an actuarial certification report and recommendation suitable for IRA submission.</li>
               </ol>
 
-              <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
-                Activities and Exercises
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-blue-600 to-blue-600'
-                  : 'bg-gradient-to-r from-blue-400 to-blue-500'
-                  } transform translate-y-1 ${styles.transition}`}></span>
-              </h3>
-              <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>
-                Download the exercises document to test your understanding through practical calculations and case studies.
-              </p>
-              <a
-                href="/Training Modules/Module-7-Premium-Certification/Module-7_Exercises_GI-Premium-Certificate.docx"
-                download="Module 7 Exercises - GI Premium Certificate.docx"
-                className={`inline-flex items-center gap-2 mt-3 px-4 py-2 ${theme === 'light'
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                  : 'bg-blue-500 hover:bg-blue-600 text-white'
-                  } rounded-lg transition ${styles.transition}`}
-              >
-                <Download className="w-4 h-4" />
-                Download Exercises (DOCX)
-              </a>
             </div>
           )}
 
@@ -500,12 +491,12 @@ export default function Module7({ theme = 'dark' }) {
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Premium Certification Technical Procedure</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Premium Certification 2025 - DOCX • Comprehensive guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Premium Certification 2025 - PDF • 25 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-7-Premium-Certification/Course Content/KAFS_Internal-Technical-Procedures_Premium-Certification_2025.docx"
-                    download="KAFS ITP Premium Certification 2025.docx"
+                    href="/Training Modules/Module-7-Premium-Certificate/Course Content/KAFS_Internal Technical Procedures_Premium Certification_2025.pdf"
+                    download="KAFS ITP Premium Certification 2025.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -514,7 +505,7 @@ export default function Module7({ theme = 'dark' }) {
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
                     <Download className="w-3 h-3 md:w-4 md:h-4" />
-                    Download DOCX
+                    Download PDF
                   </a>
                 </div>
 
@@ -546,7 +537,7 @@ export default function Module7({ theme = 'dark' }) {
                       className={`h-2 rounded-full transition-all duration-300`}
                       style={{
                         width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`,
-                        backgroundColor: theme === 'light' ? '#4F46E5' : '#818CF8'
+                        backgroundColor: theme === 'light' ? '#2563EB' : '#38BDF8'
                       }}
                     />
                   </div>
@@ -644,7 +635,7 @@ export default function Module7({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -722,7 +713,7 @@ export default function Module7({ theme = 'dark' }) {
                         setCurrentQuestionIndex(0);
                       }}
                       className={`px-6 md:px-8 py-3 ${theme === 'light'
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
+                        ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
                         : 'bg-blue-500 hover:bg-blue-600'
                         } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                     >
@@ -760,12 +751,12 @@ export default function Module7({ theme = 'dark' }) {
                       </div>
                       <div>
                         <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>ABC Company Data</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>ABC Company_Data Shared.xlsx • Complete premium & claims dataset</p>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>ABC Company Data Shared.xlsx • Complete premium & claims dataset</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-7-Premium-Certification/Data/ABC-Company_Data-Shared.xlsx',
+                        '/Training Modules/Module-7-Premium-Certificate/Data/ABC Company_Data Shared.xlsx',
                         'ABC Company Data Shared.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -806,7 +797,7 @@ export default function Module7({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-7-Premium-Certification/Working Files/ABC-Premium-Certification-2025.xlsx',
+                        '/Training Modules/Module-7-Premium-Certificate/Working Files/ABC- Premium Certification 2025.xlsx',
                         'ABC Premium Certification 2025.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -821,50 +812,9 @@ export default function Module7({ theme = 'dark' }) {
                 </div>
               </div>
 
-              {/* Results Files Subsection */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Award className="w-6 h-6" />
-                  Results Files
-                </h4>
-                <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download completed templates to compare your certification analysis with model answers:
-                </p>
-
-                <div className="space-y-4">
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
-                    : 'bg-green-500/20 border-green-400/30 hover:bg-green-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-xl ${styles.transition}`}>
-                        ✅
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Premium Certification Results 2025</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>ABC- Premium Certification 2025_Results.xlsx • Model certification answers</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-7-Premium-Certification/Results Files/ABC-Premium-Certification-2025_Results.xlsx',
-                        'ABC Premium Certification 2025 Results.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-green-500 hover:bg-green-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -873,14 +823,14 @@ export default function Module7({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-blue-50 border-blue-200'
-                  : 'bg-blue-500/10 border-blue-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-blue-300 hover:border-blue-400'
-                    : 'border-blue-400/30 hover:border-blue-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Certification Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your completed certification files here, or click to browse
@@ -895,8 +845,8 @@ export default function Module7({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : 'bg-blue-500 hover:bg-blue-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -913,7 +863,7 @@ export default function Module7({ theme = 'dark' }) {
                         {uploadedFiles.map(file => (
                           <div key={file.id} className={`flex items-center justify-between ${styles.inputBg} rounded-lg p-3 ${styles.transition}`}>
                             <div className="flex items-center space-x-3">
-                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} ${styles.transition}`} />
+                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} ${styles.transition}`} />
                               <div>
                                 <p className={`${styles.text} text-sm font-medium ${styles.transition}`}>{file.name}</p>
                                 <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>{file.size} • {file.uploadDate}</p>
@@ -931,8 +881,8 @@ export default function Module7({ theme = 'dark' }) {
 
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg'
-                          : 'bg-blue-500 hover:bg-blue-600 shadow-lg hover:shadow-blue-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit Certification for Review
                         </button>

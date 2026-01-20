@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -58,7 +59,7 @@ export default function Module6({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-purple-500/10',
@@ -430,6 +431,17 @@ export default function Module6({ theme = 'dark' }) {
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
@@ -539,12 +551,12 @@ export default function Module6({ theme = 'dark' }) {
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Financial Performance Technical Procedure</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Guidelines on Financial Performance Analysis - DOCX • Comprehensive guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Guidelines on Financial Performance Analysis - PDF • 18 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-6-Financial-Ratios/Course Content/KAFS_Internal-Technical-Procedures_Guidelines-on-Financial-Performance-Analysis.docx"
-                    download="KAFS ITP Financial Performance Analysis.docx"
+                    href="/Training Modules/Module-6-Financial-Performance-Analysis/Course Content/KAFS_Internal Technical Procedures_Guidelines on Financial Performance Analysis.pdf"
+                    download="KAFS ITP Financial Performance Analysis.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -553,34 +565,62 @@ export default function Module6({ theme = 'dark' }) {
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
                     <Download className="w-3 h-3 md:w-4 md:h-4" />
-                    Download DOCX
+                    Download PDF
                   </a>
                 </div>
 
                 {/* Additional Resources */}
-                <div className="mt-6 space-y-4">
-                  <h4 className={`text-md font-semibold ${styles.text} ${styles.transition}`}>Additional Resources and References</h4>
-                  
-                  <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-500/10 border-blue-400/20'} border p-4 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
-                        📚
+                <div className={`mt-6 pt-6 border-t ${styles.border}`}>
+                  <h4 className={`font-semibold ${styles.text} mb-4 flex items-center gap-2 ${styles.transition}`}>
+                    <FileText className="w-5 h-5" />
+                    Additional Resources
+                  </h4>
+                  <div className="space-y-3">
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100'
+                      : 'bg-blue-500/20 border border-blue-400/30 hover:bg-blue-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-700' : 'text-blue-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-blue-900' : 'text-blue-200'} ${styles.transition}`}>CFI Financial Ratios Cheat Sheet</h5>
+                        </div>
                       </div>
-                      <div>
-                        <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>IRA Insurance Industry Report 2024</h5>
-                        <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>Insurance Industry Annual Report 2024.pdf • Industry benchmarks</p>
-                      </div>
+                      <a
+                        href="/Training Modules/Module-6-Financial-Performance-Analysis/Additional Resources/CFI-Financial-Ratios-Cheat-Sheet-eBook.pdf"
+                        download="CFI Financial Ratios Cheat Sheet.pdf"
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+                          : 'bg-blue-500 hover:bg-blue-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
                     </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-6-Financial-Ratios/Additional Resources/Insurance-Industry-Annual-Report-2024.pdf',
-                        'IRA Insurance Industry Annual Report 2024.pdf'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-sm md:text-base transition flex items-center gap-2`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
+
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-green-50 border border-green-200 hover:bg-green-100'
+                      : 'bg-green-500/20 border border-green-400/30 hover:bg-green-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-green-700' : 'text-green-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-green-900' : 'text-green-200'} ${styles.transition}`}>IRA Insurance Industry Report 2024</h5>
+                        </div>
+                      </div>
+                      <a
+                        href="/Training Modules/Module-6-Financial-Performance-Analysis/Additional Resources/Insurance Industry Annual Report 2024.pdf"
+                        download="IRA Insurance Industry Annual Report 2024.pdf"
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl'
+                          : 'bg-green-500 hover:bg-green-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -687,13 +727,14 @@ export default function Module6({ theme = 'dark' }) {
                 </>
               ) : (
                 <div className="space-y-6 md:space-y-8">
+                  {/* Score Card */}
                   <div className={`${theme === 'light'
-                    ? 'bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200'
-                    : 'bg-gradient-to-br from-sky-500/10 to-blue-500/10 border-sky-400/30'
-                    } rounded-2xl p-6 md:p-8 text-center border ${styles.transition}`}>
-                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-blue-600' : 'text-sky-400'} mx-auto mb-4`} />
+                    ? 'bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200'
+                    : 'bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-400/30'
+                    } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
+                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mx-auto mb-4`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
-                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-blue-600' : 'text-sky-400'} mb-2`}>
+                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mb-2`}>
                       {calculateScore().correct}/{calculateScore().total}
                     </div>
                     <p className={`text-base md:text-lg ${styles.textTertiary} ${styles.transition}`}>
@@ -703,14 +744,15 @@ export default function Module6({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
 
+                  {/* Answer Review */}
                   <div>
                     <h4 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 md:mb-6 ${styles.transition}`}>Answer Review</h4>
-                    <div className="space-y-4 md:space-y-6">
+                    <div className="space-y-4">
                       {quizQuestions.map((q, index) => (
                         <div
                           key={q.id}
@@ -824,7 +866,7 @@ export default function Module6({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-6-Financial-Ratios/Data/Data.xlsx',
+                        '/Training Modules/Module-6-Financial-Performance-Analysis/Data/Data.xlsx',
                         'Financial Performance Data.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -841,7 +883,7 @@ export default function Module6({ theme = 'dark' }) {
 
               {/* Working Files Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Settings className="w-6 h-6" />
                   Working Files
                 </h4>
@@ -851,11 +893,11 @@ export default function Module6({ theme = 'dark' }) {
 
                 <div className="space-y-4">
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
-                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
+                    ? 'bg-orange-50 border-orange-200 hover:bg-orange-100'
+                    : 'bg-orange-500/20 border-orange-400/30 hover:bg-orange-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-orange-200' : 'bg-orange-600/40'} rounded-xl ${styles.transition}`}>
                         🛠️
                       </div>
                       <div>
@@ -865,53 +907,12 @@ export default function Module6({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-6-Financial-Ratios/Working Files/Ratios-Template.xlsx',
+                        '/Training Modules/Module-6-Financial-Performance-Analysis/Working File/Ratios Template.xlsx',
                         'Financial Ratios Template.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : 'bg-blue-500 hover:bg-blue-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Files Subsection */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Award className="w-6 h-6" />
-                  Results Files
-                </h4>
-                <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download completed templates to compare your calculations with model answers:
-                </p>
-
-                <div className="space-y-4">
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
-                    : 'bg-green-500/20 border-green-400/30 hover:bg-green-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-xl ${styles.transition}`}>
-                        ✅
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Financial Ratios Results</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Ratios Results.xlsx • Model answers and solutions</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-6-Financial-Ratios/Results Files/Ratios-Results.xlsx',
-                        'Financial Ratios Results.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-green-500 hover:bg-green-600'
+                        ? 'bg-orange-600 hover:bg-orange-700'
+                        : 'bg-orange-500 hover:bg-orange-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -923,7 +924,7 @@ export default function Module6({ theme = 'dark' }) {
 
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -932,14 +933,14 @@ export default function Module6({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-purple-50 border-purple-200'
-                  : 'bg-purple-500/10 border-purple-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-purple-300 hover:border-purple-400'
-                    : 'border-purple-400/30 hover:border-purple-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Completed Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your files here, or click to browse
@@ -954,8 +955,8 @@ export default function Module6({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-purple-600 hover:bg-purple-700'
-                        : 'bg-purple-500 hover:bg-purple-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -972,7 +973,7 @@ export default function Module6({ theme = 'dark' }) {
                         {uploadedFiles.map(file => (
                           <div key={file.id} className={`flex items-center justify-between ${styles.inputBg} rounded-lg p-3 ${styles.transition}`}>
                             <div className="flex items-center space-x-3">
-                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} ${styles.transition}`} />
+                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} ${styles.transition}`} />
                               <div>
                                 <p className={`${styles.text} text-sm font-medium ${styles.transition}`}>{file.name}</p>
                                 <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>{file.size} • {file.uploadDate}</p>
@@ -990,8 +991,8 @@ export default function Module6({ theme = 'dark' }) {
 
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg'
-                          : 'bg-purple-500 hover:bg-purple-600 shadow-lg hover:shadow-purple-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit All Files for Review
                         </button>

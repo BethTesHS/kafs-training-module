@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -59,7 +60,7 @@ export default function Module5({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-cyan-500/10',
@@ -359,6 +360,17 @@ export default function Module5({ theme = 'dark' }) {
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
@@ -447,27 +459,6 @@ export default function Module5({ theme = 'dark' }) {
                 <li>Describe the supervisory and enforcement actions the IRA can take in cases of non-compliance.</li>
               </ol>
 
-              <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
-                Activities and Exercises
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600'
-                  : 'bg-gradient-to-r from-cyan-400 to-teal-500'
-                  } transform translate-y-1 ${styles.transition}`}></span>
-              </h3>
-              <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>
-                Download the exercises document to test your understanding through practical calculations and case studies.
-              </p>
-              <a
-                href="/Training Modules/Module-5-Capital-Adequacy/Module-5_Exercises_Capital-Adequacy.docx"
-                download="Module 5 Exercises - Capital Adequacy.docx"
-                className={`inline-flex items-center gap-2 mt-3 px-4 py-2 ${theme === 'light'
-                  ? 'bg-cyan-600 hover:bg-cyan-700 text-white'
-                  : 'bg-cyan-500 hover:bg-cyan-600 text-white'
-                  } rounded-lg transition ${styles.transition}`}
-              >
-                <Download className="w-4 h-4" />
-                Download Exercises (DOCX)
-              </a>
             </div>
           )}
 
@@ -488,16 +479,16 @@ export default function Module5({ theme = 'dark' }) {
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Capital Adequacy Technical Procedure</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Guidelines on Capital Adequacy Analysis - PDF • Comprehensive guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Guidelines on Capital Adequacy Analysis - PDF • 22 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-5-Capital-Adequacy/Course Content/KAFS_Internal-Technical-Procedures_Guidelines-on-Capital-Adequacy-Analysis_2026.pdf"
+                    href="/Training Modules/Module-5-Capital-Adequacy/Course Content/KAFS_Internal Technical Procedures_Guidelines on Capital Adequacy Analysis_2026.pdf"
                     download="KAFS ITP Capital Adequacy Analysis 2026.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
-                      ? 'bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 shadow-lg hover:shadow-xl'
+                      ? 'bg-cyan-600 hover:bg-cyan-700 shadow-lg hover:shadow-xl'
                       : 'bg-cyan-500 hover:bg-cyan-600'
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
@@ -507,49 +498,57 @@ export default function Module5({ theme = 'dark' }) {
                 </div>
 
                 {/* Additional Resources */}
-                <div className="mt-6 space-y-4">
-                  <h4 className={`text-md font-semibold ${styles.text} ${styles.transition}`}>Additional Resources and References</h4>
-                  
-                  <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-500/10 border-blue-400/20'} border p-4 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
-                        📚
+                <div className={`mt-6 pt-6 border-t ${styles.border}`}>
+                  <h4 className={`font-semibold ${styles.text} mb-4 flex items-center gap-2 ${styles.transition}`}>
+                    <FileText className="w-5 h-5" />
+                    Additional Resources
+                  </h4>
+                  <div className="space-y-3">
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100'
+                      : 'bg-blue-500/20 border border-blue-400/30 hover:bg-blue-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-700' : 'text-blue-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-blue-900' : 'text-blue-200'} ${styles.transition}`}>IRA Guidelines On Capital Adequacy </h5>
+                        </div>
                       </div>
-                      <div>
-                        <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>IRA Risk Based Capital Adequacy</h5>
-                        <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>Draft_Risk_Based_Capital_Adequacy1.pdf • Regulatory framework</p>
-                      </div>
+                      <a
+                        href="/Training Modules/Module-5-Capital-Adequacy/Additional Resources/Draft_Risk_Based_Capital_Adequacy1.pdf"
+                        download="Draft Risk Based Capital Adequacy.pdf"
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+                          : 'bg-blue-500 hover:bg-blue-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
                     </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Additional Resources/Draft_Risk_Based_Capital_Adequacy1.pdf',
-                        'IRA Draft Risk Based Capital Adequacy.pdf'
-                      )}
-                      className={`px-3 py-1 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded text-white text-xs transition`}
-                    >
-                      Download
-                    </button>
-                  </div>
 
-                  <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-500/10 border-blue-400/20'} border p-4 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
-                        📚
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-green-50 border border-green-200 hover:bg-green-100'
+                      : 'bg-green-500/20 border border-green-400/30 hover:bg-green-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-green-700' : 'text-green-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-green-900' : 'text-green-200'} ${styles.transition}`}>The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017</h5>
+                        </div>
                       </div>
-                      <div>
-                        <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>IRA Technical Provisions Guidelines</h5>
-                        <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017.pdf</p>
-                      </div>
+                      <a
+                        href="/Training Modules/Module-5-Capital-Adequacy/Additional Resources/The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017 (1).pdf"
+                        download="The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017.pdf"
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl'
+                          : 'bg-green-500 hover:bg-green-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
                     </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Additional Resources/The-Insurance-Valuation-of-Technical-Provisions-for-General-Insurance-Business-Guidelines-2017.pdf',
-                        'IRA Technical Provisions Guidelines 2017.pdf'
-                      )}
-                      className={`px-3 py-1 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded text-white text-xs transition`}
-                    >
-                      Download
-                    </button>
                   </div>
                 </div>
 
@@ -675,7 +674,7 @@ export default function Module5({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -796,7 +795,7 @@ export default function Module5({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Data/Sample-Balance-Sheet_GI.xlsx',
+                        '/Training Modules/Module-5-Capital-Adequacy/Data/Sample Balance Sheet_GI.xlsx',
                         'Sample Balance Sheet_GI.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -824,7 +823,7 @@ export default function Module5({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Data/Sample-Balance-Sheet_Life.xlsx',
+                        '/Training Modules/Module-5-Capital-Adequacy/Data/Sample Balance Sheet_Life.xlsx',
                         'Sample Balance Sheet_Life.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -865,7 +864,7 @@ export default function Module5({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS-17-CAR-Template_GI.xlsx',
+                        '/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS 17 CAR Template_GI.xlsx',
                         'IFRS 17 CAR Template_GI.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -893,7 +892,7 @@ export default function Module5({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS-17-CAR-Template_Life.xlsx',
+                        '/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS 17 CAR Template_Life.xlsx',
                         'IFRS 17 CAR Template_Life.xlsx'
                       )}
                       className={`px-6 py-2 ${theme === 'light'
@@ -959,7 +958,7 @@ export default function Module5({ theme = 'dark' }) {
                         {uploadedFiles.map(file => (
                           <div key={file.id} className={`flex items-center justify-between ${styles.inputBg} rounded-lg p-3 ${styles.transition}`}>
                             <div className="flex items-center space-x-3">
-                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} ${styles.transition}`} />
+                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} ${styles.transition}`} />
                               <div>
                                 <p className={`${styles.text} text-sm font-medium ${styles.transition}`}>{file.name}</p>
                                 <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>{file.size} • {file.uploadDate}</p>

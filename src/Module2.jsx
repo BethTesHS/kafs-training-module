@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -61,7 +62,7 @@ export default function Module2({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-blue-500/10',
@@ -338,6 +339,17 @@ export default function Module2({ theme = 'dark' }) {
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container - Matching Module 1 structure */}
         <div
@@ -605,7 +617,7 @@ export default function Module2({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -685,8 +697,8 @@ export default function Module2({ theme = 'dark' }) {
                         setCurrentQuestionIndex(0);
                       }}
                       className={`px-6 md:px-8 py-3 ${theme === 'light'
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
-                        : 'bg-sky-600 hover:bg-sky-700'
+                        ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+                        : 'bg-blue-500 hover:bg-blue-600'
                         } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                     >
                       Retake Quiz
@@ -817,7 +829,7 @@ export default function Module2({ theme = 'dark' }) {
 
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -826,15 +838,15 @@ export default function Module2({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-emerald-50 border-emerald-200'
-                  : 'bg-emerald-500/10 border-emerald-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   {/* Upload Area */}
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-emerald-300 hover:border-emerald-400'
-                    : 'border-emerald-400/30 hover:border-emerald-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Completed Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your files here, or click to browse
@@ -849,8 +861,8 @@ export default function Module2({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-emerald-600 hover:bg-emerald-700'
-                        : 'bg-emerald-500 hover:bg-emerald-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -868,7 +880,7 @@ export default function Module2({ theme = 'dark' }) {
                         {uploadedFiles.map(file => (
                           <div key={file.id} className={`flex items-center justify-between ${styles.inputBg} rounded-lg p-3 ${styles.transition}`}>
                             <div className="flex items-center space-x-3">
-                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} ${styles.transition}`} />
+                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} ${styles.transition}`} />
                               <div>
                                 <p className={`${styles.text} text-sm font-medium ${styles.transition}`}>{file.name}</p>
                                 <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>{file.size} • {file.uploadDate}</p>
@@ -887,8 +899,8 @@ export default function Module2({ theme = 'dark' }) {
                       {/* Submit Button */}
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-emerald-600 hover:bg-emerald-700 shadow-md hover:shadow-lg'
-                          : 'bg-emerald-500 hover:bg-emerald-600 shadow-lg hover:shadow-emerald-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit All Files for Review
                         </button>

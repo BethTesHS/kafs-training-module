@@ -57,7 +57,7 @@ export default function Module11({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-violet-500/10',
@@ -751,7 +751,7 @@ export default function Module11({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -1167,7 +1167,7 @@ export default function Module11({ theme = 'dark' }) {
 
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -1176,14 +1176,14 @@ export default function Module11({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-purple-50 border-purple-200'
-                  : 'bg-purple-500/10 border-purple-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-purple-300 hover:border-purple-400'
-                    : 'border-purple-400/30 hover:border-purple-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Valuation Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your completed valuation files here, or click to browse
@@ -1198,8 +1198,8 @@ export default function Module11({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-purple-600 hover:bg-purple-700'
-                        : 'bg-purple-500 hover:bg-purple-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -1234,8 +1234,8 @@ export default function Module11({ theme = 'dark' }) {
 
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg'
-                          : 'bg-purple-500 hover:bg-purple-600 shadow-lg hover:shadow-purple-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit Group Life Valuation
                         </button>

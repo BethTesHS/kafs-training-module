@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -24,7 +25,9 @@ import {
   Percent,
   DollarSign,
   ChartLine,
-  ExternalLink // Added missing import
+  ExternalLink,
+  Play,
+  FileVideo
 } from "lucide-react";
 
 export default function Module4({ theme = 'dark' }) {
@@ -62,7 +65,7 @@ export default function Module4({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-orange-500/10',
@@ -388,6 +391,17 @@ export default function Module4({ theme = 'dark' }) {
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
@@ -413,9 +427,7 @@ export default function Module4({ theme = 'dark' }) {
                   } ${styles.transition}`}>
                   Valuation, Discounting and Risk Margin Analysis
                 </h1>
-                <p className={`text-sm md:text-base mt-2 ${styles.textSecondary} ${styles.transition}`}>
-                  Master reserve valuation techniques for general insurance under both traditional methods and IFRS 17 requirements
-                </p>
+
               </div>
             </div>
 
@@ -458,7 +470,7 @@ export default function Module4({ theme = 'dark' }) {
 
           {activeTab === 'overview' && (
             <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} ${styles.shadow} p-6 ${styles.transition}`} data-aos="fade-up">
-              <h3 className={`text-lg md:text-xl font-bold text-white mb-4 relative inline-block`}>
+              <h3 className={`text-lg md:text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'} mb-4 relative inline-block`}>
                 Module Objective
                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
                   ? 'bg-gradient-to-r from-orange-600 to-amber-600'
@@ -505,48 +517,98 @@ export default function Module4({ theme = 'dark' }) {
                       📄
                     </div>
                     <div>
-                      <h4 className={`text-base md:text-lg font-semibold text-white ${styles.transition}`}>Guidelines on Valuation of General Insurance Business</h4>
-                      <p className={`text-xs md:text-sm text-white/90 ${styles.transition}`}>Official guidelines • Comprehensive valuation procedures</p>
+                      <h4 className={`text-base md:text-lg font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${styles.transition}`}>KAFS Internal Technical Procedures - Guidelines on Valuation for General Insurance Business</h4>
+                      <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-gray-800' : 'text-white/90'} ${styles.transition}`}>Liability Valuation for General Insurance • 24 pages</p>
                     </div>
                   </div>
                   <a
-                    href="#"
+                    href="/Training Modules/Module-4-General-Insurance-Valuation/Course Content/KAFS_Internal Technical Procedures_Guidelines on Valuation for General Insurance Business_2025.pdf"
+                    download
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
                       ? 'bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 shadow-lg hover:shadow-xl'
-                      : 'bg-orange-500 hover:bg-orange-600'
+                      : 'bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 shadow-lg hover:shadow-xl'
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
-                    <Eye className="w-3 h-3 md:w-4 md:h-4" />
-                    View Guidelines
+                    <Download className="w-3 h-3 md:w-4 md:h-4" />
+                    Download PDF
                   </a>
                 </div>
 
                 {/* Additional Resources */}
-                <div className="space-y-3">
-                  <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light' ? 'bg-white/20' : 'bg-white/10'} ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`} />
-                      <div>
-                        <h5 className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${styles.transition}`}>IRA Regulations</h5>
-                        <p className={`text-xs ${theme === 'light' ? 'text-gray-800' : 'text-white/90'} ${styles.transition}`}>Regulatory requirements</p>
+                <div className={`mt-6 pt-6 border-t ${styles.border}`}>
+                  <h4 className={`font-semibold ${styles.text} mb-4 flex items-center gap-2 ${styles.transition}`}>
+                    <FileText className="w-5 h-5" />
+                    Additional Resources
+                  </h4>
+                  <div className="space-y-3">
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-blue-50 border border-blue-200 hover:bg-blue-100'
+                      : 'bg-blue-500/20 border border-blue-400/30 hover:bg-blue-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-700' : 'text-blue-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-blue-900' : 'text-blue-200'} ${styles.transition}`}>IFRS 17 Implementation Circular</h5>
+                        </div>
                       </div>
+                      <a
+                        href="/Training Modules/Module-4-General-Insurance-Valuation/Additional Resources/Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf"
+                        download
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl'
+                          : 'bg-blue-500 hover:bg-blue-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
                     </div>
-                    <a href="#" className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} hover:opacity-80 ${styles.transition}`}>
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </div>
 
-                  <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light' ? 'bg-white/20' : 'bg-white/10'} ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <FileText className={`w-5 h-5 text-white`} />
-                      <div>
-                        <h5 className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'} ${styles.transition}`}>IFRS 17 Contracts</h5>
-                        <p className={`text-xs ${theme === 'light' ? 'text-gray-800' : 'text-white/90'} ${styles.transition}`}>International standards</p>
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-purple-50 border border-purple-200 hover:bg-purple-100'
+                      : 'bg-purple-500/20 border border-purple-400/30 hover:bg-purple-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-purple-700' : 'text-purple-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-purple-900' : 'text-purple-200'} ${styles.transition}`}>IFRS 17 Insurance Contracts</h5>
+                        </div>
                       </div>
+                      <a
+                        href="/Training Modules/Module-4-General-Insurance-Valuation/Additional Resources/ifrs-17-insurance-contracts.pdf"
+                        download
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-purple-600 hover:bg-purple-700 shadow-lg hover:shadow-xl'
+                          : 'bg-purple-500 hover:bg-purple-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
                     </div>
-                    <a href="#" className={`text-white hover:opacity-80 ${styles.transition}`}>
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+
+                    <div className={`rounded-xl p-4 flex items-center justify-between ${theme === 'light'
+                      ? 'bg-green-50 border border-green-200 hover:bg-green-100'
+                      : 'bg-green-500/20 border border-green-400/30 hover:bg-green-500/30'
+                      } ${styles.transition}`}>
+                      <div className="flex items-center space-x-3">
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-green-700' : 'text-green-300'}`} />
+                        <div>
+                          <h5 className={`font-medium ${theme === 'light' ? 'text-green-900' : 'text-green-200'} ${styles.transition}`}>General Insurance Technical Provisions Valuation Guidelines (2017)</h5>
+                        </div>
+                      </div>
+                      <a
+                        href="/Training Modules/Module-4-General-Insurance-Valuation/Additional Resources/The Insurancce (Valuation of Technical Provisions for General Insurance Business) Guidelines 2017.pdf"
+                        download
+                        className={`px-4 md:px-6 py-2 ${theme === 'light'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl'
+                          : 'bg-green-500 hover:bg-green-600'
+                          } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
+                      >
+                        <Download className="w-3 h-3 md:w-4 md:h-4" />
+                        Download PDF
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -556,11 +618,17 @@ export default function Module4({ theme = 'dark' }) {
                     <Book className="w-5 h-5" />
                     Training Videos
                   </h4>
-                  <div className={`rounded-xl p-4 ${theme === 'light' ? 'bg-white/20' : 'bg-white/10'} ${styles.transition}`}>
-                    <a href="#" className={`flex items-center justify-between ${theme === 'light' ? 'text-gray-900' : 'text-white'} hover:opacity-80 ${styles.transition}`}>
+                  <div className={`rounded-xl p-4 ${theme === 'light'
+                    ? 'bg-amber-50 border border-amber-200 hover:bg-amber-100'
+                    : 'bg-amber-500/20 border border-amber-400/30 hover:bg-amber-500/30'
+                    } ${styles.transition}`}>
+                    <Link
+                      to="/modules/4/videos"
+                      className={`flex items-center justify-between ${theme === 'light' ? 'text-amber-900' : 'text-amber-200'} hover:opacity-80 ${styles.transition}`}
+                    >
                       <span className="font-medium">Valuation & Discounting Training Series</span>
-                      <Eye className="w-4 h-4" />
-                    </a>
+                      <Eye className={`w-4 h-4 ${theme === 'light' ? 'text-amber-700' : 'text-amber-300'}`} />
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -686,7 +754,7 @@ export default function Module4({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -808,8 +876,9 @@ export default function Module4({ theme = 'dark' }) {
                         <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • Premium data for reserve analysis</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => downloadFile('#', 'Premium_Register.xlsx')}
+                    <a
+                      href="/Training Modules/Module-4-General-Insurance-Valuation/Data/Premium Register_TRAINING.xlsx"
+                      download
                       className={`px-6 py-2 ${theme === 'light'
                         ? 'bg-orange-600 hover:bg-orange-700'
                         : 'bg-orange-500 hover:bg-orange-600'
@@ -817,7 +886,7 @@ export default function Module4({ theme = 'dark' }) {
                     >
                       <Download className="w-4 h-4" />
                       Download
-                    </button>
+                    </a>
                   </div>
 
                   {/* Paid Claims */}
@@ -830,12 +899,13 @@ export default function Module4({ theme = 'dark' }) {
                         💰
                       </div>
                       <div>
-                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Paid Claims</h4>
+                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Claims Paid</h4>
                         <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • Historical paid claims data</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => downloadFile('#', 'Paid_Claims.xlsx')}
+                    <a
+                      href="/Training Modules/Module-4-General-Insurance-Valuation/Data/Claims Paid_TRAINING.xlsx"
+                      download
                       className={`px-6 py-2 ${theme === 'light'
                         ? 'bg-green-600 hover:bg-green-700'
                         : 'bg-green-500 hover:bg-green-600'
@@ -843,7 +913,7 @@ export default function Module4({ theme = 'dark' }) {
                     >
                       <Download className="w-4 h-4" />
                       Download
-                    </button>
+                    </a>
                   </div>
 
                   {/* Outstanding Claims */}
@@ -856,12 +926,13 @@ export default function Module4({ theme = 'dark' }) {
                         📈
                       </div>
                       <div>
-                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Outstanding Claims</h4>
+                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Claims Outstanding</h4>
                         <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • Reported claims awaiting settlement</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => downloadFile('#', 'Outstanding_Claims.xlsx')}
+                    <a
+                      href="/Training Modules/Module-4-General-Insurance-Valuation/Data/Claims Outstanding_TRAINING.xlsx"
+                      download
                       className={`px-6 py-2 ${theme === 'light'
                         ? 'bg-yellow-500 hover:bg-yellow-600'
                         : 'bg-yellow-500 hover:bg-yellow-600'
@@ -869,7 +940,7 @@ export default function Module4({ theme = 'dark' }) {
                     >
                       <Download className="w-4 h-4" />
                       Download
-                    </button>
+                    </a>
                   </div>
 
                   {/* NSE Yield Curve */}
@@ -886,8 +957,9 @@ export default function Module4({ theme = 'dark' }) {
                         <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • Discount rates for IFRS 17 calculations</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => downloadFile('#', 'NSE_Yield_Curve.xlsx')}
+                    <a
+                      href="/Training Modules/Module-4-General-Insurance-Valuation/Data/FY24_NSE Yield Curve.xlsx"
+                      download
                       className={`px-6 py-2 ${theme === 'light'
                         ? 'bg-blue-600 hover:bg-blue-700'
                         : 'bg-blue-500 hover:bg-blue-600'
@@ -895,7 +967,7 @@ export default function Module4({ theme = 'dark' }) {
                     >
                       <Download className="w-4 h-4" />
                       Download
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -921,12 +993,13 @@ export default function Module4({ theme = 'dark' }) {
                         🛠️
                       </div>
                       <div>
-                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>IBNR Working File Template</h4>
-                        <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • IBNR Computation Training Template</p>
+                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>IBNR Computation Training</h4>
+                        <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • IBNR Computation Training</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => downloadFile('#', 'IBNR_Working_File_Template.xlsx')}
+                    <a
+                      href="/Training Modules/Module-4-General-Insurance-Valuation/Working Files/IBNR Computation Training.xlsx"
+                      download
                       className={`px-6 py-2 ${theme === 'light'
                         ? 'bg-purple-600 hover:bg-purple-700'
                         : 'bg-purple-500 hover:bg-purple-600'
@@ -934,95 +1007,7 @@ export default function Module4({ theme = 'dark' }) {
                     >
                       <Download className="w-4 h-4" />
                       Download
-                    </button>
-                  </div>
-
-                  {/* Discounting Working File */}
-                  <div className={`rounded-[30px] ${theme === 'light'
-                    ? 'bg-pink-50 border-pink-200 hover:bg-pink-100'
-                    : 'bg-pink-500/20 border-pink-400/30 hover:bg-pink-500/30'
-                    } border p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-4 ${theme === 'light' ? 'bg-pink-200' : 'bg-pink-600/40'} rounded-2xl ${styles.transition}`}>
-                        📊
-                      </div>
-                      <div>
-                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Discounting Working File Template</h4>
-                        <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • Discounting calculations under IFRS 17</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile('#', 'Discounting_Working_File_Template.xlsx')}
-                      className={`px-6 py-2 ${theme === 'light'
-                        ? 'bg-pink-600 hover:bg-pink-700'
-                        : 'bg-pink-500 hover:bg-pink-600'
-                        } rounded-lg text-white transition flex items-center gap-2`}
-                    >
-                      <Download className="w-4 h-4" />
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Code and Results Files */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-yellow-600' : 'text-yellow-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Code className="w-6 h-6" />
-                  Code & Results
-                </h4>
-
-                <div className="space-y-4">
-                  {/* Risk Margin Code */}
-                  <div className={`rounded-[30px] ${theme === 'light'
-                    ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
-                    : 'bg-yellow-500/20 border-yellow-400/30 hover:bg-yellow-500/30'
-                    } border p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-4 ${theme === 'light' ? 'bg-yellow-200' : 'bg-yellow-600/40'} rounded-2xl ${styles.transition}`}>
-                        💻
-                      </div>
-                      <div>
-                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Risk Margin Code</h4>
-                        <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>R Code • Risk margin calculation scripts</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile('#', 'Risk_Margin_Code.R')}
-                      className={`px-6 py-2 ${theme === 'light'
-                        ? 'bg-yellow-500 hover:bg-yellow-600'
-                        : 'bg-yellow-500 hover:bg-yellow-600'
-                        } rounded-lg text-white transition flex items-center gap-2`}
-                    >
-                      <Download className="w-4 h-4" />
-                      Download
-                    </button>
-                  </div>
-
-                  {/* Results Template */}
-                  <div className={`rounded-[30px] ${theme === 'light'
-                    ? 'bg-orange-50 border-orange-200 hover:bg-orange-100'
-                    : 'bg-orange-500/20 border-orange-400/30 hover:bg-orange-500/30'
-                    } border p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-4">
-                      <div className={`p-4 ${theme === 'light' ? 'bg-orange-200' : 'bg-orange-600/40'} rounded-2xl ${styles.transition}`}>
-                        📋
-                      </div>
-                      <div>
-                        <h4 className={`text-lg font-semibold ${styles.text} ${styles.transition}`}>Results Template</h4>
-                        <p className={`text-sm ${styles.textTertiary} ${styles.transition}`}>Excel • IBNR Valuation Results File</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile('#', 'IBNR_2024_Valuation_Results.xlsx')}
-                      className={`px-6 py-2 ${theme === 'light'
-                        ? 'bg-orange-600 hover:bg-orange-700'
-                        : 'bg-orange-500 hover:bg-orange-600'
-                        } rounded-lg text-white transition flex items-center gap-2`}
-                    >
-                      <Download className="w-4 h-4" />
-                      Download
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -1117,10 +1102,3 @@ export default function Module4({ theme = 'dark' }) {
     </div>
   );
 }
-
-// Missing Code component definition
-const Code = ({ className }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-  </svg>
-);

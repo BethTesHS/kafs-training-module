@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -57,7 +58,7 @@ export default function Module10({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-pink-500/10',
@@ -423,12 +424,23 @@ export default function Module10({ theme = 'dark' }) {
             background: theme === 'light'
               ? 'linear-gradient(135deg, rgba(236, 72, 153, 0.4) 0%, rgba(225, 29, 72, 0.35) 100%)'
               : 'linear-gradient(135deg, rgba(236, 72, 153, 0.4) 0%, rgba(219, 39, 119, 0.35) 100%)',
-            backdropFilter: theme === 'dark' ? 'blur(4px)' : 'blur(4px)',
+            backdropFilter: theme === 'dark' ? 'blur(2px)' : 'blur(2px)',
           }}
         />
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
@@ -442,9 +454,9 @@ export default function Module10({ theme = 'dark' }) {
             <div className="flex items-center space-x-4 md:space-x-6">
               <div className={`inline-block p-4 rounded-full ${theme === 'light'
                 ? 'bg-gradient-to-br from-pink-400 to-rose-500'
-                : 'bg-pink-700/30 border border-pink-600/40'
+                : 'bg-pink-400/20 border border-pink-400/40'
                 } ${styles.transition} flex-shrink-0`}>
-                <Heart className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-pink-500'} ${styles.transition}`} />
+                <Heart className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-pink-400'} ${styles.transition}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <h1 className={`text-2xl md:text-3xl font-bold leading-tight ${theme === 'light'
@@ -532,7 +544,7 @@ export default function Module10({ theme = 'dark' }) {
                 Download the exercises document to test your understanding through practical calculations and case studies.
               </p>
               <a
-                href="/Training Modules/Module-10-Ordinary-Life/Sample-Quiz-Data-Checks-Valuation.docx"
+                href="/Training Modules/Module-10-Ordinary-Life-Valuation/Sample-Quiz-Data-Checks-Valuation.docx"
                 download="Sample Quiz - Data Checks & Valuation.docx"
                 className={`inline-flex items-center gap-2 mt-3 px-4 py-2 ${theme === 'light'
                   ? 'bg-pink-600 hover:bg-pink-700 text-white'
@@ -562,17 +574,17 @@ export default function Module10({ theme = 'dark' }) {
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Ordinary Life Data Checks & Clean Up</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Ordinary Life Insurance Data & Checks - PDF • Data validation guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Ordinary Life Insurance Data & Checks - PDF • 12 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-10-Ordinary-Life/Course Content/KAFS_ITPs_Ordinary-Life-Insurance-Data-Checks.pdf"
-                    download="KAFS ITP Ordinary Life Data Checks.pdf"
+                    href="/Training Modules/Module-10-Ordinary-Life-Valuation/Course Content/KAFS_ITPs_Ordinary Life Insurance Data & Checks.pdf"
+                    download="KAFS_ITPs_Ordinary Life Insurance Data & Checks.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
-                      ? 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 shadow-lg hover:shadow-xl'
-                      : 'bg-pink-700 hover:bg-pink-800'
+                      ? 'bg-pink-600 hover:bg-pink-700'
+                      : 'bg-pink-500 hover:bg-pink-600'
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
                     <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -588,12 +600,12 @@ export default function Module10({ theme = 'dark' }) {
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Ordinary Life Valuation Guide</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS Ordinary Life Insurance Valuation - PDF • Comprehensive valuation guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS Ordinary Life Insurance Valuation - PDF • 17 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-10-Ordinary-Life/Course Content/KAFS_Ordinary-Life-Insurance-Valuation.pdf"
-                    download="KAFS Ordinary Life Valuation Guide.pdf"
+                    href="/Training Modules/Module-10-Ordinary-Life-Valuation/Course Content/KAFS_Ordinary Life Insurance Valuation.pdf"
+                    download="KAFS_Ordinary Life Insurance Valuation.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
@@ -610,24 +622,25 @@ export default function Module10({ theme = 'dark' }) {
                 <div className="mt-6 space-y-4">
                   <h4 className={`text-md font-semibold ${styles.text} ${styles.transition}`}>Additional Resources and References</h4>
                   
-                  <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-500/10 border-blue-400/20'} border p-4 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
-                        📚
+                  <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' : 'bg-blue-500/10 border-blue-400/20 hover:bg-blue-500/20'} border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
                       </div>
                       <div>
-                        <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>IRA Life Insurance Technical Provisions Guidelines</h5>
-                        <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>Insurance Valuation of Technical Provisions for Life Insurance Business Guidelines</p>
+                        <h5 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>IRA Life Insurance Technical Provisions Guidelines</h5>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Insurance Valuation of Technical Provisions for Life Insurance Business Guidelines</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-10-Ordinary-Life/Additional Resources/The-Insurance-Valuation-of-Technical-Provisions-for-Life-Insurance-Business-Guidelines.pdf',
-                        'IRA Life Insurance Technical Provisions Guidelines.pdf'
+                        '/Training Modules/Module-10-Ordinary-Life-Valuation/Additional Resources/The Insurance (Valuation of Technical Provisions for Life Insurance Business) Guidelines.pdf',
+                        'The Insurance (Valuation of Technical Provisions for Life Insurance Business) Guidelines.pdf'
                       )}
-                      className={`px-3 py-1 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded text-white text-xs transition`}
+                      className={`px-4 md:px-6 py-2 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-sm md:text-base transition-all duration-200 flex items-center gap-2`}
                     >
-                      Download
+                      <Download className="w-3 h-3 md:w-4 md:h-4" />
+                      Download PDF
                     </button>
                   </div>
                 </div>
@@ -742,9 +755,9 @@ export default function Module10({ theme = 'dark' }) {
                     ? 'bg-gradient-to-br from-pink-50 to-rose-100 border border-pink-200'
                     : 'bg-gradient-to-br from-pink-700/20 to-rose-700/20 border border-pink-600/30'
                     } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
-                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-pink-600' : 'text-pink-600'} mx-auto mb-4`} />
+                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-pink-600' : 'text-pink-400'} mx-auto mb-4`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
-                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-pink-600' : 'text-pink-600'} mb-2`}>
+                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-pink-600' : 'text-pink-400'} mb-2`}>
                       {calculateScore().correct}/{calculateScore().total}
                     </div>
                     <p className={`text-base md:text-lg ${styles.textTertiary} ${styles.transition}`}>
@@ -754,7 +767,7 @@ export default function Module10({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -875,8 +888,8 @@ export default function Module10({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-10-Ordinary-Life/Data/Ordinary-Life_Valuation-Data.xlsx',
-                        'Ordinary Life Valuation Data.xlsx'
+                        '/Training Modules/Module-10-Ordinary-Life-Valuation/Data/Ordinary Life_Valuation Data.xlsx',
+                        'Ordinary Life_Valuation Data.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
                         ? 'bg-pink-600 hover:bg-pink-700'
@@ -892,7 +905,7 @@ export default function Module10({ theme = 'dark' }) {
 
               {/* Working Files Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Settings className="w-6 h-6" />
                   Working Files
                 </h4>
@@ -902,11 +915,11 @@ export default function Module10({ theme = 'dark' }) {
 
                 <div className="space-y-4">
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
-                    : 'bg-yellow-500/20 border-yellow-400/30 hover:bg-yellow-500/30'
+                    ? 'bg-purple-50 border-purple-200 hover:bg-purple-100'
+                    : 'bg-purple-500/20 border-purple-400/30 hover:bg-purple-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-yellow-200' : 'bg-yellow-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-purple-200' : 'bg-purple-600/40'} rounded-xl ${styles.transition}`}>
                         🛠️
                       </div>
                       <div>
@@ -916,12 +929,12 @@ export default function Module10({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-10-Ordinary-Life/Working Files/Data-Reconciliation-Ordinary-Life_Data-Recon-311223_Valuation_Working-File.xlsm',
-                        'Ordinary Life Data Reconciliation Working File.xlsm'
+                        '/Training Modules/Module-10-Ordinary-Life-Valuation/Working File/Ordinary Life_Data Recon - 311223_Valuation_Working File.xlsm',
+                        'Ordinary Life_Data Recon - 311223_Valuation_Working File.xlsm'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-yellow-500 hover:bg-yellow-600'
-                        : 'bg-yellow-500 hover:bg-yellow-600'
+                        ? 'bg-purple-600 hover:bg-purple-700'
+                        : 'bg-purple-500 hover:bg-purple-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -930,11 +943,11 @@ export default function Module10({ theme = 'dark' }) {
                   </div>
 
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-orange-50 border-orange-200 hover:bg-orange-100'
-                    : 'bg-orange-500/20 border-orange-400/30 hover:bg-orange-500/30'
+                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-orange-200' : 'bg-orange-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
                         🛠️
                       </div>
                       <div>
@@ -944,12 +957,12 @@ export default function Module10({ theme = 'dark' }) {
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-10-Ordinary-Life/Working Files/Valuation-Working-File-Company-X_StandAlone_IFRS17-GMM-Model_Working-File.xlsm',
-                        'IFRS 17 GMM Valuation Working File.xlsm'
+                        '/Training Modules/Module-10-Ordinary-Life-Valuation/Working File/Company X_StandAlone_IFRS17 GMM Model_Working File.xlsm',
+                        'Company X_StandAlone_IFRS17 GMM Model_Working File.xlsm'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-orange-600 hover:bg-orange-700'
-                        : 'bg-orange-500 hover:bg-orange-600'
+                        ? 'bg-blue-600 hover:bg-blue-700'
+                        : 'bg-blue-500 hover:bg-blue-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />

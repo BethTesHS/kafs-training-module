@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -57,15 +58,15 @@ export default function Module8({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
-        shadow: 'shadow-2xl shadow-emerald-500/10',
-        accent: 'text-emerald-600',
-        accentBg: 'bg-emerald-50/80',
-        accentBorder: 'border-emerald-200/50',
-        accentHover: 'hover:bg-emerald-100/80',
-        gradientText: 'bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent',
+        shadow: 'shadow-2xl shadow-green-500/10',
+        accent: 'text-green-700',
+        accentBg: 'bg-green-50/80',
+        accentBorder: 'border-green-200/50',
+        accentHover: 'hover:bg-green-100/80',
+        gradientText: 'bg-gradient-to-r from-green-700 to-teal-700 bg-clip-text text-transparent',
         transition: 'transition-all duration-300 ease-in-out'
       };
     }
@@ -79,11 +80,11 @@ export default function Module8({ theme = 'dark' }) {
       hover: 'hover:bg-white/10',
       inputBg: 'bg-white/5',
       shadow: 'shadow-xl',
-      accent: 'text-emerald-400',
-      accentBg: 'bg-emerald-500/20',
-      accentBorder: 'border-emerald-400/30',
-      accentHover: 'hover:bg-emerald-500/30',
-      gradientText: 'text-emerald-400',
+      accent: 'text-green-400',
+      accentBg: 'bg-green-500/20',
+      accentBorder: 'border-green-400/30',
+      accentHover: 'hover:bg-green-500/30',
+      gradientText: 'text-green-400',
       transition: 'transition-all duration-300 ease-in-out'
     };
   };
@@ -421,19 +422,30 @@ export default function Module8({ theme = 'dark' }) {
           className="absolute inset-0 transition-all duration-500"
           style={{
             background: theme === 'light'
-              ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.65) 0%, rgba(20, 184, 166, 0.59) 100%)'
-              : 'linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(16, 185, 129, 0.4) 50%, rgba(20, 184, 166, 0.35) 100%)',
-            backdropFilter: theme === 'dark' ? 'blur(4px)' : 'blur(2px)',
+              ? 'linear-gradient(135deg, rgba(5, 120, 85, 0.6) 0%, rgba(15, 118, 110, 0.55) 100%)'
+              : 'linear-gradient(135deg, rgba(5, 120, 86, 0.54) 0%, rgba(12, 82, 76, 0.6) 100%)',
+            backdropFilter: theme === 'dark' ? 'blur(2px)' : 'blur(2px)',
           }}
         />
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
           className={`rounded-[40px] overflow-hidden mb-6 relative ${theme === 'light'
-            ? 'bg-white/95 shadow-2xl shadow-emerald-500/10 border border-white/30'
+            ? 'bg-white/95 shadow-2xl shadow-green-500/10 border border-white/30'
             : 'bg-black/75 backdrop-blur-xl border border-white/10 shadow-xl'
             } ${styles.transition}`}
           data-aos="fade-up"
@@ -441,15 +453,15 @@ export default function Module8({ theme = 'dark' }) {
           <div className="p-6 md:p-8">
             <div className="flex items-center space-x-4 md:space-x-6">
               <div className={`inline-block p-4 rounded-full ${theme === 'light'
-                ? 'bg-gradient-to-br from-emerald-400 to-teal-500'
-                : 'bg-emerald-500/30 border border-emerald-400/40'
+                ? 'bg-gradient-to-br from-green-500 to-teal-600'
+                : 'bg-green-500/30 border border-green-400/40'
                 } ${styles.transition} flex-shrink-0`}>
-                <Layers className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-emerald-300'} ${styles.transition}`} />
+                <Layers className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-green-300'} ${styles.transition}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <h1 className={`text-2xl md:text-3xl font-bold leading-tight ${theme === 'light'
-                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent bg-origin-padding'
-                  : 'text-emerald-400'
+                  ? 'bg-gradient-to-r from-green-700 to-teal-700 bg-clip-text text-transparent bg-origin-padding'
+                  : 'text-green-400'
                   } ${styles.transition}`}>
                   Reinsurance Certification
                 </h1>
@@ -464,7 +476,7 @@ export default function Module8({ theme = 'dark' }) {
 
         {/* TAB NAVIGATION */}
         <div className="mb-8" data-aos="fade-up">
-          <div className={`border-b ${theme === 'light' ? 'border-emerald-200' : 'border-gray-500'} ${styles.transition}`}>
+          <div className={`border-b ${theme === 'light' ? 'border-green-200' : 'border-gray-500'} ${styles.transition}`}>
             <nav className="flex space-x-8">
               {['overview', 'course', 'assignments', 'quiz'].map((tab) => (
                 <button
@@ -472,11 +484,11 @@ export default function Module8({ theme = 'dark' }) {
                   onClick={() => switchTab(tab)}
                   className={`pb-4 text-sm font-medium border-b-2 transition-all duration-200 ${activeTab === tab
                     ? theme === 'light'
-                      ? 'border-white text-white font-semibold bg-emerald-600/20 px-3 py-1 rounded-t-lg'
-                      : 'border-emerald-400 text-white font-semibold bg-emerald-400/10 px-3 py-1 rounded-t-lg'
+                      ? 'border-white text-white font-semibold bg-green-600/20 px-3 py-1 rounded-t-lg'
+                      : 'border-green-400 text-white font-semibold bg-green-400/10 px-3 py-1 rounded-t-lg'
                     : theme === 'light'
                       ? 'border-transparent text-white/80 hover:text-white hover:border-white px-1'
-                      : 'border-transparent text-white hover:text-white hover:bg-emerald-500/30 hover:border-emerald-400 px-1'
+                      : 'border-transparent text-white hover:text-white hover:bg-green-500/30 hover:border-green-400 px-1'
                     } ${styles.transition}`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -517,27 +529,6 @@ export default function Module8({ theme = 'dark' }) {
                 <li>Develop standardized certificate templates to improve efficiency, reduce errors, and maintain consistency in reinsurance documentation.</li>
               </ol>
 
-              <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
-                Activities and Exercises
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600'
-                  : 'bg-gradient-to-r from-emerald-400 to-teal-500'
-                  } transform translate-y-1 ${styles.transition}`}></span>
-              </h3>
-              <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>
-                Download the exercises document to test your understanding through practical calculations and case studies.
-              </p>
-              <a
-                href="/Training Modules/Module-8-Reinsurance-Certification/Reinsurance-Certificate-Training-Assessment-Questions.docx"
-                download="Reinsurance Certificate Training Assessment Questions.docx"
-                className={`inline-flex items-center gap-2 mt-3 px-4 py-2 ${theme === 'light'
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                  : 'bg-emerald-500 hover:bg-emerald-600 text-white'
-                  } rounded-lg transition ${styles.transition}`}
-              >
-                <Download className="w-4 h-4" />
-                Download Exercises (DOCX)
-              </a>
             </div>
           )}
 
@@ -553,49 +544,31 @@ export default function Module8({ theme = 'dark' }) {
                 {/* Resource Card */}
                 <div className={`rounded-2xl ${styles.accentBg} border ${styles.accentBorder} p-4 md:p-6 flex items-center justify-between ${styles.accentHover} ${styles.transition}`}>
                   <div className="flex items-center space-x-3 md:space-x-4">
-                    <div className={`p-3 ${theme === 'light' ? 'bg-emerald-200' : 'bg-emerald-600/40'} rounded-xl ${styles.transition}`}>
+                    <div className={`p-3 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-xl ${styles.transition}`}>
                       📄
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Reinsurance Certification Technical Procedure</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Reinsurance Certification - DOCX • Comprehensive guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Reinsurance Certification - PDF • 21 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-8-Reinsurance-Certification/Course Content/KAFS_Internal-Technical-Procedures_Reinsurance-Certification.docx"
-                    download="KAFS ITP Reinsurance Certification.docx"
+                    href="/Training Modules/Module-8-Reinsurance-Certificate/Course Content/KAFS_Internal Technical Procedures_Guidelines on Reinsurance Certificate.pdf"
+                    download="KAFS ITP Reinsurance Certification.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`px-4 md:px-6 py-2 ${theme === 'light'
                       ? 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg hover:shadow-xl'
-                      : 'bg-emerald-500 hover:bg-emerald-600'
+                      : 'bg-green-500 hover:bg-green-600'
                       } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                   >
                     <Download className="w-3 h-3 md:w-4 md:h-4" />
-                    Download DOCX
+                    Download PDF
                   </a>
                 </div>
 
-                {/* Additional Resources */}
-                <div className="mt-6 space-y-4">
-                  <h4 className={`text-md font-semibold ${styles.text} ${styles.transition}`}>Additional Resources and References</h4>
-                  
-                  <div className={`rounded-xl ${theme === 'light' ? 'bg-teal-50 border-teal-200' : 'bg-teal-500/10 border-teal-400/20'} border p-4 ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 ${theme === 'light' ? 'bg-teal-200' : 'bg-teal-600/40'} rounded-lg ${styles.transition}`}>
-                        📚
-                      </div>
-                      <div>
-                        <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>IRA Reinsurance Regulations</h5>
-                        <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>Insurance Regulatory Authority Reinsurance Circular</p>
-                      </div>
-                    </div>
-                    <div className={`mt-3 p-3 ${styles.inputBg} rounded-lg ${styles.transition}`}>
-                      <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>
-                        IRA circulars on reinsurance requirements and compliance standards for Kenyan insurers will be uploaded here.
-                      </p>
-                    </div>
-                  </div>
+                <div className={`mt-6 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'} text-xs md:text-sm italic ${styles.transition}`}>
+                  Additional resources will be added here when available.
                 </div>
 
                 <div className={`mt-6 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'} text-xs md:text-sm italic ${styles.transition}`}>
@@ -622,7 +595,7 @@ export default function Module8({ theme = 'dark' }) {
                       className={`h-2 rounded-full transition-all duration-300`}
                       style={{
                         width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`,
-                        backgroundColor: theme === 'light' ? '#10B981' : '#34D399'
+                        backgroundColor: theme === 'light' ? '#047857' : '#34d399'
                       }}
                     />
                   </div>
@@ -638,8 +611,8 @@ export default function Module8({ theme = 'dark' }) {
                           key={option}
                           className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${quizAnswers[quizQuestions[currentQuestionIndex].id] === option
                             ? theme === 'light'
-                              ? 'bg-emerald-100 border-2 border-emerald-500'
-                              : 'bg-emerald-500/30 border-2 border-emerald-400'
+                              ? 'bg-green-100 border-2 border-green-600'
+                              : 'bg-green-500/30 border-2 border-green-400'
                             : theme === 'light'
                               ? 'bg-white border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                               : 'bg-white/5 border-2 border-white/10 hover:bg-white/10 hover:border-white/20'
@@ -681,8 +654,8 @@ export default function Module8({ theme = 'dark' }) {
                       <button
                         onClick={goToNextQuestion}
                         className={`px-4 md:px-6 py-3 ${theme === 'light'
-                          ? 'bg-emerald-600 hover:bg-emerald-700 shadow-lg hover:shadow-xl'
-                          : 'bg-emerald-500 hover:bg-emerald-600 shadow-lg hover:shadow-xl'
+                          ? 'bg-green-700 hover:bg-green-800 shadow-lg hover:shadow-xl'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-xl'
                           } text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
                       >
                         Next
@@ -693,7 +666,7 @@ export default function Module8({ theme = 'dark' }) {
                         onClick={submitQuiz}
                         disabled={Object.keys(quizAnswers).length !== quizQuestions.length}
                         className={`px-6 md:px-8 py-3 ${theme === 'light'
-                          ? 'bg-green-600 hover:bg-green-700 disabled:bg-gray-400 shadow-lg hover:shadow-xl'
+                          ? 'bg-green-700 hover:bg-green-800 disabled:bg-gray-400 shadow-lg hover:shadow-xl'
                           : 'bg-green-600 hover:bg-green-700 disabled:bg-gray-600'
                           } disabled:cursor-not-allowed disabled:opacity-50 text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                       >
@@ -705,12 +678,12 @@ export default function Module8({ theme = 'dark' }) {
               ) : (
                 <div className="space-y-6 md:space-y-8">
                   <div className={`${theme === 'light'
-                    ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200'
-                    : 'bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-400/30'
+                    ? 'bg-gradient-to-br from-green-50 to-teal-100 border border-green-200'
+                    : 'bg-gradient-to-br from-green-500/20 to-teal-500/20 border border-green-400/30'
                     } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
-                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} mx-auto mb-4`} />
+                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-green-700' : 'text-green-400'} mx-auto mb-4`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
-                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-emerald-600' : 'text-emerald-400'} mb-2`}>
+                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-green-700' : 'text-green-400'} mb-2`}>
                       {calculateScore().correct}/{calculateScore().total}
                     </div>
                     <p className={`text-base md:text-lg ${styles.textTertiary} ${styles.transition}`}>
@@ -720,7 +693,7 @@ export default function Module8({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -777,10 +750,10 @@ export default function Module8({ theme = 'dark' }) {
                               </div>
 
                               <div className={`p-3 md:p-4 ${theme === 'light'
-                                ? 'bg-teal-50 border border-teal-200'
-                                : 'bg-emerald-500/10 border border-emerald-400/20'
+                                ? 'bg-green-50 border border-green-200'
+                                : 'bg-green-500/10 border border-green-400/20'
                                 } rounded-lg ${styles.transition}`}>
-                                <p className={`${theme === 'light' ? 'text-teal-700' : 'text-emerald-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
+                                <p className={`${theme === 'light' ? 'text-green-700' : 'text-green-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
                                 <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>{q.explanation}</p>
                               </div>
                             </div>
@@ -798,8 +771,8 @@ export default function Module8({ theme = 'dark' }) {
                         setCurrentQuestionIndex(0);
                       }}
                       className={`px-6 md:px-8 py-3 ${theme === 'light'
-                        ? 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-lg hover:shadow-xl'
-                        : 'bg-emerald-600 hover:bg-emerald-700'
+                        ? 'bg-gradient-to-r from-green-700 to-teal-700 hover:from-green-800 hover:to-teal-800 shadow-lg hover:shadow-xl'
+                        : 'bg-green-600 hover:bg-green-700'
                         } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                     >
                       Retake Quiz
@@ -817,7 +790,7 @@ export default function Module8({ theme = 'dark' }) {
 
               {/* Data Files Subsection */}
               <div className="space-y-4">
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-teal-600' : 'text-teal-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-700' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Database className="w-6 h-6" />
                   Data Files
                 </h4>
@@ -827,26 +800,26 @@ export default function Module8({ theme = 'dark' }) {
 
                 <div className="space-y-4">
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-teal-50 border-teal-200 hover:bg-teal-100'
-                    : 'bg-teal-500/20 border-teal-400/30 hover:bg-teal-500/30'
+                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
+                    : 'bg-green-500/20 border-green-400/30 hover:bg-green-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-teal-200' : 'bg-teal-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-xl ${styles.transition}`}>
                         📊
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Premium Register Data</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>premium_register_1000.xlsx • 1,000 premium records</p>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Premium Data</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Premium Data.xlsx • Premium dataset</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-8-Reinsurance-Certification/Data/premium_register_1000.xlsx',
-                        'Premium Register 1000.xlsx'
+                        '/Training Modules/Module-8-Reinsurance-Certificate/Data/Premium Data.xlsx',
+                        'Premium Data.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-teal-600 hover:bg-teal-700'
-                        : 'bg-teal-500 hover:bg-teal-600'
+                        ? 'bg-green-700 hover:bg-green-800'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -855,26 +828,26 @@ export default function Module8({ theme = 'dark' }) {
                   </div>
 
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-teal-50 border-teal-200 hover:bg-teal-100'
-                    : 'bg-teal-500/20 border-teal-400/30 hover:bg-teal-500/30'
+                    ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
+                    : 'bg-yellow-500/20 border-yellow-400/30 hover:bg-yellow-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-teal-200' : 'bg-teal-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-yellow-200' : 'bg-yellow-600/40'} rounded-xl ${styles.transition}`}>
                         📊
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Paid Claims Data</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>paid_claims_5000.xlsx • 5,000 paid claims records</p>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Claims Data</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Claims Data.xlsx • Claims dataset</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-8-Reinsurance-Certification/Data/paid_claims_5000.xlsx',
-                        'Paid Claims 5000.xlsx'
+                        '/Training Modules/Module-8-Reinsurance-Certificate/Data/Claims Data.xlsx',
+                        'Claims Data.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-teal-600 hover:bg-teal-700'
-                        : 'bg-teal-500 hover:bg-teal-600'
+                        ? 'bg-yellow-500 hover:bg-yellow-600'
+                        : 'bg-yellow-500 hover:bg-yellow-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -883,26 +856,26 @@ export default function Module8({ theme = 'dark' }) {
                   </div>
 
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-teal-50 border-teal-200 hover:bg-teal-100'
-                    : 'bg-teal-500/20 border-teal-400/30 hover:bg-teal-500/30'
+                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-teal-200' : 'bg-teal-600/40'} rounded-xl ${styles.transition}`}>
+                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
                         📊
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Outstanding Claims Data</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>outstanding_claims_2000.xlsx • 2,000 outstanding claims</p>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Frequency and Severity</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Frequency and Severity.xlsx • Frequency and severity dataset</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-8-Reinsurance-Certification/Data/outstanding_claims_2000.xlsx',
-                        'Outstanding Claims 2000.xlsx'
+                        '/Training Modules/Module-8-Reinsurance-Certificate/Data/Frequency and Severity.xlsx',
+                        'Frequency and Severity.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-teal-600 hover:bg-teal-700'
-                        : 'bg-teal-500 hover:bg-teal-600'
+                        ? 'bg-blue-600 hover:bg-blue-700'
+                        : 'bg-blue-500 hover:bg-blue-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -916,10 +889,10 @@ export default function Module8({ theme = 'dark' }) {
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
                 <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Settings className="w-6 h-6" />
-                  Working Files
+                  Working File
                 </h4>
                 <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download these templates to structure your reinsurance data analysis:
+                  Download this template to structure your reinsurance data analysis:
                 </p>
 
                 <div className="space-y-4">
@@ -932,87 +905,18 @@ export default function Module8({ theme = 'dark' }) {
                         🛠️
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Premium Data Clean Up Template</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Premium_Data_Clean_Up_Template.xlsx • Premium validation workbook</p>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Beetroot General - Reinsurance Simulation Template</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Beetroot General - Reinsurance Simulation Template.xlsm • Comprehensive reinsurance simulation workbook</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-8-Reinsurance-Certification/Working Files/Premium_Data_Clean_Up_Template.xlsx',
-                        'Premium Data Clean Up Template.xlsx'
+                        '/Training Modules/Module-8-Reinsurance-Certificate/Working File/Beetroot General - Reinsurance Simulation Template.xlsm',
+                        'Beetroot General - Reinsurance Simulation Template.xlsm'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
                         ? 'bg-orange-600 hover:bg-orange-700'
                         : 'bg-orange-500 hover:bg-orange-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-orange-50 border-orange-200 hover:bg-orange-100'
-                    : 'bg-orange-500/20 border-orange-400/30 hover:bg-orange-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-orange-200' : 'bg-orange-600/40'} rounded-xl ${styles.transition}`}>
-                        🛠️
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Claims Data Clean Up Template</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Claims Data_Clean_Up_Template.xlsx • Claims validation workbook</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-8-Reinsurance-Certification/Working Files/Claims_Data_Clean_Up_Template.xlsx',
-                        'Claims Data Clean Up Template.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-orange-600 hover:bg-orange-700'
-                        : 'bg-orange-500 hover:bg-orange-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Files Subsection */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Award className="w-6 h-6" />
-                  Results Files
-                </h4>
-                <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download completed templates to compare your data cleaning results with model answers:
-                </p>
-
-                <div className="space-y-4">
-                  <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-green-50 border-green-200 hover:bg-green-100'
-                    : 'bg-green-500/20 border-green-400/30 hover:bg-green-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-xl ${styles.transition}`}>
-                        ✅
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Premium Data Clean Up Results</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Premium_Data_Clean_Up.xlsx • Model cleaned premium data</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-8-Reinsurance-Certification/Results Files/Premium_Data_Clean_Up.xlsx',
-                        'Premium Data Clean Up Results.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
                     >
                       <Download className="w-3 h-3 md:w-4 md:h-4" />
@@ -1024,7 +928,7 @@ export default function Module8({ theme = 'dark' }) {
 
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -1033,14 +937,14 @@ export default function Module8({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-purple-50 border-purple-200'
-                  : 'bg-purple-500/10 border-purple-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-purple-300 hover:border-purple-400'
-                    : 'border-purple-400/30 hover:border-purple-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Reinsurance Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your completed certification files here, or click to browse
@@ -1055,8 +959,8 @@ export default function Module8({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-purple-600 hover:bg-purple-700'
-                        : 'bg-purple-500 hover:bg-purple-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -1073,7 +977,7 @@ export default function Module8({ theme = 'dark' }) {
                         {uploadedFiles.map(file => (
                           <div key={file.id} className={`flex items-center justify-between ${styles.inputBg} rounded-lg p-3 ${styles.transition}`}>
                             <div className="flex items-center space-x-3">
-                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} ${styles.transition}`} />
+                              <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} ${styles.transition}`} />
                               <div>
                                 <p className={`${styles.text} text-sm font-medium ${styles.transition}`}>{file.name}</p>
                                 <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>{file.size} • {file.uploadDate}</p>
@@ -1091,8 +995,8 @@ export default function Module8({ theme = 'dark' }) {
 
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg'
-                          : 'bg-purple-500 hover:bg-purple-600 shadow-lg hover:shadow-purple-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit Reinsurance Certification
                         </button>

@@ -13,6 +13,7 @@ import Module1 from "./Module1";
 import Module2 from "./Module2";
 import Module3 from "./Module3";
 import Module4 from "./Module4";
+import Module4Videos from "./Module4Videos";
 import Module5 from "./Module5";
 import Module6 from "./Module6";
 import Module7 from "./Module7";
@@ -267,6 +268,17 @@ function App() {
                 user ? (
                   <div className="pt-20">
                     <Module4 theme={theme} />
+                  </div>
+                ) : <Navigate to="/auth" replace />
+              }
+            />
+
+            <Route
+              path="/modules/4/videos"
+              element={
+                user ? (
+                  <div className="pt-20">
+                    <Module4Videos theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
               }

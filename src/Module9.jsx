@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
@@ -57,7 +58,7 @@ export default function Module9({ theme = 'dark' }) {
         text: 'text-gray-900',
         textSecondary: 'text-gray-700',
         textTertiary: 'text-gray-600',
-        border: 'border-white/30',
+        border: 'border-gray-200',
         hover: 'hover:bg-white',
         inputBg: 'bg-white/90',
         shadow: 'shadow-2xl shadow-orange-500/10',
@@ -325,14 +326,25 @@ export default function Module9({ theme = 'dark' }) {
           className="absolute inset-0 transition-all duration-500"
           style={{
             background: theme === 'light'
-              ? 'linear-gradient(135deg, rgba(251, 146, 60, 0.65) 0%, rgba(245, 158, 11, 0.59) 100%)'
+              ? 'linear-gradient(135deg, rgba(251, 146, 60, 0.26) 0%, rgba(245, 159, 11, 0.49) 100%)'
               : 'linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(251, 146, 60, 0.4) 50%, rgba(245, 158, 11, 0.35) 100%)',
-            backdropFilter: theme === 'dark' ? 'blur(4px)' : 'blur(2px)',
+            backdropFilter: theme === 'dark' ? 'blur(3px)' : 'blur(2px)',
           }}
         />
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+        {/* Back Button - Outside Card, Extreme Left */}
+        <Link
+          to="/modules"
+          className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
+            ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
+            : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
+            } transition-all duration-300 hover:scale-110 ${styles.transition}`}
+          aria-label="Back to Training Modules"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
 
         {/* Module Hero Container */}
         <div
@@ -421,27 +433,6 @@ export default function Module9({ theme = 'dark' }) {
                 <li>Recognize governance, professional, and regulatory considerations when preparing an FCR, including confidentiality, accuracy, and transparency of actuarial advice.</li>
               </ol>
 
-              <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
-                Activities and Exercises
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-orange-600 to-amber-600'
-                  : 'bg-gradient-to-r from-orange-400 to-amber-500'
-                  } transform translate-y-1 ${styles.transition}`}></span>
-              </h3>
-              <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>
-                Download the exercises document to test your understanding through practical calculations and case studies.
-              </p>
-              <a
-                href="/Training Modules/Module-9-FCR/Module-9_Exercises_FCR.docx"
-                download="Module 9 Exercises - Financial Condition Report.docx"
-                className={`inline-flex items-center gap-2 mt-3 px-4 py-2 ${theme === 'light'
-                  ? 'bg-orange-600 hover:bg-orange-700 text-white'
-                  : 'bg-orange-500 hover:bg-orange-600 text-white'
-                  } rounded-lg transition ${styles.transition}`}
-              >
-                <Download className="w-4 h-4" />
-                Download Exercises (DOCX)
-              </a>
             </div>
           )}
 
@@ -462,11 +453,11 @@ export default function Module9({ theme = 'dark' }) {
                     </div>
                     <div>
                       <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Financial Condition Report Technical Procedure</h4>
-                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Financial Condition Report 2025 - PDF • Comprehensive guide</p>
+                      <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>KAFS ITP Financial Condition Report 2025 - PDF • 15 pages</p>
                     </div>
                   </div>
                   <a
-                    href="/Training Modules/Module-9-FCR/Course Content/KAFS-ITP-Financial-Condition-Report-2025.pdf"
+                    href="/Training Modules/Module-9-FCR/Course Content/KAFS ITP Financial_Condition_Report_2025.pdf"
                     download="KAFS ITP Financial Condition Report 2025.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -484,20 +475,205 @@ export default function Module9({ theme = 'dark' }) {
                 <div className="mt-6 space-y-4">
                   <h4 className={`text-md font-semibold ${styles.text} ${styles.transition}`}>Additional Resources and References</h4>
                   
-                  <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-500/10 border-blue-400/20'} border p-4 ${styles.transition}`}>
-                    <div className="flex items-center space-x-3">
-                      <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
-                        📚
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' : 'bg-blue-500/10 border-blue-400/20 hover:bg-blue-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Draft Risk Based Capital Adequacy</h5>
+                        </div>
                       </div>
-                      <div>
-                        <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>IRA FCR Guidelines</h5>
-                        <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>Insurance Regulatory Authority Financial Condition Report Requirements</p>
-                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Draft_Risk_Based_Capital_Adequacy1.pdf',
+                          'Draft_Risk_Based_Capital_Adequacy1.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
                     </div>
-                    <div className={`mt-3 p-3 ${styles.inputBg} rounded-lg ${styles.transition}`}>
-                      <p className={`text-xs ${styles.textTertiary} ${styles.transition}`}>
-                        Regulatory guidelines and circulars on FCR preparation requirements, timelines, and submission standards.
-                      </p>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-sky-50 border-sky-200 hover:bg-sky-100' : 'bg-sky-500/10 border-sky-400/20 hover:bg-sky-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-sky-200' : 'bg-sky-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-sky-500' : 'text-sky-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Guideline on Insurance Risk</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Guideline on Insurance Risk.pdf',
+                          'Guideline on Insurance Risk.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-sky-500 hover:bg-sky-600' : 'bg-sky-400 hover:bg-sky-500'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' : 'bg-blue-500/10 border-blue-400/20 hover:bg-blue-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Guideline on Risk Management and Internal Controls</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Guideline on Risk Management and Internal Controls.pdf',
+                          'Guideline on Risk Management and Internal Controls.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-sky-50 border-sky-200 hover:bg-sky-100' : 'bg-sky-500/10 border-sky-400/20 hover:bg-sky-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-sky-200' : 'bg-sky-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-sky-500' : 'text-sky-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Guideline on the Actuarial Function</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Guideline on the Actuarial Function.pdf',
+                          'Guideline on the Actuarial Function.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-sky-500 hover:bg-sky-600' : 'bg-sky-400 hover:bg-sky-500'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' : 'bg-blue-500/10 border-blue-400/20 hover:bg-blue-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Guidelines on Actuarial Function Issued in February 2013</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Guidelines on Actuarial Function Issued in February 2013.pdf',
+                          'Guidelines on Actuarial Function Issued in February 2013.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-sky-50 border-sky-200 hover:bg-sky-100' : 'bg-sky-500/10 border-sky-400/20 hover:bg-sky-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-sky-200' : 'bg-sky-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-sky-500' : 'text-sky-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Guidelines on Insurance Products</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Guidelines on Insurance Products.pdf',
+                          'Guidelines on Insurance Products.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-sky-500 hover:bg-sky-600' : 'bg-sky-400 hover:bg-sky-500'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' : 'bg-blue-500/10 border-blue-400/20 hover:bg-blue-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Guidelines on Claims Management</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Guidelines1 on Claims Management.pdf',
+                          'Guidelines1 on Claims Management.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-sky-50 border-sky-200 hover:bg-sky-100' : 'bg-sky-500/10 border-sky-400/20 hover:bg-sky-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-sky-200' : 'bg-sky-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-sky-500' : 'text-sky-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>Suitability of Persons</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/Suitability of Persons.pdf',
+                          'Suitability of Persons.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-sky-500 hover:bg-sky-600' : 'bg-sky-400 hover:bg-sky-500'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-blue-50 border-blue-200 hover:bg-blue-100' : 'bg-blue-500/10 border-blue-400/20 hover:bg-blue-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>The Insurance (Investments Management) Guidelines</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/The Insurance (Investments Management) Guidelines..pdf',
+                          'The Insurance (Investments Management) Guidelines..pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className={`rounded-xl ${theme === 'light' ? 'bg-sky-50 border-sky-200 hover:bg-sky-100' : 'bg-sky-500/10 border-sky-400/20 hover:bg-sky-500/20'} border p-4 ${styles.transition} flex items-center justify-between`}>
+                      <div className="flex items-center space-x-3 flex-1">
+                        <div className={`p-2 ${theme === 'light' ? 'bg-sky-200' : 'bg-sky-600/40'} rounded-lg ${styles.transition}`}>
+                          <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-sky-500' : 'text-sky-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className={`text-sm font-semibold ${styles.text} ${styles.transition} truncate`}>The Insurance Act</h5>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => downloadFile(
+                          '/Training Modules/Module-9-FCR/Additional Resources/The Insurance Act.pdf',
+                          'The Insurance Act.pdf'
+                        )}
+                        className={`ml-2 px-3 py-1.5 ${theme === 'light' ? 'bg-sky-500 hover:bg-sky-600' : 'bg-sky-400 hover:bg-sky-500'} rounded-lg text-white text-xs transition flex items-center gap-1`}
+                      >
+                        <Download className="w-3 h-3" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -608,10 +784,7 @@ export default function Module9({ theme = 'dark' }) {
                 </>
               ) : (
                 <div className="space-y-6 md:space-y-8">
-                  <div className={`${theme === 'light'
-                    ? 'bg-gradient-to-br from-orange-50 to-amber-100 border border-orange-200'
-                    : 'bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-400/30'
-                    } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
+                  <div className={`${theme === 'light' ? 'bg-gradient-to-br from-orange-50 to-amber-100 border-orange-200' : 'bg-gradient-to-br from-orange-500/20 to-amber-500/20 border-orange-400/30'} rounded-2xl p-6 md:p-8 text-center border ${styles.transition}`}>
                     <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} mx-auto mb-4`} />
                     <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
                     <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} mb-2`}>
@@ -624,7 +797,7 @@ export default function Module9({ theme = 'dark' }) {
                           ? 'Great job! You passed!'
                           : 'Keep studying and try again!'}
                     </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm md:text-base ${styles.transition}`}>
+                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
                       Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                     </div>
                   </div>
@@ -703,7 +876,7 @@ export default function Module9({ theme = 'dark' }) {
                       }}
                       className={`px-6 md:px-8 py-3 ${theme === 'light'
                         ? 'bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 shadow-lg hover:shadow-xl'
-                        : 'bg-orange-600 hover:bg-orange-700'
+                        : 'bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 shadow-lg hover:shadow-xl'
                         } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
                     >
                       Retake Quiz
@@ -721,7 +894,7 @@ export default function Module9({ theme = 'dark' }) {
 
               {/* Data Files Subsection */}
               <div className="space-y-4">
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Database className="w-6 h-6" />
                   Data Files
                 </h4>
@@ -731,63 +904,22 @@ export default function Module9({ theme = 'dark' }) {
 
                 <div className="space-y-4">
                   <div className={`rounded-2xl ${theme === 'light'
-                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
-                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
-                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
-                        📊
-                      </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>FCR Analysis Dataset</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Data.xlsx • Complete financial and claims dataset</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => downloadFile(
-                        '/Training Modules/Module-9-FCR/Data/Data.xlsx',
-                        'FCR Analysis Dataset.xlsx'
-                      )}
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : 'bg-blue-500 hover:bg-blue-600'
-                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Working Files Subsection */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Settings className="w-6 h-6" />
-                  Working Files
-                </h4>
-                <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download these templates to structure your FCR preparation:
-                </p>
-
-                <div className="space-y-4">
-                  <div className={`rounded-2xl ${theme === 'light'
                     ? 'bg-orange-50 border-orange-200 hover:bg-orange-100'
                     : 'bg-orange-500/20 border-orange-400/30 hover:bg-orange-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
                       <div className={`p-3 ${theme === 'light' ? 'bg-orange-200' : 'bg-orange-600/40'} rounded-xl ${styles.transition}`}>
-                        🛠️
+                        📊
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>FCR Working Template</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Working File.xlsx • Comprehensive FCR preparation workbook</p>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>2025 Budget</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>2025 Budget.xlsx • Budget dataset</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-9-FCR/Working Files/Working-File.xlsx',
-                        'FCR Working Template.xlsx'
+                        '/Training Modules/Module-9-FCR/Data/2025 Budget.xlsx',
+                        '2025 Budget.xlsx'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
                         ? 'bg-orange-600 hover:bg-orange-700'
@@ -798,37 +930,24 @@ export default function Module9({ theme = 'dark' }) {
                       Download
                     </button>
                   </div>
-                </div>
-              </div>
 
-              {/* Results Files Subsection */}
-              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
-                  <Award className="w-6 h-6" />
-                  Results Files
-                </h4>
-                <p className={`${styles.textTertiary} ${styles.transition}`}>
-                  Download completed templates to compare your FCR analysis with model answers:
-                </p>
-
-                <div className="space-y-4">
                   <div className={`rounded-2xl ${theme === 'light'
                     ? 'bg-green-50 border-green-200 hover:bg-green-100'
                     : 'bg-green-500/20 border-green-400/30 hover:bg-green-500/30'
                     } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
                     <div className="flex items-center space-x-3 md:space-x-4">
                       <div className={`p-3 ${theme === 'light' ? 'bg-green-200' : 'bg-green-600/40'} rounded-xl ${styles.transition}`}>
-                        ✅
+                        📄
                       </div>
                       <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>FCR Results Template</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Results Files.xlsx • Model FCR analysis and recommendations</p>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.pdf • Audited financial statements</p>
                       </div>
                     </div>
                     <button
                       onClick={() => downloadFile(
-                        '/Training Modules/Module-9-FCR/Results Files/Results-Files.xlsx',
-                        'FCR Results Template.xlsx'
+                        '/Training Modules/Module-9-FCR/Data/PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.pdf',
+                        'PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.pdf'
                       )}
                       className={`px-4 md:px-6 py-2 ${theme === 'light'
                         ? 'bg-green-600 hover:bg-green-700'
@@ -842,9 +961,78 @@ export default function Module9({ theme = 'dark' }) {
                 </div>
               </div>
 
+              {/* Working Files Subsection */}
+              <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'} flex items-center gap-3 ${styles.transition}`}>
+                  <Settings className="w-6 h-6" />
+                  Working Files
+                </h4>
+                <p className={`${styles.textTertiary} ${styles.transition}`}>
+                  Download these templates to structure your FCR preparation:
+                </p>
+
+                <div className="space-y-4">
+                  <div className={`rounded-2xl ${theme === 'light'
+                    ? 'bg-blue-50 border-blue-200 hover:bg-blue-100'
+                    : 'bg-blue-500/20 border-blue-400/30 hover:bg-blue-500/30'
+                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-blue-600/40'} rounded-xl ${styles.transition}`}>
+                        🛠️
+                      </div>
+                      <div>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Pioneer General - FCR 2023 Working File V2</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Pioneer General - FCR 2023 Working File V2.xlsx • Comprehensive FCR preparation workbook</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => downloadFile(
+                        '/Training Modules/Module-9-FCR/Working File/Pioneer General - FCR 2023 Working File V2.xlsx',
+                        'Pioneer General - FCR 2023 Working File V2.xlsx'
+                      )}
+                      className={`px-4 md:px-6 py-2 ${theme === 'light'
+                        ? 'bg-blue-600 hover:bg-blue-700'
+                        : 'bg-blue-500 hover:bg-blue-600'
+                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
+                    >
+                      <Download className="w-3 h-3 md:w-4 md:h-4" />
+                      Download
+                    </button>
+                  </div>
+
+                  <div className={`rounded-2xl ${theme === 'light'
+                    ? 'bg-yellow-50 border-yellow-200 hover:bg-yellow-100'
+                    : 'bg-yellow-500/20 border-yellow-400/30 hover:bg-yellow-500/30'
+                    } border p-4 md:p-6 flex items-center justify-between ${styles.transition}`}>
+                    <div className="flex items-center space-x-3 md:space-x-4">
+                      <div className={`p-3 ${theme === 'light' ? 'bg-yellow-200' : 'bg-yellow-600/40'} rounded-xl ${styles.transition}`}>
+                        📄
+                      </div>
+                      <div>
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>Pioneer General FCR 2023 - Final Report</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>Pioneer General FCR 2023 - Final Report (290424).pdf • Final FCR report</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => downloadFile(
+                        '/Training Modules/Module-9-FCR/Working File/Pioneer General FCR 2023 - Final Report (290424).pdf',
+                        'Pioneer General FCR 2023 - Final Report (290424).pdf'
+                      )}
+                      className={`px-4 md:px-6 py-2 ${theme === 'light'
+                        ? 'bg-yellow-500 hover:bg-yellow-600'
+                        : 'bg-yellow-500 hover:bg-yellow-600'
+                        } rounded-lg text-white transition flex items-center gap-2 text-sm md:text-base`}
+                    >
+                      <Download className="w-3 h-3 md:w-4 md:h-4" />
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               {/* Submission Subsection */}
               <div className={`space-y-4 pt-6 border-t ${styles.border} ${styles.transition}`}>
-                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} flex items-center gap-3 ${styles.transition}`}>
+                <h4 className={`text-xl font-semibold ${theme === 'light' ? 'text-green-600' : 'text-green-400'} flex items-center gap-3 ${styles.transition}`}>
                   <Upload className="w-6 h-6" />
                   Submission
                 </h4>
@@ -853,14 +1041,14 @@ export default function Module9({ theme = 'dark' }) {
                 </p>
 
                 <div className={`rounded-3xl ${theme === 'light'
-                  ? 'bg-purple-50 border-purple-200'
-                  : 'bg-purple-500/10 border-purple-400/20'
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
                   <div className={`border-2 border-dashed ${theme === 'light'
-                    ? 'border-purple-300 hover:border-purple-400'
-                    : 'border-purple-400/30 hover:border-purple-400/50'
+                    ? 'border-green-300 hover:border-green-400'
+                    : 'border-green-400/30 hover:border-green-400/50'
                     } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'} mx-auto mb-4 ${styles.transition}`} />
+                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
                     <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your FCR Work</h5>
                     <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
                       Drag and drop your completed FCR analysis files here, or click to browse
@@ -875,8 +1063,8 @@ export default function Module9({ theme = 'dark' }) {
                     <label
                       htmlFor="file-upload"
                       className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-purple-600 hover:bg-purple-700'
-                        : 'bg-purple-500 hover:bg-purple-600'
+                        ? 'bg-green-600 hover:bg-green-700'
+                        : 'bg-green-500 hover:bg-green-600'
                         } rounded-lg text-white cursor-pointer transition`}
                     >
                       Choose Files
@@ -911,8 +1099,8 @@ export default function Module9({ theme = 'dark' }) {
 
                       <div className="mt-4 text-center">
                         <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg'
-                          : 'bg-purple-500 hover:bg-purple-600 shadow-lg hover:shadow-purple-500/25'
+                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
                           } rounded-xl text-white font-semibold transition`}>
                           Submit FCR Analysis
                         </button>
