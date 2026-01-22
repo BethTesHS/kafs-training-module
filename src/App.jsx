@@ -35,6 +35,8 @@ import Module1Tutorial from "./components/Tutorial/Module1Tutorial";
 import ThemeToggle from "./components/ThemeToggle";
 import AuthCallback from "./components/AuthCallback";
 import ScrollToTop from "./components/ScrollToTop";
+import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -170,6 +172,18 @@ function App() {
               path="/auth"
               element={
                 user ? <Navigate to="/" replace /> : <Auth onAuthSuccess={handleAuthSuccess} theme={theme} />
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                user ? <Navigate to="/" replace /> : <ForgotPassword theme={theme} />
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                user ? <Navigate to="/" replace /> : <ResetPassword theme={theme} />
               }
             />
 

@@ -1,6 +1,6 @@
 // src/components/Auth/Auth.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import {
   Mail,
   Lock,
@@ -9,10 +9,7 @@ import {
   EyeOff,
   ArrowRight,
   Sparkles,
-  X,
-  Chrome,
-  Github,
-  Facebook
+  X
 } from "lucide-react";
 
 import { supabase } from "../../supabaseClient";
@@ -26,7 +23,10 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [socialLoading, setSocialLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [isResetMode, setIsResetMode] = useState(false);
+  const [isUpdatePassword, setIsUpdatePassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -77,12 +77,33 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
       confirmPassword: ""
     });
     setError("");
+    setSuccess("");
     setShowPassword(false);
+    setIsResetMode(false);
+    setIsUpdatePassword(false);
+    setResetEmail("");
   }, [mode]);
 
+  // Check if we're in password reset mode from URL hash
+  useEffect(() => {
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    const type = hashParams.get('type');
+    
+    if (type === 'recovery' && accessToken) {
+      setIsUpdatePassword(true);
+      setIsLogin(false);
+    }
+  }, []);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === 'resetEmail') {
+      setResetEmail(e.target.value);
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
     setError("");
+    setSuccess("");
   };
 
   const toggleMode = () => {
@@ -121,14 +142,101 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
     return true;
   };
 
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    if (!resetEmail) {
+      setError("Please enter your email address");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(resetEmail)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/auth?mode=login`,
+      });
+
+      if (error) throw error;
+
+      setSuccess("Password reset email sent! Please check your inbox and follow the instructions.");
+      setTimeout(() => {
+        setIsResetMode(false);
+        setResetEmail("");
+      }, 3000);
+    } catch (err) {
+      console.error("Password reset error:", err);
+      setError(err.message || "Failed to send password reset email");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    if (!formData.password) {
+      setError("Please enter a new password");
+      return;
+    }
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: formData.password
+      });
+
+      if (error) throw error;
+
+      setSuccess("Password updated successfully! Redirecting to login...");
+      setTimeout(() => {
+        navigate('/auth?mode=login');
+        setIsUpdatePassword(false);
+        setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+      }, 2000);
+    } catch (err) {
+      console.error("Password update error:", err);
+      setError(err.message || "Failed to update password");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (isResetMode) {
+      return handlePasswordReset(e);
+    }
+    
+    if (isUpdatePassword) {
+      return handleUpdatePassword(e);
+    }
+
     if (!validateForm()) {
       return;
     }
 
     setLoading(true);
     setError("");
+    setSuccess("");
 
     try {
       let data, error;
@@ -165,7 +273,8 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
 
       if (!isLogin) {
         // For signup, show success message
-        setError("Registration successful! Please check your email to confirm your account.");
+        setSuccess("Registration successful! Please check your email to confirm your account.");
+        setError("");
         setTimeout(() => {
           navigate(`/auth?mode=login`);
         }, 2000);
@@ -185,61 +294,6 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
     }
   };
 
-  const handleSocialLogin = async (provider) => {
-    setSocialLoading(true);
-    setError("");
-
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: provider,
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent'
-          }
-        }
-      });
-
-      if (error) throw error;
-      
-      // The user will be redirected to OAuth provider
-      // No need to do anything else here
-
-    } catch (err) {
-      console.error("Social login error:", err);
-      setError(`Failed to sign in with ${provider}: ${err.message}`);
-      setSocialLoading(false);
-    }
-  };
-
-  // Social login providers configuration
-  const socialProviders = [
-    {
-      id: 'google',
-      name: 'Google',
-      icon: Chrome,
-      color: theme === 'dark' ? '#4285F4' : '#DB4437',
-      bgColor: theme === 'dark' ? 'rgba(66, 133, 244, 0.1)' : 'rgba(219, 68, 55, 0.08)',
-      borderColor: theme === 'dark' ? 'rgba(66, 133, 244, 0.3)' : 'rgba(219, 68, 55, 0.2)'
-    },
-    {
-      id: 'github',
-      name: 'GitHub',
-      icon: Github,
-      color: theme === 'dark' ? '#FFFFFF' : '#333333',
-      bgColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(51, 51, 51, 0.08)',
-      borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(51, 51, 51, 0.2)'
-    },
-    {
-      id: 'facebook',
-      name: 'Facebook',
-      icon: Facebook,
-      color: theme === 'dark' ? '#1877F2' : '#1877F2',
-      bgColor: theme === 'dark' ? 'rgba(24, 119, 242, 0.1)' : 'rgba(24, 119, 242, 0.08)',
-      borderColor: theme === 'dark' ? 'rgba(24, 119, 242, 0.3)' : 'rgba(24, 119, 242, 0.2)'
-    }
-  ];
 
   return (
     <>
@@ -299,10 +353,16 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
                 </div>
               </div>
               <h2 className="text-2xl font-bold mb-2" style={{ color: currentColors.text }}>
-                {isLogin ? 'Welcome Back' : 'Get Started'}
+                {isResetMode ? 'Reset Password' : 
+                 isUpdatePassword ? 'Set New Password' :
+                 isLogin ? 'Welcome Back' : 'Get Started'}
               </h2>
               <p className="text-sm" style={{ color: currentColors.textSecondary }}>
-                {isLogin
+                {isResetMode
+                  ? 'Enter your email to receive a password reset link'
+                  : isUpdatePassword
+                  ? 'Enter your new password below'
+                  : isLogin
                   ? 'Sign in to continue learning'
                   : 'Create your free account'}
               </p>
@@ -322,44 +382,125 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
               </div>
             )}
 
-            {/* Social Login Buttons */}
-            <div className="mb-6">
-              <div className="flex gap-3 mb-4">
-                {socialProviders.map((provider) => (
-                  <button
-                    key={provider.id}
-                    onClick={() => handleSocialLogin(provider.id)}
-                    disabled={socialLoading}
-                    className="flex-1 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    style={{
-                      background: provider.bgColor,
-                      border: `2px solid ${provider.borderColor}`,
-                      color: provider.color
-                    }}
-                  >
-                    <provider.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{provider.name}</span>
-                  </button>
-                ))}
+            {/* Success Message */}
+            {success && (
+              <div
+                className="mb-6 p-3 rounded-xl flex items-center gap-2 text-sm"
+                style={{
+                  background: theme === 'dark' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(34, 197, 94, 0.08)',
+                  border: theme === 'dark' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(34, 197, 94, 0.2)'
+                }}
+              >
+                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: theme === 'dark' ? '#22C55E' : '#16A34A' }} />
+                <span style={{ color: theme === 'dark' ? '#4ADE80' : '#16A34A' }}>{success}</span>
               </div>
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t" style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}></div>
-                </div>
-                <div className="relative flex justify-center text-xs">
-                  <span className="px-2" style={{ 
-                    background: currentColors.card, 
-                    color: currentColors.textSecondary 
-                  }}>
-                    Or continue with email
-                  </span>
-                </div>
-              </div>
-            </div>
+            )}
 
             {/* Form */}
             <div className="space-y-4">
-              {!isLogin && (
+              {/* Password Reset Form */}
+              {isResetMode && (
+                <div>
+                  <label className="block text-sm mb-2 font-medium" style={{ color: currentColors.textSecondary }}>Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: currentColors.textSecondary }} />
+                    <input
+                      type="email"
+                      name="resetEmail"
+                      value={resetEmail}
+                      onChange={handleChange}
+                      placeholder="you@example.com"
+                      className="w-full pl-11 pr-4 py-3 rounded-xl text-sm outline-none transition-all"
+                      style={{
+                        background: currentColors.inputBg,
+                        border: `2px solid ${currentColors.inputBorder}`,
+                        color: currentColors.inputText
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = theme === 'dark' ? currentColors.cyan : currentColors.blue;
+                        e.target.style.boxShadow = `0 0 0 3px ${theme === 'dark' ? currentColors.cyan : currentColors.blue}15`;
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = currentColors.inputBorder;
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Password Update Form */}
+              {isUpdatePassword && (
+                <>
+                  <div>
+                    <label className="block text-sm mb-2 font-medium" style={{ color: currentColors.textSecondary }}>New Password</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: currentColors.textSecondary }} />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="••••••••"
+                        className="w-full pl-11 pr-11 py-3 rounded-xl text-sm outline-none transition-all"
+                        style={{
+                          background: currentColors.inputBg,
+                          border: `2px solid ${currentColors.inputBorder}`,
+                          color: currentColors.inputText
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = theme === 'dark' ? currentColors.cyan : currentColors.blue;
+                          e.target.style.boxShadow = `0 0 0 3px ${theme === 'dark' ? currentColors.cyan : currentColors.blue}15`;
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = currentColors.inputBorder;
+                          e.target.style.boxShadow = 'none';
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 transition hover:scale-110"
+                        style={{ color: currentColors.textSecondary }}
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm mb-2 font-medium" style={{ color: currentColors.textSecondary }}>Confirm New Password</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: currentColors.textSecondary }} />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        placeholder="••••••••"
+                        className="w-full pl-11 pr-4 py-3 rounded-xl text-sm outline-none transition-all"
+                        style={{
+                          background: currentColors.inputBg,
+                          border: `2px solid ${currentColors.inputBorder}`,
+                          color: currentColors.inputText
+                        }}
+                        onFocus={(e) => {
+                          e.target.style.borderColor = theme === 'dark' ? currentColors.cyan : currentColors.blue;
+                          e.target.style.boxShadow = `0 0 0 3px ${theme === 'dark' ? currentColors.cyan : currentColors.blue}15`;
+                        }}
+                        onBlur={(e) => {
+                          e.target.style.borderColor = currentColors.inputBorder;
+                          e.target.style.boxShadow = 'none';
+                        }}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Regular Login/Signup Form */}
+              {!isResetMode && !isUpdatePassword && (
+                <>
+                  {!isLogin && (
                 <div>
                   <label className="block text-sm mb-2 font-medium" style={{ color: currentColors.textSecondary }}>Full Name</label>
                   <div className="relative">
@@ -481,20 +622,37 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
                     />
                   </div>
                 </div>
-              )}
+                  )}
 
-              {isLogin && (
+                  {isLogin && (
                 <div className="flex justify-end">
-                  <button 
-                    type="button" 
+                  <Link 
+                    to="/forgot-password"
                     className="text-xs transition hover:opacity-70" 
                     style={{ color: theme === 'dark' ? currentColors.cyan : currentColors.blue }}
-                    onClick={() => {
-                      // You can implement password reset here
-                      setError("Password reset feature coming soon!");
-                    }}
                   >
                     Forgot password?
+                  </Link>
+                </div>
+                  )}
+                </>
+              )}
+
+              {isResetMode && (
+                <div className="mb-4">
+                  <button 
+                    type="button" 
+                    className="text-xs transition hover:opacity-70 flex items-center gap-1" 
+                    style={{ color: theme === 'dark' ? currentColors.cyan : currentColors.blue }}
+                    onClick={() => {
+                      setIsResetMode(false);
+                      setResetEmail("");
+                      setError("");
+                      setSuccess("");
+                    }}
+                  >
+                    <ArrowRight className="w-3 h-3 rotate-180" />
+                    Back to login
                   </button>
                 </div>
               )}
@@ -524,41 +682,51 @@ export default function Auth({ onAuthSuccess, theme = 'dark' }) {
                         borderColor: 'rgba(255,255,255,0.3)',
                         borderTopColor: 'white'
                       }} />
-                    <span>{isLogin ? 'Signing in...' : 'Creating Account...'}</span>
+                    <span>
+                      {isResetMode ? 'Sending reset email...' : 
+                       isUpdatePassword ? 'Updating password...' :
+                       isLogin ? 'Signing in...' : 'Creating Account...'}
+                    </span>
                   </>
                 ) : (
                   <>
-                    <span>{isLogin ? 'Sign In' : 'Create Account'}</span>
+                    <span>
+                      {isResetMode ? 'Send Reset Email' : 
+                       isUpdatePassword ? 'Update Password' :
+                       isLogin ? 'Sign In' : 'Create Account'}
+                    </span>
                     <ArrowRight className="w-4 h-4" style={{ color: 'white' }} />
                   </>
                 )}
               </button>
             </div>
 
-            {/* Toggle Login/Signup */}
-            <div className="text-center mt-6 pt-6 border-t"
-              style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}>
-              <p className="text-sm mb-4" style={{ color: currentColors.textSecondary }}>
-                {isLogin ? "New to Kenbright?" : "Already have an account?"}
-              </p>
-              <button
-                type="button"
-                onClick={toggleMode}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105"
-                style={{
-                  background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : `${currentColors.blue}08`,
-                  border: `2px solid ${theme === 'dark' ? currentColors.cyan : currentColors.blue}${theme === 'dark' ? '80' : '80'}`,
-                  color: theme === 'dark' ? currentColors.cyan : currentColors.blue
-                }}
-              >
-                <Sparkles className="w-4 h-4"
+            {/* Toggle Login/Signup - Only show when not in reset or update password mode */}
+            {!isResetMode && !isUpdatePassword && (
+              <div className="text-center mt-6 pt-6 border-t"
+                style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}>
+                <p className="text-sm mb-4" style={{ color: currentColors.textSecondary }}>
+                  {isLogin ? "New to Kenbright?" : "Already have an account?"}
+                </p>
+                <button
+                  type="button"
+                  onClick={toggleMode}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105"
                   style={{
+                    background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : `${currentColors.blue}08`,
+                    border: `2px solid ${theme === 'dark' ? currentColors.cyan : currentColors.blue}${theme === 'dark' ? '80' : '80'}`,
                     color: theme === 'dark' ? currentColors.cyan : currentColors.blue
                   }}
-                />
-                <span>{isLogin ? 'Create Free Account' : 'Sign In Instead'}</span>
-              </button>
-            </div>
+                >
+                  <Sparkles className="w-4 h-4"
+                    style={{
+                      color: theme === 'dark' ? currentColors.cyan : currentColors.blue
+                    }}
+                  />
+                  <span>{isLogin ? 'Create Free Account' : 'Sign In Instead'}</span>
+                </button>
+              </div>
+            )}
 
             {/* Footer Note */}
             <p className="text-center text-xs mt-6" style={{ color: currentColors.textSecondary }}>

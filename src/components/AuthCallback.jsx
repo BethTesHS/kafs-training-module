@@ -9,7 +9,17 @@ export default function AuthCallback({ theme = 'dark' }) {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        // Get the current session after OAuth redirect
+        // Check if this is a password reset callback
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const type = hashParams.get('type');
+        
+        if (type === 'recovery') {
+          // Redirect to reset password page
+          navigate('/reset-password' + window.location.hash, { replace: true });
+          return;
+        }
+        
+        // Handle OAuth callback
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
