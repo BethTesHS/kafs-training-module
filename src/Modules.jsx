@@ -66,7 +66,7 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 1,
       name: "Data Clean Up",
-      color: "#00E5FF",
+      color: "#9333EA", // Purple-600 to match Module 1 theme
       status: "accessible",
       description: "Learn data validation, cleaning, and standardization techniques for actuarial datasets.",
       image: dataCleanupImg,
@@ -75,8 +75,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 2,
       name: "Pricing Fundamentals",
-      color: "#7C4DFF",
-      status: "locked",
+      color: "#2563EB", // Blue-600 to match Module 2 theme
+      status: "accessible",
       description: "Master the core principles of insurance pricing and risk assessment.",
       image: pricingFundamentalsImg,
       number: "02"
@@ -84,8 +84,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 3,
       name: "Liability for Remaining Coverage (LRC)",
-      color: "#06B6D4",
-      status: "locked",
+      color: "#10B981", // Green-500 to match Module 3 theme
+      status: "accessible",
       description: "Understand LRC calculations and their importance in insurance valuations.",
       image: lrcImg,
       number: "03"
@@ -93,8 +93,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 4,
       name: "General Insurance Valuations (Liability for Incurred Claims)",
-      color: "#8B5CF6",
-      status: "locked",
+      color: "#F97316", // Orange-600 to match Module 4 theme
+      status: "accessible",
       description: "Advanced techniques for general insurance liability valuations.",
       image: giValuationsImg,
       number: "04"
@@ -102,8 +102,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 5,
       name: "Capital Adequacy Analysis",
-      color: "#10B981",
-      status: "locked",
+      color: "#06B6D4", // Cyan-600 to match Module 5 theme
+      status: "accessible",
       description: "Learn capital adequacy requirements and solvency analysis methods.",
       image: capitalAdequacyImg,
       number: "05"
@@ -111,8 +111,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 6,
       name: "Financial Performance Analysis (Ratio Analysis)",
-      color: "#F59E0B",
-      status: "locked",
+      color: "#9333EA", // Purple-600 to match Module 6 theme
+      status: "accessible",
       description: "Master financial ratio analysis and balance sheet evaluation techniques.",
       image: finPerformanceImg,
       number: "06"
@@ -120,8 +120,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 7,
       name: "Premium Certificates",
-      color: "#14B8A6",
-      status: "locked",
+      color: "#2563EB", // Blue-600 to match Module 7 theme
+      status: "accessible",
       description: "Learn premium certificate preparation and validation processes.",
       image: premCertificatesImg,
       number: "07"
@@ -129,8 +129,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 8,
       name: "Reinsurance Certificates",
-      color: "#6366F1",
-      status: "locked",
+      color: "#10B981", // Green-500 to match Module 8 theme
+      status: "accessible",
       description: "Understand reinsurance certificate creation and management.",
       image: reinCertificatesImg,
       number: "08"
@@ -138,8 +138,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 9,
       name: "Financial Condition Reporting",
-      color: "#EAB308",
-      status: "locked",
+      color: "#F97316", // Orange-600 to match Module 9 theme
+      status: "accessible",
       description: "Master financial condition reporting standards and requirements.",
       image: finConditionImg,
       number: "09"
@@ -147,8 +147,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 10,
       name: "Ordinary Life Valuation",
-      color: "#A855F7",
-      status: "locked",
+      color: "#E91E63", // Pink-600 to match Module 10 theme
+      status: "accessible",
       description: "Learn ordinary life insurance valuation techniques and methodologies.",
       image: ordLifeValuationImg,
       number: "10"
@@ -156,8 +156,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 11,
       name: "Group Business Valuation",
-      color: "#06B6D4",
-      status: "locked",
+      color: "#9333EA", // Purple-600 to match Module 11 theme
+      status: "accessible",
       description: "Understand group business valuation principles and applications.",
       image: groupBusinessValuationImg,
       number: "11"
@@ -165,8 +165,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 12,
       name: "DA Valuation",
-      color: "#8B5CF6",
-      status: "locked",
+      color: "#2563EB", // Blue-600 to match Module 12 theme
+      status: "accessible",
       description: "Master deferred acquisition cost valuation and accounting treatment.",
       image: daValuationImg,
       number: "12"
@@ -174,8 +174,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 13,
       name: "Investment Policy Statements (IPS)",
-      color: "#FBBF24",
-      status: "locked",
+      color: "#10B981", // Green-500 to match Module 13 theme
+      status: "accessible",
       description: "Learn investment policy statement development and implementation.",
       image: ipsImg,
       number: "13"
@@ -183,8 +183,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 14,
       name: "Post Retirement Medical Fund",
-      color: "#7C3AED",
-      status: "locked",
+      color: "#3B82F6", // Blue-500 to match Module 14 theme
+      status: "accessible",
       description: "Understand post-retirement medical fund valuation and management.",
       image: prmfImg,
       number: "14"
@@ -192,8 +192,8 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 15,
       name: "Defined Benefit (DB) & Defined Contribution (DC) Valuations",
-      color: "#0284C7",
-      status: "locked",
+      color: "#F97316", // Orange-600 to match Module 15 theme
+      status: "accessible",
       description: "Master DB and DC pension scheme valuation and funding assessment.",
       image: dbdcValuationsImg,
       number: "15"
@@ -201,11 +201,20 @@ export default function Modules({ theme = 'dark' }) {
     {
       id: 16,
       name: "IAS 19 Valuation",
-      color: "#9333EA",
-      status: "locked",
+      color: "#3B82F6", // Blue-500 to match Module 16 theme
+      status: "accessible",
       description: "Learn IAS 19 employee benefits valuation and reporting standards.",
       image: ias19Img,
       number: "16"
+    },
+    {
+      id: 17,
+      name: "IFRS 17 Insurance Contracts",
+      color: "#06B6D4", // Cyan-500 to match Module 17 theme
+      status: "accessible",
+      description: "Master end-to-end application of IFRS 17. Learn to classify contracts, select measurement models, calculate fulfilment cash flows, manage CSM, test for onerous contracts, account for reinsurance, and produce compliant financial statements and disclosures.",
+      image: ifrs17Img,
+      number: "17"
     }
   ];
 
@@ -256,9 +265,9 @@ export default function Modules({ theme = 'dark' }) {
               }}>
               <div>
                 <div className="flex items-center gap-2 mb-1 lg:mb-2">
-                  <Award className="w-3 h-3 lg:w-4 lg:h-4 transition-colors"
-                    style={{ color: theme === 'dark' ? '#FB923C' : currentColors.orange }} />
-                  <h3 className="text-xs lg:text-sm font-bold line-clamp-1 transition-colors"
+                  <BookOpen className="w-5 h-5 transition-colors"
+                    style={{ color: theme === 'dark' ? currentColors.textSecondary : currentColors.text }} />
+                  <h3 className="text-xs lg:text-sm font-bold line-clamp-1 transition-colors group-hover:opacity-80"
                     style={{ color: currentColors.text }}>
                     {module.name}
                   </h3>
@@ -277,9 +286,9 @@ export default function Modules({ theme = 'dark' }) {
 
                 <div className="flex justify-between items-center">
                   <span className="text-sm lg:text-lg font-bold" style={{ color: currentColors.orange }}>Start Here</span>
-                  <div className="flex items-center gap-1 transition-colors" style={{ color: currentColors.orange }}>
-                    <span className="text-xs">Begin</span>
-                    <Play className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 transition-colors" style={{ color: currentColors.orange }}>
+                    <span className="text-xs lg:text-sm font-semibold">Begin</span>
+                    <Play className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                   </div>
                 </div>
               </div>
@@ -333,7 +342,7 @@ export default function Modules({ theme = 'dark' }) {
               }}>
               <div>
                 <div className="flex items-center gap-2 mb-1 lg:mb-2">
-                  <BookOpen className="w-3 h-3 lg:w-4 lg:h-4 transition-colors"
+                  <BookOpen className="w-5 h-5 transition-colors"
                     style={{ color: theme === 'dark' ? currentColors.textSecondary : currentColors.text }} />
                   <h3 className="text-xs lg:text-sm font-bold line-clamp-1 transition-colors group-hover:opacity-80"
                     style={{ color: currentColors.text }}>
@@ -353,14 +362,14 @@ export default function Modules({ theme = 'dark' }) {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm lg:text-lg font-bold"
-                    style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)' }}>
+                  <span className="text-sm lg:text-base font-semibold"
+                    style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
                     {module.number}
                   </span>
-                  <div className="flex items-center gap-1 transition-colors group-hover:opacity-80"
-                    style={{ color: currentColors.textSecondary }}>
-                    <span className="text-xs">Start</span>
-                    <Play className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 transition-colors group-hover:opacity-80"
+                    style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
+                    <span className="text-xs lg:text-sm font-semibold">Start</span>
+                    <Play className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                   </div>
                 </div>
               </div>
@@ -436,8 +445,8 @@ export default function Modules({ theme = 'dark' }) {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm lg:text-lg font-bold"
-                    style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)' }}>
+                  <span className="text-sm lg:text-base font-semibold"
+                    style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
                     {module.number}
                   </span>
                   <Lock className="w-3 h-3 lg:w-4 lg:h-4"

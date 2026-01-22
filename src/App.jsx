@@ -5,7 +5,7 @@ import { supabase } from "./supabaseClient";
 import Navbar from "./components/Navbar";
 import HomePage from "./HomePage";
 import LandingPage from "./LandingPage";
-import QASReports from "./QASReports";
+import QASReports from "./QasReports";
 import TrainingLinks from "./TrainingLinks";
 import FileSavingFormat from "./FileSavingFormat";
 import Modules from "./Modules";
@@ -20,21 +20,21 @@ import Module7 from "./Module7";
 import Module8 from "./Module8";
 import Module9 from "./Module9";
 import Module10 from "./Module10";
-// import Module11 from "./Module11";
-// import Module12 from "./Module12";
-// import Module13 from "./Module13";
-// import Module14 from "./Module14";
-// import Module15 from "./Module15";
-// import Module16 from "./Module16";
-// import Module17 from "./Module17"; // IFRS 17 module
+import Module11 from "./Module11";
+import Module12 from "./Module12";
+import Module13 from "./Module13";
+import Module14 from "./Module14";
+import Module15 from "./Module15";
+import Module16 from "./Module16";
+import Module17 from "./Module17"; // IFRS 17 module
 import Auth from "./components/Auth/Auth";
 import UserProfile from "./components/UserProfile";
-import AdminDashboard from "./components/Admin/AdminDashboard";
 import { TutorialProvider } from "./contexts/TutorialContext";
 import ModulesTutorial from "./components/Tutorial/ModulesTutorial";
 import Module1Tutorial from "./components/Tutorial/Module1Tutorial";
 import ThemeToggle from "./components/ThemeToggle";
 import AuthCallback from "./components/AuthCallback";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,12 +48,22 @@ function App() {
 
       if (session?.user) {
         // User is logged in via Supabase
+        let role = 'trainee';
+        const email = session.user.email?.toLowerCase() || '';
+        if (email.includes('admin')) {
+          role = 'admin';
+        } else if (email.includes('supervisor') || session.user.user_metadata?.role === 'supervisor') {
+          role = 'supervisor';
+        } else if (session.user.user_metadata?.role) {
+          role = session.user.user_metadata.role;
+        }
+
         const userData = {
           id: session.user.id,
           email: session.user.email,
           name: session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
           username: session.user.user_metadata?.username || session.user.email?.split('@')[0],
-          role: session.user.email?.includes('admin') ? 'admin' : 'user'
+          role: role
         };
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
@@ -129,8 +139,6 @@ function App() {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const isAdmin = user && user.role === 'admin';
-
   if (loading) {
     return (
       <div className="min-h-screen bg-var(--bg-primary) flex items-center justify-center">
@@ -142,6 +150,7 @@ function App() {
   return (
     <TutorialProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen bg-var(--bg-primary) text-var(--text-primary) transition-colors duration-300">
           {/* Theme Toggle - Bottom Right Corner (visible for everyone now) */}
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
@@ -156,7 +165,7 @@ function App() {
               element={<AuthCallback theme={theme} />}
             />
 
-            {/* Auth Page with theme prop */}
+            {/* Auth Pages with theme prop */}
             <Route
               path="/auth"
               element={
@@ -214,17 +223,6 @@ function App() {
                 ) : <Navigate to="/auth" replace />
               }
             />
-            <Route
-              path="/admin"
-              element={
-                isAdmin ? (
-                  <div className="pt-20">
-                    <AdminDashboard theme={theme} />
-                  </div>
-                ) : <Navigate to="/" replace />
-              }
-            />
-
             {/* Module Routes - Only for modules that exist */}
             <Route
               path="/modules/1"
@@ -349,7 +347,7 @@ function App() {
                 ) : <Navigate to="/auth" replace />
               } 
             />
-            {/*
+            
             <Route 
               path="/modules/11" 
               element={
@@ -426,14 +424,13 @@ function App() {
                 ) : <Navigate to="/auth" replace />
               } 
             />
-            */}
 
             <Route
               path="/profile"
               element={
                 user ? (
                   <div className="pt-20">
-                    <UserProfile theme={theme} />
+                    <UserProfile user={user} onLogout={handleLogout} theme={theme} />
                   </div>
                 ) : <Navigate to="/auth" replace />
               }

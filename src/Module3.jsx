@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import {
     ArrowLeft,
     BarChart2,
@@ -37,25 +35,6 @@ export default function Module3({ theme = 'dark' }) {
     const [showQuizResults, setShowQuizResults] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const aosInitialized = useRef(false);
-
-    useEffect(() => {
-        if (!aosInitialized.current) {
-            AOS.init({
-                duration: 800,
-                easing: "ease-in-out",
-                once: true,
-            });
-            aosInitialized.current = true;
-        }
-    }, []);
-
-    // Refresh AOS when theme or tab changes to handle new elements
-    useEffect(() => {
-        if (aosInitialized.current) {
-            AOS.refresh();
-        }
-    }, [theme, activeTab]);
 
     // Theme-based styles with modern light mode design
     const getThemeStyles = () => {
@@ -378,7 +357,7 @@ export default function Module3({ theme = 'dark' }) {
                 />
             </div>
 
-            <main className={`relative z-10 max-w-6xl mx-auto px-4 py-8 ${styles.transition}`}>
+            <main className={`relative z-10 max-w-6xl mx-auto px-4 pt-8 pb-8 ${styles.transition}`}>
                 {/* Back Button - Outside Card, Extreme Left */}
                 <Link
                   to="/modules"
@@ -397,7 +376,6 @@ export default function Module3({ theme = 'dark' }) {
                         ? 'bg-white/95 shadow-2xl shadow-green-500/10 border border-white/30'
                         : 'bg-black/75 backdrop-blur-xl border border-white/10 shadow-xl'
                         } ${styles.transition}`}
-                    data-aos="fade-up"
                 >
                   <div className="p-6 md:p-8">
                         <div className="flex items-center space-x-4 md:space-x-6">
@@ -424,7 +402,7 @@ export default function Module3({ theme = 'dark' }) {
                 </div>
 
                 {/* TAB NAVIGATION */}
-                <div className="mb-8" data-aos="fade-up">
+                <div className="mb-8">
                     <div className={`border-b ${theme === 'light' ? 'border-green-200' : 'border-gray-500'} ${styles.transition}`}>
                         <nav className="flex space-x-8">
                             {['overview', 'course', 'assignments', 'quiz'].map((tab) => (
@@ -451,7 +429,7 @@ export default function Module3({ theme = 'dark' }) {
                 <div className="space-y-6">
 
                     {activeTab === 'overview' && (
-                        <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} ${styles.shadow} p-6 ${styles.transition}`} data-aos="fade-up">
+                        <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} ${styles.shadow} p-6 ${styles.transition}`}>
                             <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
                                 Module Objective
                                 <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
@@ -483,7 +461,7 @@ export default function Module3({ theme = 'dark' }) {
 
                     {/* Course Content Tab */}
                     {activeTab === 'course' && (
-                        <div data-aos="fade-up">
+                        <div>
                             <div className={`${styles.cardBg} backdrop-blur-md rounded-3xl p-6 md:p-8 border ${styles.border} ${styles.transition}`}>
                                 <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 ${styles.transition}`}>Course Content</h3>
                                 <p className={`${styles.textTertiary} mb-6 text-sm md:text-base ${styles.transition}`}>
@@ -540,7 +518,7 @@ export default function Module3({ theme = 'dark' }) {
 
                     {/* QUIZ TAB */}
                     {activeTab === 'quiz' && (
-                        <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 ${styles.transition}`} data-aos="fade-up">
+                        <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 ${styles.transition}`}>
                             {!showQuizResults ? (
                                 <>
                                     {/* Quiz Header */}
@@ -753,7 +731,7 @@ export default function Module3({ theme = 'dark' }) {
 
                     {/* ASSIGNMENTS TAB */}
                     {activeTab === 'assignments' && (
-                        <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 space-y-8 ${styles.transition}`} data-aos="fade-up">
+                        <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 space-y-8 ${styles.transition}`}>
                             <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 ${styles.transition}`}>Assignments</h3>
 
                             {/* Data Files Subsection */}

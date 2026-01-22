@@ -1,7 +1,7 @@
 // src/components/Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom"; 
-import { Home, BookOpen, Gamepad2, Calculator, User, ChevronDown, LogOut, Settings, LayoutDashboard, Menu, X, LogIn, UserPlus } from "lucide-react";
+import { Home, BookOpen, Gamepad2, Calculator, User, ChevronDown, LogOut, Settings, Menu, X, LogIn, UserPlus } from "lucide-react";
 import { supabase } from "../supabaseClient"; 
 
 export default function Navbar({ user, onLogout, theme = 'dark' }) {
@@ -14,7 +14,7 @@ export default function Navbar({ user, onLogout, theme = 'dark' }) {
   const [showMobileResourcesMenu, setShowMobileResourcesMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const currentPath = location.pathname
+  const currentPath = location.pathname;
 
   const isLoggedIn = !!user;
 
@@ -492,7 +492,6 @@ export default function Navbar({ user, onLogout, theme = 'dark' }) {
                   <div className="p-2">
                     {[
                       { href: "/profile", icon: <User className="w-4 h-4" />, label: "Profile" },
-                      ...(user?.role === 'admin' ? [{ href: "/admin", icon: <LayoutDashboard className="w-4 h-4" />, label: "Admin Dashboard" }] : []),
                       { href: "/settings", icon: <Settings className="w-4 h-4" />, label: "Settings" }
                     ].map((item, i) => (
                       <a key={i} href={item.href}
@@ -703,17 +702,6 @@ export default function Navbar({ user, onLogout, theme = 'dark' }) {
                     <User className="w-4 h-4" />
                     <span>Profile</span>
                   </a>
-                  {user?.role === 'admin' && (
-                    <a
-                      href="/admin"
-                      onClick={() => setShowMobileMenu(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all"
-                      style={{ color: colors.text }}
-                    >
-                      <LayoutDashboard className="w-4 h-4" />
-                      <span>Admin Dashboard</span>
-                    </a>
-                  )}
                   <a
                     href="/settings"
                     onClick={() => setShowMobileMenu(false)}

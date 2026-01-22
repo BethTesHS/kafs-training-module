@@ -396,11 +396,11 @@ export default function FileSavingFormat() {
             <h1 className="text-2xl md:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-[#00E5FF] to-[#7C4DFF]">
               File Saving Format
             </h1>
-            <p className="text-gray-300 text-sm leading-relaxed max-w-4xl">
+            <div className="text-gray-300 text-sm leading-relaxed max-w-4xl space-y-1">
               <p>Welcome to our standardized file organization system for actuarial projects.</p>
               <p>This structured approach ensures consistency, easy navigation, and efficient collaboration across all client engagements.</p>
               <p>Follow this hierarchy to maintain organized project documentation, from initial agreements to final deliverables.</p>
-            </p>
+            </div>
           </div>
         </div>
         
