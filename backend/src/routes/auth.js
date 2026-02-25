@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/user.controller');
+const { validateRequest } = require('../middleware/validation');
+const { authMiddleware, roleMiddleware } = require('../middleware/auth');
+const { registerSchema, loginSchema, updateProfileSchema } = require('../schemas/auth.schema');
 
-router.post('/register', (req, res) => {
-  res.json({ message: 'Register endpoint - coming soon' });
-});
+// Public routes
+router.post('/register', validateRequest(registerSchema), userController.register);
+router.post('/login', validateRequest(loginSchema), userController.login);
 
-router.post('/login', (req, res) => {
-  res.json({ message: 'Login endpoint - coming soon' });
-});
-
-router.post('/refresh', (req, res) => {
-  res.json({ message: 'Refresh token endpoint - coming soon' });
-});
+// Protected routes
+router.get('/profile', authMiddleware, userController.getProfile);
+router.put('/profile', authMiddleware, validateRequest(updateProfileSchema), userController.updateProfile);
+router.get('/stats', authMiddleware, userController.getStats);
+router.delete('/account', authMiddleware, userController.deleteAccount);
 
 module.exports = router;
