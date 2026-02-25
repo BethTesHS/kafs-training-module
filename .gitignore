@@ -30,3 +30,5 @@ public/Training Modules/
 *.xlsx
 *.xlsm
 *.mp4
+
+/todo
