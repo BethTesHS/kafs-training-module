@@ -4,6 +4,9 @@ const usersRoutes = require('./users');
 const modulesRoutes = require('./modules');
 const quizRoutes = require('./quiz');
 const filesRoutes = require('./files');
+const progressRoutes = require('./progress');
+const discussionRoutes = require('./discussion');
+const adminRoutes = require('./admin');
 
 const router = express.Router();
 
@@ -12,5 +15,8 @@ router.use('/users', usersRoutes);
 router.use('/modules', modulesRoutes);
 router.use('/quiz', quizRoutes);
 router.use('/files', filesRoutes);
+router.use('/progress', progressRoutes);
+router.use('/discussion', discussionRoutes);
+router.use('/admin', adminRoutes);
 
 module.exports = router;
