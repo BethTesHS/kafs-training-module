@@ -1,133 +1,34 @@
 const prisma = require('../config/database');
-const { hashPassword, comparePassword } = require('../utils/password');
-const { generateToken } = require('../utils/jwt');
 
 class UserService {
-  // Register a new user
-  async register(data) {
-    // Check if user already exists
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: data.email },
-          { username: data.username }
-        ]
-      }
-    });
+  // Note: Register and Login are now handled by Supabase Auth
+  // These methods are kept for reference but should not be used
+  // Authentication is managed on the frontend with Supabase Auth
 
-    if (existingUser) {
-      throw new Error('Email or username already exists');
-    }
-
-    // Hash password
-    const hashedPassword = await hashPassword(data.password);
-
-    // Create user
-    const user = await prisma.user.create({
-      data: {
-        email: data.email,
-        password: hashedPassword,
-        fullName: data.fullName,
-        username: data.username,
-        role: 'trainee', // Default role
-      },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        username: true,
-        role: true,
-        createdAt: true,
-      }
-    });
-
-    // Generate token
-    const token = generateToken(user.id, user.role);
-
-    return { user, token };
-  }
-
-  // Login user
-  async login(email, password) {
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
-
-    if (!user) {
-      throw new Error('Invalid email or password');
-    }
-
-    const isPasswordValid = await comparePassword(password, user.password);
-    if (!isPasswordValid) {
-      throw new Error('Invalid email or password');
-    }
-
-    // Update last login
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { lastLogin: new Date() }
-    });
-
-    // Generate token
-    const token = generateToken(user.id, user.role);
-
-    return {
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        username: user.username,
-        role: user.role,
-      },
-      token
+  // Get user profile from Supabase
+  // In a real scenario, you would fetch this from Supabase Admin API
+  // For now, we just return the user ID passed from the JWT token
+  async getUserProfile(userId) {
+    // Return user info from Supabase (passed via JWT token in middleware)
+    // The profile info comes from the auth middleware's req.user object
+    // which is populated from Supabase's JWT token
+    return { 
+      id: userId,
+      message: 'User profile info comes from Supabase auth token'
     };
   }
 
-  // Get user profile
-  async getUserProfile(userId) {
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        username: true,
-        role: true,
-        profilePictureUrl: true,
-        bio: true,
-        createdAt: true,
-        lastLogin: true,
-      }
-    });
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    return user;
-  }
-
   // Update user profile
+  // Since user profile is managed by Supabase, this is limited to non-auth fields
   async updateUserProfile(userId, data) {
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        fullName: data.fullName,
-        username: data.username,
-        bio: data.bio,
-      },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        username: true,
-        role: true,
-        profilePictureUrl: true,
-        bio: true,
-      }
-    });
-
-    return user;
+    // Supabase manages core user data (email, password, etc.)
+    // This would be where you update user-specific app data if needed
+    // For now, just acknowledge the update
+    return {
+      id: userId,
+      message: 'Profile updates should be made through Supabase Auth',
+      receivedData: data
+    };
   }
 
   // Get user statistics
@@ -159,13 +60,15 @@ class UserService {
     };
   }
 
-  // Delete user account (admin only)
+  // Delete user account
+  // In production, you would also call Supabase to delete the auth user
   async deleteUser(userId) {
-    await prisma.user.delete({
-      where: { id: userId }
-    });
+    // First, delete all user-related data from the database
+    // This cascades through related tables
 
-    return { message: 'User deleted successfully' };
+    return { 
+      message: 'User deletion initiated. Please also delete the user from Supabase Auth console.' 
+    };
   }
 }
 

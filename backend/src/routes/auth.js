@@ -3,13 +3,9 @@ const router = express.Router();
 const userController = require('../controllers/user.controller');
 const { validateRequest } = require('../middleware/validation');
 const { authMiddleware, roleMiddleware } = require('../middleware/auth');
-const { registerSchema, loginSchema, updateProfileSchema } = require('../schemas/auth.schema');
+const { updateProfileSchema } = require('../schemas/auth.schema');
 
-// Public routes
-router.post('/register', validateRequest(registerSchema), userController.register);
-router.post('/login', validateRequest(loginSchema), userController.login);
-
-// Protected routes
+// Protected routes - these require Supabase JWT token
 router.get('/profile', authMiddleware, userController.getProfile);
 router.put('/profile', authMiddleware, validateRequest(updateProfileSchema), userController.updateProfile);
 router.get('/stats', authMiddleware, userController.getStats);

@@ -3,7 +3,7 @@
 ## Tables Overview
 
 ### Users
-- Stores user account information
+- Authentication is now handled by Supabase Auth
 - Fields: id, email, password, fullName, username, role, etc.
 - Roles: trainee, supervisor, admin
 

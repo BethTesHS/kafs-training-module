@@ -1,363 +1,325 @@
-const prisma = require('../config/database');
+// const prisma = require('../config/database');
 
-class AdminService {
-  // Get all users
-  async getAllUsers(page = 1, limit = 10) {
-    try {
-      const skip = (page - 1) * limit;
+// class AdminService {
+//   // Get all users
+//   // Note: User data is now managed by Supabase Auth
+//   // This method returns a message directing to use Supabase console
+//   async getAllUsers(page = 1, limit = 10) {
+//     try {
+//       return {
+//         message: 'User management is now handled by Supabase Auth',
+//         note: 'Please use the Supabase console to manage users',
+//         hint: 'You can query user activity from other tables like UserProgress, QuizResult, etc.'
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to get users: ${error.message}`);
+//     }
+//   }
 
-      const users = await prisma.user.findMany({
-        select: {
-          id: true,
-          email: true,
-          fullName: true,
-          username: true,
-          role: true,
-          createdAt: true,
-          lastLogin: true,
-        },
-        skip,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-      });
+//   // Get user details
+//   // Returns activity and progress data for a user
+//   async getUserDetails(userId) {
+//     try {
+//       const userProgress = await prisma.userProgress.findMany({
+//         where: { userId },
+//         include: { module: true }
+//       });
 
-      const total = await prisma.user.count();
+//       const quizResults = await prisma.quizResult.findMany({
+//         where: { userId }
+//       });
 
-      return {
-        users,
-        pagination: {
-          total,
-          page,
-          limit,
-          pages: Math.ceil(total / limit),
-        },
-      };
-    } catch (error) {
-      throw new Error(`Failed to get users: ${error.message}`);
-    }
-  }
+//       const fileUploads = await prisma.fileUpload.findMany({
+//         where: { userId },
+//         include: { module: true }
+//       });
 
-  // Get user details
-  async getUserDetails(userId) {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          email: true,
-          fullName: true,
-          username: true,
-          role: true,
-          bio: true,
-          createdAt: true,
-          lastLogin: true,
-          progress: {
-            select: {
-              moduleId: true,
-              status: true,
-              progressPercentage: true,
-            },
-          },
-        },
-      });
+//       return {
+//         userId,
+//         progress: userProgress,
+//         quizResults,
+//         fileUploads,
+//         note: 'Auth details available in Supabase console'
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to get user details: ${error.message}`);
+//     }
+//   }
 
-      if (!user) {
-        throw new Error('User not found');
-      }
+//   // Update user role
+//   // Note: Roles are now managed in Supabase Custom Claims or separate role table
+//   async updateUserRole(userId, newRole) {
+//     try {
+//       const validRoles = ['trainee', 'supervisor', 'admin'];
 
-      return user;
-    } catch (error) {
-      throw new Error(
-        `Failed to get user details: ${error.message}`
-      );
-    }
-  }
+//       if (!validRoles.includes(newRole)) {
+//         throw new Error('Invalid role');
+//       }
 
-  // Update user role
-  async updateUserRole(userId, newRole) {
-    try {
-      const validRoles = ['trainee', 'supervisor', 'admin'];
+//       // User roles should be managed through Supabase Custom Claims or a separate role table
+//       return {
+//         message: 'Role update should be done through Supabase Auth',
+//         userId,
+//         newRole,
+//         note: 'Configure custom claims in Supabase dashboard'
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to update user role: ${error.message}`);
+//     }
+//   }
 
-      if (!validRoles.includes(newRole)) {
-        throw new Error('Invalid role');
-      }
+//   // Delete user
+//   // Note: User deletion should be done through Supabase console
+//   async deleteUser(userId) {
+//     try {
+//       // Clean up all user-related data in the application database
+//       await prisma.userProgress.deleteMany({ where: { userId } });
+//       await prisma.quizResult.deleteMany({ where: { userId } });
+//       await prisma.fileUpload.deleteMany({ where: { userId } });
+//       await prisma.assignmentSubmission.deleteMany({ where: { userId } });
+//       await prisma.discussionPost.deleteMany({ where: { userId } });
+//       await prisma.discussionReply.deleteMany({ where: { userId } });
 
-      const user = await prisma.user.update({
-        where: { id: userId },
-        data: { role: newRole },
-        select: {
-          id: true,
-          email: true,
-          fullName: true,
-          role: true,
-        },
-      });
+//       return {
+//         message: 'User data cleaned from application database. Delete user from Supabase Auth console.',
+//         userId
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to delete user data: ${error.message}`);
+//     }
+//   }
 
-      return user;
-    } catch (error) {
-      throw new Error(`Failed to update user role: ${error.message}`);
-    }
-  }
+//   // Get all modules
+//   async getAllModules(page = 1, limit = 10) {
+//     try {
+//       const skip = (page - 1) * limit;
 
-  // Delete user
-  async deleteUser(userId) {
-    try {
-      await prisma.user.delete({
-        where: { id: userId },
-      });
+//       const modules = await prisma.module.findMany({
+//         skip,
+//         take: limit,
+//         orderBy: { orderNumber: 'asc' },
+//       });
 
-      return { message: 'User deleted successfully' };
-    } catch (error) {
-      throw new Error(`Failed to delete user: ${error.message}`);
-    }
-  }
+//       const total = await prisma.module.count();
 
-  // Get all modules
-  async getAllModules(page = 1, limit = 10) {
-    try {
-      const skip = (page - 1) * limit;
+//       return {
+//         modules,
+//         pagination: {
+//           total,
+//           page,
+//           limit,
+//           pages: Math.ceil(total / limit),
+//         },
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to get modules: ${error.message}`);
+//     }
+//   }
 
-      const modules = await prisma.module.findMany({
-        skip,
-        take: limit,
-        orderBy: { orderNumber: 'asc' },
-      });
+//   // Create a new module
+//   async createModule(data) {
+//     try {
+//       const module = await prisma.module.create({
+//         data: {
+//           title: data.title,
+//           description: data.description,
+//           difficulty: data.difficulty || 'intermediate',
+//           estimatedDuration: data.estimatedDuration || 120,
+//           color: data.color,
+//           orderNumber: data.orderNumber,
+//         },
+//       });
 
-      const total = await prisma.module.count();
+//       return module;
+//     } catch (error) {
+//       throw new Error(`Failed to create module: ${error.message}`);
+//     }
+//   }
 
-      return {
-        modules,
-        pagination: {
-          total,
-          page,
-          limit,
-          pages: Math.ceil(total / limit),
-        },
-      };
-    } catch (error) {
-      throw new Error(`Failed to get modules: ${error.message}`);
-    }
-  }
+//   // Update module
+//   async updateModule(moduleId, data) {
+//     try {
+//       const module = await prisma.module.update({
+//         where: { id: moduleId },
+//         data: {
+//           title: data.title || undefined,
+//           description: data.description || undefined,
+//           difficulty: data.difficulty || undefined,
+//           estimatedDuration: data.estimatedDuration || undefined,
+//           color: data.color || undefined,
+//           orderNumber: data.orderNumber || undefined,
+//         },
+//       });
 
-  // Create a new module
-  async createModule(data) {
-    try {
-      const module = await prisma.module.create({
-        data: {
-          title: data.title,
-          description: data.description,
-          difficulty: data.difficulty || 'intermediate',
-          estimatedDuration: data.estimatedDuration || 120,
-          color: data.color,
-          orderNumber: data.orderNumber,
-        },
-      });
+//       return module;
+//     } catch (error) {
+//       throw new Error(`Failed to update module: ${error.message}`);
+//     }
+//   }
 
-      return module;
-    } catch (error) {
-      throw new Error(`Failed to create module: ${error.message}`);
-    }
-  }
+//   // Delete module
+//   async deleteModule(moduleId) {
+//     try {
+//       await prisma.module.delete({
+//         where: { id: moduleId },
+//       });
 
-  // Update module
-  async updateModule(moduleId, data) {
-    try {
-      const module = await prisma.module.update({
-        where: { id: moduleId },
-        data: {
-          title: data.title || undefined,
-          description: data.description || undefined,
-          difficulty: data.difficulty || undefined,
-          estimatedDuration: data.estimatedDuration || undefined,
-          color: data.color || undefined,
-          orderNumber: data.orderNumber || undefined,
-        },
-      });
+//       return { message: 'Module deleted successfully' };
+//     } catch (error) {
+//       throw new Error(`Failed to delete module: ${error.message}`);
+//     }
+//   }
 
-      return module;
-    } catch (error) {
-      throw new Error(`Failed to update module: ${error.message}`);
-    }
-  }
+//   // Get system statistics
+//   async getSystemStats() {
+//     try {
+//       // User stats are now managed by Supabase
+//       const totalModules = await prisma.module.count();
+//       const totalQuizAttempts = await prisma.quizResult.count();
+//       const uniqueUsers = await prisma.userProgress.findMany({
+//         select: { userId: true },
+//         distinct: ['userId']
+//       });
 
-  // Delete module
-  async deleteModule(moduleId) {
-    try {
-      await prisma.module.delete({
-        where: { id: moduleId },
-      });
+//       const moduleProgress = await prisma.userProgress.groupBy({
+//         by: ['status'],
+//         _count: true,
+//       });
 
-      return { message: 'Module deleted successfully' };
-    } catch (error) {
-      throw new Error(`Failed to delete module: ${error.message}`);
-    }
-  }
+//       const avgQuizScore = await prisma.quizResult.aggregate({
+//         _avg: {
+//           score: true,
+//         },
+//       });
 
-  // Get system statistics
-  async getSystemStats() {
-    try {
-      const totalUsers = await prisma.user.count();
-      const totalModules = await prisma.module.count();
-      const totalQuizAttempts = await prisma.quizResult.count();
+//       return {
+//         totalUsers: uniqueUsers.length, // Derived from user progress
+//         totalModules,
+//         totalQuizAttempts,
+//         moduleProgress,
+//         avgQuizScore: (avgQuizScore._avg.score || 0).toFixed(2),
+//         note: 'User roles and detailed user info managed by Supabase Auth',
+//         timestamp: new Date(),
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to get system stats: ${error.message}`);
+//     }
+//   }
 
-      const usersByRole = await prisma.user.groupBy({
-        by: ['role'],
-        _count: true,
-      });
+//   // Get activity log
+//   async getActivityLog(filters = {}, page = 1, limit = 20) {
+//     try {
+//       const skip = (page - 1) * limit;
+//       const { userId, action, startDate, endDate } = filters;
 
-      const moduleProgress = await prisma.userProgress.groupBy({
-        by: ['status'],
-        _count: true,
-      });
+//       const whereClause = {};
 
-      const avgQuizScore = await prisma.quizResult.aggregate({
-        _avg: {
-          score: true,
-        },
-      });
+//       if (userId) {
+//         whereClause.userId = userId;
+//       }
 
-      return {
-        totalUsers,
-        totalModules,
-        totalQuizAttempts,
-        usersByRole,
-        moduleProgress,
-        avgQuizScore: (avgQuizScore._avg.score || 0).toFixed(2),
-        timestamp: new Date(),
-      };
-    } catch (error) {
-      throw new Error(`Failed to get system stats: ${error.message}`);
-    }
-  }
+//       if (startDate || endDate) {
+//         whereClause.updatedAt = {};
+//         if (startDate) {
+//           whereClause.updatedAt.gte = new Date(startDate);
+//         }
+//         if (endDate) {
+//           whereClause.updatedAt.lte = new Date(endDate);
+//         }
+//       }
 
-  // Get activity log
-  async getActivityLog(filters = {}, page = 1, limit = 20) {
-    try {
-      const skip = (page - 1) * limit;
-      const { userId, action, startDate, endDate } = filters;
+//       const activities = await prisma.userProgress.findMany({
+//         where: whereClause,
+//         include: {
+//           module: {
+//             select: {
+//               id: true,
+//               title: true,
+//             },
+//           },
+//         },
+//         orderBy: { updatedAt: 'desc' },
+//         skip,
+//         take: limit,
+//       });
 
-      const whereClause = {};
+//       const total = await prisma.userProgress.count({
+//         where: whereClause,
+//       });
 
-      if (userId) {
-        whereClause.userId = userId;
-      }
+//       return {
+//         activities,
+//         pagination: {
+//           total,
+//           page,
+//           limit,
+//           pages: Math.ceil(total / limit),
+//         },
+//       };
+//     } catch (error) {
+//       throw new Error(`Failed to get activity log: ${error.message}`);
+//     }
+//   }
 
-      if (startDate || endDate) {
-        whereClause.createdAt = {};
-        if (startDate) {
-          whereClause.createdAt.gte = new Date(startDate);
-        }
-        if (endDate) {
-          whereClause.createdAt.lte = new Date(endDate);
-        }
-      }
+//   // Get module performance report
+//   async getModulePerformanceReport(moduleId) {
+//     try {
+//       const module = await prisma.module.findUnique({
+//         where: { id: moduleId },
+//         include: {
+//           userProgress: true,
+//           quizQuestions: true,
+//         },
+//       });
 
-      const activities = await prisma.userProgress.findMany({
-        where: whereClause,
-        include: {
-          user: {
-            select: {
-              id: true,
-              fullName: true,
-              email: true,
-            },
-          },
-          module: {
-            select: {
-              id: true,
-              title: true,
-            },
-          },
-        },
-        orderBy: { updatedAt: 'desc' },
-        skip,
-        take: limit,
-      });
+//       if (!module) {
+//         throw new Error('Module not found');
+//       }
 
-      const total = await prisma.userProgress.count({
-        where: whereClause,
-      });
+//       const quizResults = await prisma.quizResult.findMany({
+//         where: { moduleId },
+//       });
 
-      return {
-        activities,
-        pagination: {
-          total,
-          page,
-          limit,
-          pages: Math.ceil(total / limit),
-        },
-      };
-    } catch (error) {
-      throw new Error(`Failed to get activity log: ${error.message}`);
-    }
-  }
+//       const avgScore =
+//         quizResults.length > 0
+//           ? (
+//               quizResults.reduce((sum, r) => sum + r.score, 0) /
+//               quizResults.length
+//             ).toFixed(2)
+//           : 0;
 
-  // Get module performance report
-  async getModulePerformanceReport(moduleId) {
-    try {
-      const module = await prisma.module.findUnique({
-        where: { id: moduleId },
-        include: {
-          progress: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  fullName: true,
-                },
-              },
-            },
-          },
-          quizQuestions: true,
-        },
-      });
+//       const completionRate = module.userProgress.length > 0
+//         ? (
+//             (module.userProgress.filter((p) => p.status === 'completed').length /
+//               module.userProgress.length) *
+//             100
+//           ).toFixed(2)
+//         : 0;
 
-      if (!module) {
-        throw new Error('Module not found');
-      }
+//       return {
+//         module: {
+//           id: module.id,
+//           title: module.title,
+//           description: module.description,
+//         },
+//         stats: {
+//           totalEnrollments: module.userProgress.length,
+//           completedCount: module.userProgress.filter(
+//             (p) => p.status === 'completed'
+//           ).length,
+//           completionRate,
+//           quizAttempts: quizResults.length,
+//           avgQuizScore: avgScore,
+//         },
+//         progress: module.userProgress,
+//         quizResults: quizResults.slice(0, 10),
+//       };
+//     } catch (error) {
+//       throw new Error(
+//         `Failed to get module performance report: ${error.message}`
+//       );
+//     }
+//   }
+// }
 
-      const quizResults = await prisma.quizResult.findMany({
-        where: { moduleId },
-      });
-
-      const avgScore =
-        quizResults.length > 0
-          ? (
-              quizResults.reduce((sum, r) => sum + r.score, 0) /
-              quizResults.length
-            ).toFixed(2)
-          : 0;
-
-      const completionRate = (
-        (module.progress.filter((p) => p.status === 'completed').length /
-          module.progress.length) *
-        100
-      ).toFixed(2);
-
-      return {
-        module: {
-          id: module.id,
-          title: module.title,
-          description: module.description,
-        },
-        stats: {
-          totalEnrollments: module.progress.length,
-          completedCount: module.progress.filter(
-            (p) => p.status === 'completed'
-          ).length,
-          completionRate,
-          quizAttempts: quizResults.length,
-          avgQuizScore: avgScore,
-        },
-        progress: module.progress,
-        quizResults: quizResults.slice(0, 10),
-      };
-    } catch (error) {
-      throw new Error(
-        `Failed to get module performance report: ${error.message}`
-      );
-    }
-  }
-}
-
-module.exports = new AdminService();
+// module.exports = new AdminService();

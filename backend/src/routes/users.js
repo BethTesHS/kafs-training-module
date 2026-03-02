@@ -6,49 +6,27 @@ const { validateRequest } = require('../middleware/validation');
 const { updateProfileSchema } = require('../schemas/auth.schema');
 
 // Get any user by ID (admin only)
+// Note: User data is now managed by Supabase Auth
 router.get('/:id', authMiddleware, roleMiddleware(['admin']), async (req, res) => {
   try {
-    const prisma = require('../config/database');
-    const user = await prisma.user.findUnique({
-      where: { id: req.params.id },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        username: true,
-        role: true,
-        createdAt: true,
-      }
+    res.status(200).json({ 
+      message: 'User management is handled by Supabase Auth',
+      userId: req.params.id,
+      note: 'Please use the Supabase console for user account details'
     });
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    res.status(200).json({ data: user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 // List all users (admin only)
+// Note: User data is now managed by Supabase Auth
 router.get('/', authMiddleware, roleMiddleware(['admin']), async (req, res) => {
   try {
-    const prisma = require('../config/database');
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        username: true,
-        role: true,
-        createdAt: true,
-      },
-      take: 50,
-      skip: 0,
+    res.status(200).json({ 
+      message: 'User management is handled by Supabase Auth',
+      note: 'Please use the Supabase console to view all users'
     });
-
-    res.status(200).json({ data: users, total: users.length });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

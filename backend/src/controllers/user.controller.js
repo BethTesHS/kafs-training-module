@@ -1,30 +1,6 @@
 const userService = require('../services/user.service');
 
 class UserController {
-  async register(req, res, next) {
-    try {
-      const result = await userService.register(req.body);
-      res.status(201).json({
-        message: 'User registered successfully',
-        data: result
-      });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  }
-
-  async login(req, res, next) {
-    try {
-      const { email, password } = req.body;
-      const result = await userService.login(email, password);
-      res.status(200).json({
-        message: 'Login successful',
-        data: result
-      });
-    } catch (error) {
-      res.status(401).json({ error: error.message });
-    }
-  }
 
   async getProfile(req, res, next) {
     try {
