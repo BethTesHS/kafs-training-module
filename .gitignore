@@ -32,6 +32,7 @@ public/Training Modules/
 *.mp4
 
 /todo
+.env
 .env.development
 .env.local
 .env.production
