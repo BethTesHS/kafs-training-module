@@ -14,7 +14,9 @@ import {
   Settings,
   Loader2,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Maximize2,
+  X
 } from "lucide-react";
 import { supabase } from "../supabaseClient";
 
@@ -325,6 +327,48 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
 
   return (
     <div className={`min-h-screen relative ${styles.transition}`}>
+      {/* Fullscreen PDF Viewer Modal */}
+      {viewingPdf && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-black/90 backdrop-blur-sm">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between px-4 py-3 bg-gray-900/95 border-b border-gray-700">
+            <h4 className="text-white font-semibold text-sm md:text-base truncate mr-4">{viewingPdf.title}</h4>
+            <div className="flex items-center gap-2">
+              <a
+                href={viewingPdf.url}
+                download={viewingPdf.filename}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 rounded-lg text-white text-sm flex items-center gap-2 transition-all duration-200"
+              >
+                <Download className="w-4 h-4" />
+                Download
+              </a>
+              <button
+                onClick={() => setViewingPdf(null)}
+                className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white transition-colors duration-200"
+                aria-label="Close full view"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          {/* Full View PDF */}
+          <div className="flex-1 w-full bg-white">
+            <object
+              data={`${encodeURI(viewingPdf.url)}#toolbar=1&view=FitH`}
+              type="application/pdf"
+              className="w-full h-full border-0"
+            >
+              <div className="flex items-center justify-center h-full flex-col gap-4 p-6 text-center bg-gray-50">
+                <FileText className="w-12 h-12 text-gray-400" />
+                <p className="text-gray-600 max-w-md">The PDF could not be displayed directly in your browser. You can still download it using the button above.</p>
+              </div>
+            </object>
+          </div>
+        </div>
+      )}
+
       {/* Background */}
       <div
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-all duration-500"
@@ -478,7 +522,17 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
                           <p className={`text-xs md:text-sm ${styles.textTertiary} line-clamp-2 ${styles.transition}`}>{resource.description}</p>
                         </div>
                       </div>
-                      <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0">
+                      <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0 flex flex-col sm:flex-row gap-2">
+                        <button
+                          onClick={() => setViewingPdf({ url: resource.url, title: resource.title, filename: resource.filename })}
+                          className={`w-full md:w-auto px-4 md:px-6 py-2.5 ${theme === 'light'
+                            ? 'bg-gray-200 hover:bg-gray-300 text-gray-800'
+                            : 'bg-white/10 hover:bg-white/20 text-white'
+                            } rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base font-medium whitespace-nowrap`}
+                        >
+                          <Maximize2 className="w-4 h-4" />
+                          Full View
+                        </button>
                         <a
                           href={resource.url}
                           download={resource.filename}
