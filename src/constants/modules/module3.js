@@ -70,6 +70,35 @@ export const module3Data = {
       }
     ]
   },
+
+  aiQuizQuestions: [
+    {
+      id: "aq1",
+      question: "Explain the concept of Unearned Premium Reserve (UPR) and describe step-by-step how you would calculate UPR using the 365th method for a portfolio of insurance contracts.",
+      hint: "Consider how the 365th method allocates premium to each day of coverage and how the unexpired portion at the valuation date forms the UPR."
+    },
+    {
+      id: "aq2",
+      question: "Describe the relationship between Earned Premium, Written Premium, and UPR. How does earned premium flow into the LRC roll-forward calculation under IFRS 17?",
+      hint: "Think about the formula: Earned Premium = Written Premium + Opening UPR − Closing UPR, and how this connects to revenue recognition."
+    },
+    {
+      id: "aq3",
+      question: "What are Deferred Acquisition Costs (DAC) and why must they be incorporated into the LRC calculation? Explain how DAC amortization works over the coverage period.",
+      hint: "Focus on how acquisition costs are deferred and amortized in proportion to the earning of premiums, reducing the LRC balance."
+    },
+    {
+      id: "aq4",
+      question: "Perform a conceptual LRC roll-forward from the opening to closing balance. Identify each component that increases or decreases the LRC and explain why.",
+      hint: "Consider premium receivables, written premium, earned premium, UPR movements, and DAC as the key components of the roll-forward."
+    },
+    {
+      id: "aq5",
+      question: "Why is accurate LRC measurement critical for IFRS 17 compliance and financial reporting? Discuss the consequences of misstating the LRC on an insurer's financial statements.",
+      hint: "Think about how LRC affects the balance sheet (insurance contract liabilities) and income statement (insurance revenue recognition)."
+    }
+  ],
+
   quizTitle: "Quiz: Liability for Remaining Coverage (LRC)",
   quizQuestions: [
     {

@@ -91,6 +91,34 @@ export const module1Data = {
     ]
   },
 
+  aiQuizQuestions: [
+    {
+      id: "aq1",
+      question: "What are the key data items required in a Premium Register for General Insurance valuation? List at least five.",
+      hint: "Think about what information is needed to uniquely identify and value each policy."
+    },
+    {
+      id: "aq2",
+      question: "Explain the difference between Paid Claims data and Outstanding Claims data. Why is it important to maintain both datasets separately?",
+      hint: "Consider how each type feeds into reserving and financial reporting."
+    },
+    {
+      id: "aq3",
+      question: "Describe at least three common data quality issues you might encounter when cleaning a General Insurance claims dataset, and explain how you would resolve each one.",
+      hint: "Think about missing values, duplicates, inconsistencies, and misclassifications."
+    },
+    {
+      id: "aq4",
+      question: "What is the purpose of the Exposure File, and how is it used in calculating the Unearned Premium Reserve (UPR)?",
+      hint: "Consider active in-force policies and their relationship to premium earning patterns."
+    },
+    {
+      id: "aq5",
+      question: "Why is it important to use standardized working templates for data clean-up? What benefits do they provide in terms of compliance and reproducibility?",
+      hint: "Think about internal technical procedures, audit trails, and regulatory requirements."
+    }
+  ],
+
   quizTitle: "Quiz: Data Requirements & Checks",
   
   quizQuestions: [

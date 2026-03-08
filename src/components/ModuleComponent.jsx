@@ -16,9 +16,17 @@ import {
   AlertCircle,
   CheckCircle2,
   Maximize2,
-  X
+  X,
+  Brain,
+  Send,
+  RotateCcw,
+  ChevronDown,
+  ChevronUp,
+  MessageSquare,
+  Sparkles
 } from "lucide-react";
 import { supabase } from "../supabaseClient";
+import { gradeAiQuiz } from "../services/ai-quiz.service";
 
 const BUCKET_NAME = 'submissions';
 
@@ -35,6 +43,14 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [loadingFiles, setLoadingFiles] = useState(false);
 
+  // AI Quiz Grading state
+  const [aiQuizAnswers, setAiQuizAnswers] = useState({});
+  const [gradingInProgress, setGradingInProgress] = useState(false);
+  const [gradingResults, setGradingResults] = useState(null);
+  const [gradingError, setGradingError] = useState(null);
+  const [expandedResults, setExpandedResults] = useState({});
+  const [quizSubTab, setQuizSubTab] = useState('multiple-choice');
+
   // Destructure module data
   const {
     title,
@@ -46,6 +62,7 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     courseContent,
     quizTitle,
     assignments,
+    aiQuizQuestions,
     quizQuestions
   } = moduleData;
 
@@ -133,6 +150,7 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     }
     if (tabId === 'quiz') {
       setCurrentQuestionIndex(0);
+      setQuizSubTab('multiple-choice');
     }
   };
 
@@ -319,6 +337,80 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
   const isAnswerCorrect = (questionId) => {
     const question = quizQuestions.find(q => q.id === questionId);
     return quizAnswers[questionId] === question.correctAnswer;
+  };
+
+  // AI Quiz Grading handlers
+  const handleAiQuizAnswerChange = (questionId, value) => {
+    setAiQuizAnswers(prev => ({
+      ...prev,
+      [questionId]: value
+    }));
+  };
+
+  const handleSubmitForGrading = async () => {
+    if (!aiQuizQuestions || aiQuizQuestions.length === 0) return;
+    if (!user?.id) {
+      setGradingError('Please log in to submit answers for grading.');
+      return;
+    }
+
+    const answeredCount = Object.values(aiQuizAnswers).filter(a => a && a.trim().length > 0).length;
+    if (answeredCount === 0) {
+      setGradingError('Please answer at least one question before submitting.');
+      return;
+    }
+
+    setGradingInProgress(true);
+    setGradingError(null);
+    setGradingResults(null);
+
+    try {
+      const response = await gradeAiQuiz({
+        moduleData: {
+          title,
+          description,
+          shortDescription,
+          objectives,
+          learningOutcomes,
+          courseContent,
+          assignments,
+          quizQuestions: quizQuestions?.slice(0, 10), // Send limited quiz context
+        },
+        questions: aiQuizQuestions,
+        answers: aiQuizAnswers,
+      });
+
+      if (response.success) {
+        setGradingResults(response.data);
+        // Auto-expand all results
+        const expanded = {};
+        response.data.results?.forEach(r => {
+          expanded[r.questionId] = true;
+        });
+        setExpandedResults(expanded);
+      } else {
+        setGradingError(response.error || 'Grading failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Grading error:', err);
+      setGradingError(err?.error || err?.message || 'Failed to grade quiz. Please try again.');
+    } finally {
+      setGradingInProgress(false);
+    }
+  };
+
+  const resetAiQuizGrading = () => {
+    setAiQuizAnswers({});
+    setGradingResults(null);
+    setGradingError(null);
+    setExpandedResults({});
+  };
+
+  const toggleResultExpanded = (questionId) => {
+    setExpandedResults(prev => ({
+      ...prev,
+      [questionId]: !prev[questionId]
+    }));
   };
 
   if (!moduleData) {
@@ -585,8 +677,48 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
           )}
 
           {/* QUIZ TAB */}
-          {activeTab === 'quiz' && quizQuestions && quizQuestions.length > 0 && (
+          {activeTab === 'quiz' && (
             <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 ${styles.transition}`}>
+              {/* Quiz Sub-Tab Navigation */}
+              <div className="mb-6">
+                <div className={`flex gap-2 p-1 rounded-xl ${theme === 'light' ? 'bg-gray-100' : 'bg-white/5'} ${styles.transition}`}>
+                  <button
+                    onClick={() => setQuizSubTab('multiple-choice')}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      quizSubTab === 'multiple-choice'
+                        ? theme === 'light'
+                          ? 'bg-white text-indigo-700 shadow-md'
+                          : 'bg-indigo-500/20 text-white border border-indigo-400/30'
+                        : theme === 'light'
+                          ? 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <FileText className="w-4 h-4" />
+                    Multiple Choice
+                  </button>
+                  <button
+                    onClick={() => setQuizSubTab('ai-graded')}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      quizSubTab === 'ai-graded'
+                        ? theme === 'light'
+                          ? 'bg-white text-purple-700 shadow-md'
+                          : 'bg-purple-500/20 text-white border border-purple-400/30'
+                        : theme === 'light'
+                          ? 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
+                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <Brain className="w-4 h-4" />
+                    AI-Graded
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${theme === 'light' ? 'bg-purple-100 text-purple-600' : 'bg-purple-500/20 text-purple-300'}`}>AI</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Multiple Choice Sub-Tab */}
+              {quizSubTab === 'multiple-choice' && quizQuestions && quizQuestions.length > 0 && (
+              <>
               {!showQuizResults ? (
                 <>
                   {/* Quiz Header */}
@@ -839,6 +971,245 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
                       Retake Quiz
                     </button>
                   </div>
+                </div>
+              )}
+              </>
+              )}
+
+              {/* Multiple Choice - No Questions */}
+              {quizSubTab === 'multiple-choice' && (!quizQuestions || quizQuestions.length === 0) && (
+                <div className={`text-center py-12 ${styles.textTertiary}`}>
+                  <FileText className={`w-12 h-12 mx-auto mb-4 ${theme === 'light' ? 'text-gray-300' : 'text-gray-600'}`} />
+                  <p className="text-lg font-medium">No multiple choice questions available yet.</p>
+                  <p className="text-sm mt-2">Check back later or try the AI-Graded quiz.</p>
+                </div>
+              )}
+
+              {/* AI-Graded Sub-Tab */}
+              {quizSubTab === 'ai-graded' && aiQuizQuestions && aiQuizQuestions.length > 0 && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className={`text-xl font-semibold ${styles.text} flex items-center gap-3 ${styles.transition}`}>
+                      <Sparkles className={`w-6 h-6 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`} />
+                      AI-Graded Questions
+                    </h4>
+                    {gradingResults && (
+                      <button
+                        onClick={resetAiQuizGrading}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${theme === 'light'
+                          ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                          : 'bg-white/10 hover:bg-white/20 text-gray-300'
+                        }`}
+                      >
+                        <RotateCcw className="w-4 h-4" />
+                        Reset & Try Again
+                      </button>
+                    )}
+                  </div>
+                  <p className={`${styles.textTertiary} ${styles.transition}`}>
+                    Answer the questions below based on the module's training materials. Submit your answers to receive instant AI-powered feedback.
+                  </p>
+
+                  {/* Grading Error */}
+                  {gradingError && (
+                    <div className={`rounded-xl p-4 flex items-center gap-3 ${theme === 'light' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-red-500/10 border border-red-400/20 text-red-300'}`}>
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      <p className="text-sm">{gradingError}</p>
+                      <button onClick={() => setGradingError(null)} className="ml-auto text-xs underline">Dismiss</button>
+                    </div>
+                  )}
+
+                  {/* Overall Score Card (shown after grading) */}
+                  {gradingResults && (
+                    <div className={`rounded-2xl p-6 text-center ${theme === 'light'
+                      ? 'bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200'
+                      : 'bg-gradient-to-br from-purple-500/15 to-indigo-500/15 border border-purple-400/20'
+                    } ${styles.transition}`}>
+                      <div className="flex items-center justify-center gap-3 mb-3">
+                        <Sparkles className={`w-8 h-8 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`} />
+                        <h3 className={`text-xl font-bold ${styles.text}`}>AI Grading Complete</h3>
+                      </div>
+                      <div className={`text-4xl font-extrabold mb-2 ${
+                        gradingResults.overallScore >= 70
+                          ? theme === 'light' ? 'text-green-600' : 'text-green-400'
+                          : gradingResults.overallScore >= 50
+                            ? theme === 'light' ? 'text-yellow-600' : 'text-yellow-400'
+                            : theme === 'light' ? 'text-red-600' : 'text-red-400'
+                      }`}>
+                        {Math.round(gradingResults.overallScore)}%
+                      </div>
+                      <p className={`${styles.textTertiary} text-sm`}>{gradingResults.overallFeedback}</p>
+                    </div>
+                  )}
+
+                  {/* Questions List */}
+                  <div className="space-y-5">
+                    {aiQuizQuestions.map((q, idx) => {
+                      const result = gradingResults?.results?.find(r => String(r.questionId) === String(q.id));
+                      const isExpanded = expandedResults[q.id];
+
+                      return (
+                        <div key={q.id} className={`rounded-2xl border overflow-hidden ${styles.transition} ${
+                          result
+                            ? result.isCorrect
+                              ? theme === 'light'
+                                ? 'border-green-300 bg-green-50/50'
+                                : 'border-green-400/30 bg-green-500/5'
+                              : theme === 'light'
+                                ? 'border-red-300 bg-red-50/50'
+                                : 'border-red-400/30 bg-red-500/5'
+                            : theme === 'light'
+                              ? 'border-gray-200 bg-white/80'
+                              : 'border-white/10 bg-white/5'
+                        }`}>
+                          {/* Question Header */}
+                          <div className="p-5">
+                            <div className="flex items-start gap-3 mb-3">
+                              <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                                result
+                                  ? result.isCorrect
+                                    ? theme === 'light' ? 'bg-green-200 text-green-700' : 'bg-green-500/30 text-green-400'
+                                    : theme === 'light' ? 'bg-red-200 text-red-700' : 'bg-red-500/30 text-red-400'
+                                  : theme === 'light' ? 'bg-purple-200 text-purple-700' : 'bg-purple-500/30 text-purple-400'
+                              }`}>
+                                {result ? (result.isCorrect ? <Check className="w-4 h-4" /> : '✗') : idx + 1}
+                              </span>
+                              <div className="flex-1">
+                                <h5 className={`text-base font-semibold ${styles.text} ${styles.transition}`}>
+                                  {q.question}
+                                </h5>
+                                {q.hint && !gradingResults && (
+                                  <p className={`text-xs mt-1 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'} italic`}>
+                                    Hint: {q.hint}
+                                  </p>
+                                )}
+                                {result && (
+                                  <div className="flex items-center gap-3 mt-2">
+                                    <span className={`text-xs font-semibold px-2 py-1 rounded ${
+                                      result.isCorrect
+                                        ? theme === 'light' ? 'bg-green-200 text-green-800' : 'bg-green-500/25 text-green-300'
+                                        : theme === 'light' ? 'bg-red-200 text-red-800' : 'bg-red-500/25 text-red-300'
+                                    }`}>
+                                      {result.isCorrect ? 'Correct' : 'Needs Improvement'} — {result.score}/10
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Answer Input */}
+                            <textarea
+                              value={aiQuizAnswers[q.id] || ''}
+                              onChange={(e) => handleAiQuizAnswerChange(q.id, e.target.value)}
+                              disabled={gradingInProgress}
+                              placeholder="Type your answer here..."
+                              rows={4}
+                              className={`w-full rounded-xl p-4 text-sm resize-y border transition-all focus:outline-none focus:ring-2 ${
+                                theme === 'light'
+                                  ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-purple-400 focus:border-purple-400'
+                                  : 'bg-white/5 border-white/10 text-white placeholder-gray-500 focus:ring-purple-400/50 focus:border-purple-400/50'
+                              } ${gradingInProgress ? 'opacity-60 cursor-not-allowed' : ''}`}
+                            />
+                          </div>
+
+                          {/* AI Feedback (shown after grading) */}
+                          {result && (
+                            <div className={`border-t ${theme === 'light' ? 'border-gray-200' : 'border-white/10'}`}>
+                              <button
+                                onClick={() => toggleResultExpanded(q.id)}
+                                className={`w-full px-5 py-3 flex items-center justify-between text-sm font-medium transition-colors ${
+                                  theme === 'light'
+                                    ? 'hover:bg-gray-100 text-gray-700'
+                                    : 'hover:bg-white/5 text-gray-300'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2">
+                                  <MessageSquare className="w-4 h-4" />
+                                  AI Feedback
+                                </span>
+                                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                              </button>
+
+                              {isExpanded && (
+                                <div className="px-5 pb-5 space-y-3">
+                                  {/* Feedback */}
+                                  <div className={`p-4 rounded-lg ${theme === 'light'
+                                    ? 'bg-blue-50 border border-blue-200'
+                                    : 'bg-blue-500/10 border border-blue-400/20'
+                                  }`}>
+                                    <p className={`text-xs font-semibold mb-1 ${theme === 'light' ? 'text-blue-700' : 'text-blue-300'}`}>
+                                      Feedback:
+                                    </p>
+                                    <p className={`text-sm ${theme === 'light' ? 'text-blue-800' : 'text-blue-200'}`}>
+                                      {result.feedback}
+                                    </p>
+                                  </div>
+
+                                  {/* Correct Guidance (shown when wrong or partially correct) */}
+                                  {!result.isCorrect && result.correctGuidance && (
+                                    <div className={`p-4 rounded-lg ${theme === 'light'
+                                      ? 'bg-green-50 border border-green-200'
+                                      : 'bg-green-500/10 border border-green-400/20'
+                                    }`}>
+                                      <p className={`text-xs font-semibold mb-1 ${theme === 'light' ? 'text-green-700' : 'text-green-300'}`}>
+                                        Correct Answer / Key Points:
+                                      </p>
+                                      <p className={`text-sm ${theme === 'light' ? 'text-green-800' : 'text-green-200'}`}>
+                                        {result.correctGuidance}
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Submit for Grading Button */}
+                  {!gradingResults && (
+                    <div className="flex justify-center pt-2">
+                      <button
+                        onClick={handleSubmitForGrading}
+                        disabled={gradingInProgress || !user?.id || Object.values(aiQuizAnswers).filter(a => a && a.trim()).length === 0}
+                        className={`px-8 py-3 rounded-xl font-semibold text-white transition-all duration-200 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed ${
+                          theme === 'light'
+                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-lg hover:shadow-xl'
+                            : 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 shadow-lg hover:shadow-purple-500/25'
+                        }`}
+                      >
+                        {gradingInProgress ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            AI is grading your answers...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5" />
+                            Submit for AI Grading
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
+
+                  {!user?.id && (
+                    <div className={`rounded-xl p-4 flex items-center gap-3 ${theme === 'light' ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-amber-500/10 border border-amber-400/20 text-amber-300'}`}>
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      <p className="text-sm">Please log in to submit your answers for AI grading.</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* AI-Graded - No Questions */}
+              {quizSubTab === 'ai-graded' && (!aiQuizQuestions || aiQuizQuestions.length === 0) && (
+                <div className={`text-center py-12 ${styles.textTertiary}`}>
+                  <Brain className={`w-12 h-12 mx-auto mb-4 ${theme === 'light' ? 'text-gray-300' : 'text-gray-600'}`} />
+                  <p className="text-lg font-medium">No AI-graded questions available yet.</p>
+                  <p className="text-sm mt-2">Check back later or try the Multiple Choice quiz.</p>
                 </div>
               )}
             </div>
