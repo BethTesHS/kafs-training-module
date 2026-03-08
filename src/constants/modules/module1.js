@@ -28,8 +28,8 @@ export const module1Data = {
       {
         title: "Data Clean Up Training Manual",
         description: "KAFS ITP GI Data & Checks - PDF • 14 pages • January 2025",
-        url: "/Training Modules/Module-1-Data-Clean-Up/Course Content/KAFS-ITP-GI-Data-and-Checks-2025.pdf",
-        filename: "KAFS-ITP-GI-Data-and-Checks-2025.pdf",
+        url: "/Training Modules/Module 1_Data Clean Up/Course Content/KAFS ITP GI Data & Checks_2025.pdf",
+        filename: "KAFS ITP GI Data & Checks_2025.pdf",
         icon: "📄"
       }
     ],
@@ -49,24 +49,24 @@ export const module1Data = {
       {
         title: "Premium Register Data",
         description: "Excel • 1,000 records • Sample dataset",
-        url: "/Training Modules/Module-1-Data-Clean-Up/Data/premium-register-1000.xlsx",
-        filename: "premium-register-1000.xlsx",
+        url: "/Training Modules/Module 1_Data Clean Up/Data/premium_register_1000.xlsx",
+        filename: "premium_register_1000.xlsx",
         icon: "📊",
         color: "blue"
       },
       {
         title: "Paid Claims Data",
         description: "Excel • 5,000 records • Sample dataset",
-        url: "/Training Modules/Module-1-Data-Clean-Up/Data/paid-claims-5000.xlsx",
-        filename: "paid-claims-5000.xlsx",
+        url: "/Training Modules/Module 1_Data Clean Up/Data/paid_claims_5000.xlsx",
+        filename: "paid_claims_5000.xlsx",
         icon: "📈",
         color: "green"
       },
       {
         title: "Outstanding Claims Data",
         description: "Excel • 2,000 records • Sample dataset",
-        url: "/Training Modules/Module-1-Data-Clean-Up/Data/outstanding-claims-2000.xlsx",
-        filename: "outstanding-claims-2000.xlsx",
+        url: "/Training Modules/Module 1_Data Clean Up/Data/outstanding_claims_2000.xlsx",
+        filename: "outstanding_claims_2000.xlsx",
         icon: "📋",
         color: "purple"
       }
@@ -75,16 +75,16 @@ export const module1Data = {
       {
         title: "Claims Data Clean Up Template",
         description: "Excel • Structured template for claims validation",
-        url: "/Training Modules/Module-1-Data-Clean-Up/Working Files/Claims-Data-Clean-Up-Template.xlsx",
-        filename: "Claims-Data-Clean-Up-Template.xlsx",
+        url: "/Training Modules/Module 1_Data Clean Up/Working Files/Claims Data_Clean_Up_Template.xlsx",
+        filename: "Claims Data_Clean_Up_Template.xlsx",
         icon: "🛠️",
         color: "orange"
       },
       {
         title: "Premium Data Clean Up Template",
         description: "Excel • Structured template for premium validation",
-        url: "/Training Modules/Module-1-Data-Clean-Up/Working Files/Premium-Data-Clean-Up-Template.xlsx",
-        filename: "Premium-Data-Clean-Up-Template.xlsx",
+        url: "/Training Modules/Module 1_Data Clean Up/Working Files/Premium_Data_Clean_Up_Template.xlsx",
+        filename: "Premium_Data_Clean_Up_Template.xlsx",
         icon: "⚙️",
         color: "yellow"
       }

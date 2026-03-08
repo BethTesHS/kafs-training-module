@@ -22,10 +22,10 @@ export const module3Data = {
       {
         id: 1,
         title: "LRC Internal Technical Procedure",
-        description: "KAFS ITP Liability for Remaining Coverage - PDF • 30 pages • Comprehensive guide",
+        description: "KAFS ITP Liability for Remaining Coverage - DOCX • 30 pages • Comprehensive guide",
         icon: "📄",
-        downloadUrl: "/Training Modules/Module-3-LRC/Course Content/KAFS-Internal-Technical-Procedures-Liability-for-Remaining-Coverage-Analysis-2025.pdf",
-        fileName: "KAFS Internal Technical Procedures LRC Analysis 2025.pdf"
+        downloadUrl: "/Training Modules/Module 3_LRC/Course Content/KAFS_Internal Technical Procedures_Liability for Remaining Coverage Analysis_2025.docx",
+        fileName: "KAFS_Internal Technical Procedures_Liability for Remaining Coverage Analysis_2025.docx"
       }
     ],
     aboutText: {
@@ -47,7 +47,7 @@ export const module3Data = {
         title: "Premium Register Data",
         description: "Premium Register 31-12-2024.xlsx • Year-end premium data",
         icon: "📊",
-        downloadUrl: "/Training Modules/Module-3-LRC/Data/Premium Register_31_12_2024.xlsx",
+        downloadUrl: "/Training Modules/Module 3_LRC/Data/Premium Register_31_12_2024.xlsx",
         fileName: "Premium Register 31-12-2024.xlsx"
       }
     ],
@@ -57,7 +57,7 @@ export const module3Data = {
         title: "LRC Analysis Template",
         description: "LRC Analysis.xlsx • Comprehensive LRC calculation workbook",
         icon: "🛠️",
-        downloadUrl: "/Training Modules/Module-3-LRC/Working Files/LRC_Analysis.xlsx",
+        downloadUrl: "/Training Modules/Module 3_LRC/Working Files/LRC_Analysis.xlsx",
         fileName: "LRC Analysis Template.xlsx"
       },
       {
@@ -65,7 +65,7 @@ export const module3Data = {
         title: "UPR, GEP & DAC Analysis Template",
         description: "UPR, GEP & DAC Analysis.xlsx • Component calculations workbook",
         icon: "⚙️",
-        downloadUrl: "/Training Modules/Module-3-LRC/Working Files/UPR,GEP & DAC_Analysis.xlsx",
+        downloadUrl: "/Training Modules/Module 3_LRC/Working Files/UPR,GEP & DAC_Analysis.xlsx",
         fileName: "UPR, GEP & DAC Analysis Template.xlsx"
       }
     ]

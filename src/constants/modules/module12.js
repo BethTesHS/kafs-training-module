@@ -30,7 +30,7 @@ export const module12Data = {
       {
         title: "DA & IPP Valuation Technical Procedure",
         description: "KAFS_Internal Technical Procedures_DA & IPP - Valuation Manual.pdf",
-        url: "/Training Modules/Module-12-DA-Valuation/Course Content/KAFS_Internal Technical Procedures_DA & IPP - Valuation Manual.pdf",
+        url: "/Training Modules/Module 12_DA Valuation/Course Content/KAFS_Internal Technical Procedures_DA & IPP - Valuation Manual.pdf",
         type: "document",
         icon: "📄"
       }
@@ -43,7 +43,7 @@ export const module12Data = {
       {
         title: "DA Training Dataset",
         description: "DA_training_dataset_with_full_dates.xlsx",
-        url: "/Training Modules/Module-12-DA-Valuation/Data/DA_training_dataset_with_full_dates.xlsx",
+        url: "/Training Modules/Module 12_DA Valuation/Data/DA_training_dataset_with_full_dates.xlsx",
         type: "excel"
       }
     ],
@@ -51,7 +51,7 @@ export const module12Data = {
       {
         title: "DA & IPP Working File Template",
         description: "DA & IPP_Working File.xlsx",
-        url: "/Training Modules/Module-12-DA-Valuation/Working Files/DA & IPP_Working File.xlsx",
+        url: "/Training Modules/Module 12_DA Valuation/Working Files/DA & IPP_Working File.xlsx",
         type: "template"
       }
     ]

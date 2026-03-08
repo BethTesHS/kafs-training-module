@@ -25,8 +25,8 @@ export const module8Data = {
     resources: [
       {
         title: "Reinsurance Certification Technical Procedure",
-        description: "KAFS ITP Reinsurance Certification - PDF • 21 pages",
-        url: "/Training Modules/Module-8-Reinsurance-Certificate/Course Content/KAFS_Internal Technical Procedures_Guidelines on Reinsurance Certificate.pdf"
+        description: "KAFS ITP Reinsurance Certification - DOCX • 21 pages",
+        url: "/Training Modules/Module 8_Reinsurance Certificate/Course Content/KAFS_Internal Technical Procedures_Guidelines on Reinsurance Certificate.docx"
       }
     ],
     additionalResources: [
@@ -40,24 +40,24 @@ export const module8Data = {
       {
         title: "Premium Data",
         description: "Premium Data.xlsx • Premium dataset",
-        url: "/Training Modules/Module-8-Reinsurance-Certificate/Data/Premium Data.xlsx"
+        url: "/Training Modules/Module 8_Reinsurance Certificate/Data/Premium Data.xlsx"
       },
       {
         title: "Claims Data",
         description: "Claims Data.xlsx • Claims dataset",
-        url: "/Training Modules/Module-8-Reinsurance-Certificate/Data/Claims Data.xlsx"
+        url: "/Training Modules/Module 8_Reinsurance Certificate/Data/Claims Data.xlsx"
       },
       {
         title: "Frequency and Severity",
         description: "Frequency and Severity.xlsx • Frequency and severity dataset",
-        url: "/Training Modules/Module-8-Reinsurance-Certificate/Data/Frequency and Severity.xlsx"
+        url: "/Training Modules/Module 8_Reinsurance Certificate/Data/Frequency and Severity.xlsx"
       }
     ],
     workingFiles: [
       {
         title: "Beetroot General - Reinsurance Simulation Template",
         description: "Beetroot General - Reinsurance Simulation Template.xlsm • Comprehensive reinsurance simulation workbook",
-        url: "/Training Modules/Module-8-Reinsurance-Certificate/Working File/Beetroot General - Reinsurance Simulation Template.xlsm"
+        url: "/Training Modules/Module 8_Reinsurance Certificate/Working File/Beetroot General - Reinsurance Simulation Template.xlsm"
       }
     ]
   },

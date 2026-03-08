@@ -22,9 +22,9 @@ export const module6Data = {
       {
         id: 1,
         title: "Financial Performance Technical Procedure",
-        description: "KAFS ITP Guidelines on Financial Performance Analysis - PDF • 18 pages",
+        description: "KAFS ITP Guidelines on Financial Performance Analysis - DOCX • 18 pages",
         icon: "📄",
-        downloadUrl: "/Training Modules/Module-6-Financial-Performance-Analysis/Course Content/KAFS_Internal Technical Procedures_Guidelines on Financial Performance Analysis.pdf",
+        downloadUrl: "/Training Modules/Module 6_Financial Performance Analysis/Course Content/KAFS_Internal Technical Procedures_Guidelines on Financial Performance Analysis.docx",
         fileName: "KAFS ITP Financial Performance Analysis.pdf"
       }
     ],
@@ -32,14 +32,14 @@ export const module6Data = {
       {
         id: 1,
         title: "CFI Financial Ratios Cheat Sheet",
-        downloadUrl: "/Training Modules/Module-6-Financial-Performance-Analysis/Additional Resources/CFI-Financial-Ratios-Cheat-Sheet-eBook.pdf",
+        downloadUrl: "/Training Modules/Module 6_Financial Performance Analysis/Additional Resources/CFI-Financial-Ratios-Cheat-Sheet-eBook (1).pdf",
         fileName: "CFI Financial Ratios Cheat Sheet.pdf",
         color: "blue"
       },
       {
         id: 2,
         title: "IRA Insurance Industry Report 2024",
-        downloadUrl: "/Training Modules/Module-6-Financial-Performance-Analysis/Additional Resources/Insurance Industry Annual Report 2024.pdf",
+        downloadUrl: "/Training Modules/Module 6_Financial Performance Analysis/Additional Resources/Insurance Industry Annual Report 2024.pdf",
         fileName: "IRA Insurance Industry Annual Report 2024.pdf",
         color: "green"
       }
@@ -65,7 +65,7 @@ export const module6Data = {
         title: "Financial Performance Data",
         description: "Data.xlsx • Complete financial dataset for analysis",
         icon: "📊",
-        downloadUrl: "/Training Modules/Module-6-Financial-Performance-Analysis/Data/Data.xlsx",
+        downloadUrl: "/Training Modules/Module 6_Financial Performance Analysis/Data/Data.xlsx",
         fileName: "Financial Performance Data.xlsx"
       }
     ],
@@ -75,7 +75,7 @@ export const module6Data = {
         title: "Financial Ratios Template",
         description: "Ratios Template.xlsx • Comprehensive ratio calculation workbook",
         icon: "🛠️",
-        downloadUrl: "/Training Modules/Module-6-Financial-Performance-Analysis/Working File/Ratios Template.xlsx",
+        downloadUrl: "/Training Modules/Module 6_Financial Performance Analysis/Working File/Ratios Template.xlsx",
         fileName: "Financial Ratios Template.xlsx"
       }
     ]

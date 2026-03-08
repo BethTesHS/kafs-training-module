@@ -27,12 +27,12 @@ export const module10Data = {
       {
         title: "Ordinary Life Data Checks & Clean Up",
         description: "KAFS ITP Ordinary Life Insurance Data & Checks - PDF • 12 pages",
-        url: "/Training Modules/Module-10-Ordinary-Life-Valuation/Course Content/KAFS_ITPs_Ordinary Life Insurance Data & Checks.pdf"
+        url: "/Training Modules/Module 10_Ordinary Life Valuation/Course Content/KAFS_ITPs_Ordinary Life Insurance Data & Checks.pdf"
       },
       {
         title: "Ordinary Life Valuation Guide",
         description: "KAFS Ordinary Life Insurance Valuation - PDF • 17 pages",
-        url: "/Training Modules/Module-10-Ordinary-Life-Valuation/Course Content/KAFS_Ordinary Life Insurance Valuation.pdf"
+        url: "/Training Modules/Module 10_Ordinary Life Valuation/Course Content/KAFS_Ordinary Life Insurance Valuation.pdf"
       }
     ],
     additionalResources: [
@@ -45,19 +45,19 @@ export const module10Data = {
       {
         title: "Ordinary Life Valuation Data",
         description: "Ordinary Life_Valuation Data.xlsx • Complete valuation dataset",
-        url: "/Training Modules/Module-10-Ordinary-Life-Valuation/Data/Ordinary Life_Valuation Data.xlsx"
+        url: "/Training Modules/Module 10_Ordinary Life Valuation/Data/Ordinary Life_Valuation Data.xlsx"
       }
     ],
     workingFiles: [
       {
         title: "Data Reconciliation Template",
         description: "Data Reconciliation- Ordinary Life_Data Recon - 311223_Valuation_Working File.xlsm • Data validation workbook",
-        url: "/Training Modules/Module-10-Ordinary-Life-Valuation/Working File/Ordinary Life_Data Recon - 311223_Valuation_Working File.xlsm"
+        url: "/Training Modules/Module 10_Ordinary Life Valuation/Working File/Ordinary Life_Data Recon - 311223_Valuation_Working File.xlsm"
       },
       {
         title: "IFRS 17 GMM Model Template",
         description: "Valuation Working File- Company X_StandAlone_IFRS17 GMM Model_Working File.xlsm • Comprehensive valuation model",
-        url: "/Training Modules/Module-10-Ordinary-Life-Valuation/Working File/Company X_StandAlone_IFRS17 GMM Model_Working File.xlsm"
+        url: "/Training Modules/Module 10_Ordinary Life Valuation/Working File/Company X_StandAlone_IFRS17 GMM Model_Working File.xlsm"
       }
     ]
   },

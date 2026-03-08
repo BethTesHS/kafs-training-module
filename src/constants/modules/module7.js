@@ -27,8 +27,8 @@ export const module7Data = {
     resources: [
       {
         title: "Premium Certification Technical Procedure",
-        description: "KAFS ITP Premium Certification 2025 - PDF • 25 pages",
-        url: "/Training Modules/Module-7-Premium-Certificate/Course Content/KAFS_Internal Technical Procedures_Premium Certification_2025.pdf"
+        description: "KAFS ITP Premium Certification 2025 - DOCX • 25 pages",
+        url: "/Training Modules/Module 7_Premium Certificate/Course Content/KAFS_Internal Technical Procedures_Premium Certification_2025.docx"
       }
     ],
     additionalResources: [
@@ -42,14 +42,14 @@ export const module7Data = {
       {
         title: "ABC Company Data",
         description: "ABC Company Data Shared.xlsx • Complete premium & claims dataset",
-        url: "/Training Modules/Module-7-Premium-Certificate/Data/ABC Company_Data Shared.xlsx"
+        url: "/Training Modules/Module 7_Premium Certificate/Data/ABC Company_Data Shared.xlsx"
       }
     ],
     workingFiles: [
       {
         title: "Premium Certification Template 2025",
         description: "ABC- Premium Certification 2025.xlsx • Comprehensive certification workbook",
-        url: "/Training Modules/Module-7-Premium-Certificate/Working Files/ABC- Premium Certification 2025.xlsx"
+        url: "/Training Modules/Module 7_Premium Certificate/Working Files/ABC- Premium Certification 2025.xlsx"
       }
     ]
   },

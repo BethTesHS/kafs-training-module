@@ -30,14 +30,14 @@ export const module15Data = {
       {
         title: "DB Valuation Technical Procedure - Data Checks",
         description: "KAFS_Internal Technical Procedures_Defined Benefits Valuation - Data Checks.pdf",
-        url: "/Training Modules/Module-15-DB-Valuation/Course Content/KAFS_Internal Technical Procedures_Defined Benefits Valuation - Data Checks.pdf",
+        url: "/Training Modules/Module 15_DB Valuation/Course Content/KAFS_Internal Technical Procedures_Defined Benefits Valuation - Data Checks.pdf",
         type: "document",
         icon: "📄"
       },
       {
         title: "Data Checks Practical Example",
         description: "Data_Checks_Practical Example.xlsx",
-        url: "/Training Modules/Module-15-DB-Valuation/Course Content/Data_Checks_Practical Example.xlsx",
+        url: "/Training Modules/Module 15_DB Valuation/Course Content/Data_Checks_Practical Example.xlsx",
         type: "excel",
         icon: "📊"
       }
@@ -46,14 +46,14 @@ export const module15Data = {
       {
         title: "Guidebook on Retirement Benefits Sector in Kenya",
         description: "Guidebook on Retirement Benefits Sector in Kenya.pdf",
-        url: "/Training Modules/Module-15-DB-Valuation/Additional Resources/Guidebook on Retirement Benefits Sector in Kenya.pdf",
+        url: "/Training Modules/Module 15_DB Valuation/Additional Resources/Guidebook on Retirement Benefits Sector in Kenya.pdf",
         type: "guidelines",
         icon: "📚"
       },
       {
-        title: "DB Valuation Guide",
-        description: "DB_Valuation_Guide.pdf",
-        url: "/Training Modules/Module-15-DB-Valuation/Course Content/DB_Valuation_Guide.pdf",
+        title: "DB Valuation Manual",
+        description: "KAFS_Internal Technical Procedures_Defined Benefits Valuation Manual.docx",
+        url: "/Training Modules/Module 15_DB Valuation/Course Content/KAFS_Internal Technical Procedures_Defined Benefits Valuation Manual.docx",
         type: "guidelines",
         icon: "📖"
       }
@@ -61,28 +61,8 @@ export const module15Data = {
   },
 
   assignments: {
-    dataFiles: [
-      {
-        title: "Premium Register Dataset",
-        description: "premium_register_1000.xlsx",
-        url: "/Training Modules/Module-15-DB-Valuation/Data/premium_register_1000.xlsx",
-        type: "excel"
-      }
-    ],
-    workingFiles: [
-      {
-        title: "Premium Data Clean Up Template",
-        description: "Premium_Data_Clean_Up_Template.xlsx",
-        url: "/Training Modules/Module-15-DB-Valuation/Working Files/Premium_Data_Clean_Up_Template.xlsx",
-        type: "template"
-      },
-      {
-        title: "Claims Data Clean Up Template",
-        description: "Claims Data_Clean_Up_Template.xlsx",
-        url: "/Training Modules/Module-15-DB-Valuation/Working Files/Claims Data_Clean_Up_Template.xlsx",
-        type: "template"
-      }
-    ]
+    dataFiles: [],
+    workingFiles: []
   },
 
   quizTitle: "Quiz: DB Valuation - Data Checks",

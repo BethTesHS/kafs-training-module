@@ -23,7 +23,7 @@ export const module5Data = {
         title: "Capital Adequacy Technical Procedure",
         description: "KAFS ITP Guidelines on Capital Adequacy Analysis - PDF • 22 pages",
         icon: "📄",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Course Content/KAFS_Internal Technical Procedures_Guidelines on Capital Adequacy Analysis_2026.pdf",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Course Content/KAFS_Internal Technical Procedures_Guidelines on Capital Adequacy Analysis_2026.pdf",
         fileName: "KAFS ITP Capital Adequacy Analysis 2026.pdf"
       }
     ],
@@ -31,14 +31,14 @@ export const module5Data = {
       {
         id: 1,
         title: "IRA Guidelines On Capital Adequacy",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Additional Resources/Draft_Risk_Based_Capital_Adequacy1.pdf",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Additional Resources/Draft_Risk_Based_Capital_Adequacy1.pdf",
         fileName: "Draft Risk Based Capital Adequacy.pdf",
         color: "blue"
       },
       {
         id: 2,
         title: "The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Additional Resources/The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017 (1).pdf",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Additional Resources/The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017 (1).pdf",
         fileName: "The Insurance Valuation of Technical Provisions for General Insurance Business Guidelines 2017.pdf",
         color: "green"
       }
@@ -64,7 +64,7 @@ export const module5Data = {
         title: "General Insurance Balance Sheet",
         description: "Sample Balance Sheet_GI.xlsx • Practice dataset",
         icon: "📊",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Data/Sample Balance Sheet_GI.xlsx",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Data/Sample Balance Sheet_GI.xlsx",
         fileName: "Sample Balance Sheet_GI.xlsx"
       },
       {
@@ -72,7 +72,7 @@ export const module5Data = {
         title: "Life Insurance Balance Sheet",
         description: "Sample Balance Sheet_Life.xlsx • Practice dataset",
         icon: "📊",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Data/Sample Balance Sheet_Life.xlsx",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Data/Sample Balance Sheet_Life.xlsx",
         fileName: "Sample Balance Sheet_Life.xlsx"
       }
     ],
@@ -82,7 +82,7 @@ export const module5Data = {
         title: "General Insurance CAR Template",
         description: "IFRS 17 CAR Template_GI.xlsx • Comprehensive calculation workbook",
         icon: "🛠️",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS 17 CAR Template_GI.xlsx",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Working Files/IFRS 17 CAR Template_GI.xlsx",
         fileName: "IFRS 17 CAR Template_GI.xlsx"
       },
       {
@@ -90,7 +90,7 @@ export const module5Data = {
         title: "Life Insurance CAR Template",
         description: "IFRS 17 CAR Template_Life.xlsx • Comprehensive calculation workbook",
         icon: "🛠️",
-        downloadUrl: "/Training Modules/Module-5-Capital-Adequacy/Working Files/IFRS 17 CAR Template_Life.xlsx",
+        downloadUrl: "/Training Modules/Module 5_Capital Adequacy/Working Files/IFRS 17 CAR Template_Life.xlsx",
         fileName: "IFRS 17 CAR Template_Life.xlsx"
       }
     ]

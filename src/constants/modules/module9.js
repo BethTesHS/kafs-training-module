@@ -26,7 +26,7 @@ export const module9Data = {
       {
         title: "Financial Condition Report Technical Procedure",
         description: "KAFS ITP Financial Condition Report 2025 - PDF • 15 pages",
-        url: "/Training Modules/Module-9-FCR/Course Content/KAFS ITP Financial_Condition_Report_2025.pdf"
+        url: "/Training Modules/Module 9_FCR/Course Content/KAFS ITP Financial_Condition_Report_2025.pdf"
       }
     ],
     additionalResources: [
@@ -48,24 +48,24 @@ export const module9Data = {
       {
         title: "2025 Budget",
         description: "2025 Budget.xlsx • Budget dataset",
-        url: "/Training Modules/Module-9-FCR/Data/2025 Budget.xlsx"
+        url: "/Training Modules/Module 9_FCR/Data/2025 Budget.xlsx"
       },
       {
         title: "PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024",
-        description: "PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.pdf • Audited financial statements",
-        url: "/Training Modules/Module-9-FCR/Data/PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.pdf"
+        description: "PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.doc • Audited financial statements",
+        url: "/Training Modules/Module 9_FCR/Data/PIONEER General Insurance Company Limited - Final Audited Financial statements FY 2024 - 23-03.doc"
       }
     ],
     workingFiles: [
       {
         title: "Pioneer General - FCR 2023 Working File V2",
         description: "Pioneer General - FCR 2023 Working File V2.xlsx • Comprehensive FCR preparation workbook",
-        url: "/Training Modules/Module-9-FCR/Working File/Pioneer General - FCR 2023 Working File V2.xlsx"
+        url: "/Training Modules/Module 9_FCR/Working File/Pioneer General - FCR 2023 Working File V2.xlsx"
       },
       {
         title: "Pioneer General FCR 2023 - Final Report",
-        description: "Pioneer General FCR 2023 - Final Report (290424).pdf • Final FCR report",
-        url: "/Training Modules/Module-9-FCR/Working File/Pioneer General FCR 2023 - Final Report (290424).pdf"
+        description: "Pioneer General FCR 2023 - Final Report (290424).docx • Final FCR report",
+        url: "/Training Modules/Module 9_FCR/Working File/Pioneer General FCR 2023 - Final Report (290424).docx"
       }
     ]
   },

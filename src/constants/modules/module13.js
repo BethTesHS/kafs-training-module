@@ -30,7 +30,7 @@ export const module13Data = {
       {
         title: "Investment Policy Statement Technical Procedure",
         description: "KAFS_Internal Technical Procedures_Investment Policy Statement.pdf",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Course Content/KAFS_Internal Technical Procedures_Investment Policy Statement.pdf",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Course Content/KAFS_Internal Technical Procedures_Investment Policy Statement.pdf",
         type: "document",
         icon: "📄"
       }
@@ -39,14 +39,14 @@ export const module13Data = {
       {
         title: "Draft Investment Guidelines",
         description: "Draft_Investment_Guidelines1 2.pdf",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Additional Resources/Draft_Investment_Guidelines1 2.pdf",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Additional Resources/Draft_Investment_Guidelines1 2.pdf",
         type: "guidelines",
         icon: "🛡️"
       },
       {
         title: "RBA Retirement Benefits Regulations",
         description: "The Retirement Benefits (Occupational Retirement Benefits Schemes) Regulations.pdf",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Additional Resources/The Retirement Benefits (Occupational Retirement Benefits Schemes) Regulations.pdf",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Additional Resources/The Retirement Benefits (Occupational Retirement Benefits Schemes) Regulations.pdf",
         type: "regulations",
         icon: "⚖️"
       }
@@ -58,25 +58,25 @@ export const module13Data = {
       {
         title: "Financial Statements (2018-2024)",
         description: "Financial_Statements_2018-2024.xlsx",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Data/Financial_Statements_2018-2024.xlsx",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Data/Financial_Statements_2018-2024.xlsx",
         type: "excel"
       },
       {
         title: "Membership Data",
         description: "IPS_Membership Data.xlsx",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Data/IPS_Membership Data.xlsx",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Data/IPS_Membership Data.xlsx",
         type: "excel"
       },
       {
         title: "Industry Report (December 2024)",
         description: "Industry Brief as at December 2024- Approved for Circulation (1).pdf",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Data/Industry Brief as at December 2024- Approved for Circulation (1).pdf",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Data/Industry Brief as at December 2024- Approved for Circulation (1).pdf",
         type: "pdf"
       },
       {
         title: "Trust Deed & Rules",
         description: "Solara Summit_Trust Deed & Rules.pdf",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Data/Solara Summit_Trust Deed & Rules.pdf",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Data/Solara Summit_Trust Deed & Rules.pdf",
         type: "pdf"
       }
     ],
@@ -84,7 +84,7 @@ export const module13Data = {
       {
         title: "IPS Working File Template",
         description: "Working File.xlsx",
-        url: "/Training Modules/Module-13-Investment-Policy-Statement/Working File/Working File.xlsx",
+        url: "/Training Modules/Module 13_ Investment Policy Statement/Working File/Working File.xlsx",
         type: "template"
       }
     ]

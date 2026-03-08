@@ -27,8 +27,8 @@ export const module2Data = {
       {
         title: "Frequency & Severity Technical Procedure",
         description: "Comprehensive guide",
-        url: "/Training Modules/Module-2-Pricing/Course Content/ITP-Frequency-Severity.pdf",
-        filename: "ITP-Frequency-Severity.pdf",
+        url: "/Training Modules/Module 2_Pricing_Fundamentals/Course Content/KAFS ITP Pricing_Fundermentals_2025.pdf",
+        filename: "KAFS ITP Pricing_Fundermentals_2025.pdf",
         icon: "📄",
         color: "blue"
       }
@@ -49,7 +49,7 @@ export const module2Data = {
       {
         title: "Claims Data",
         description: "Historical claims for analysis",
-        url: "/Training Modules/Module-2-Pricing-Fundamentals/Data/Claims-Data.xlsx",
+        url: "/Training Modules/Module 2_Pricing_Fundamentals/Data/Claims Data.xlsx",
         filename: "Claims Data.xlsx",
         icon: "📊",
         color: "blue"
@@ -57,7 +57,7 @@ export const module2Data = {
       {
         title: "Premium Data",
         description: "Premium and exposure data",
-        url: "/Training Modules/Module-2-Pricing-Fundamentals/Data/Premium-Data.xlsx",
+        url: "/Training Modules/Module 2_Pricing_Fundamentals/Data/Premium Data.xlsx",
         filename: "Premium Data.xlsx",
         icon: "📈",
         color: "yellow"
@@ -67,7 +67,7 @@ export const module2Data = {
       {
         title: "Frequency and Severity Template",
         description: "Structured template for calculations",
-        url: "/Training Modules/Module-2-Pricing-Fundamentals/Working File/Frequency-and-Severity-Template.xlsx",
+        url: "/Training Modules/Module 2_Pricing_Fundamentals/Working File/Frequency and Severity Template.xlsx",
         filename: "Frequency and Severity Template.xlsx",
         icon: "🛠️",
         color: "orange"

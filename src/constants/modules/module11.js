@@ -32,14 +32,14 @@ export const module11Data = {
       {
         title: "Data Checks Technical Procedure",
         description: "KAFS_Internal Technical Procedures_Group Life Business Data & Checks_2026.docx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Course Content/KAFS_Internal Technical Procedures_Group Life Business Data & Checks_2026.docx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Course Content/KAFS_Internal Technical Procedures_Group Life Business Data & Checks_2026.docx",
         type: "document",
         icon: "📄"
       },
       {
         title: "Group Life Business Valuation",
         description: "KAFS_Internal Technical Procedures_Group Life Valuation_2026.docx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Course Content/KAFS_Internal Technical Procedures_Group Life Valuation_2026.docx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Course Content/KAFS_Internal Technical Procedures_Group Life Valuation_2026.docx",
         type: "document",
         icon: "📄"
       }
@@ -48,7 +48,7 @@ export const module11Data = {
       {
         title: "IRA Guidelines - Life Insurance Valuation",
         description: "The Insurance (Valuation of Technical Provisions for Life Insurance Business) Guidelines.pdf",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Additional Resources/The Insurance (Valuation of Technical Provisions for Life Insurance Business) Guidelines.pdf",
+        url: "/Training Modules/Module 11_Group Life Valuation/Additional Resources/The Insurance (Valuation of Technical Provisions for Life Insurance Business) Guidelines.pdf",
         type: "guidelines",
         icon: "🛡️"
       }
@@ -60,13 +60,13 @@ export const module11Data = {
       {
         title: "Group Life Premiums Data",
         description: "Group_life_premiums_data.xlsx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Data/Group_life_premiums data.xlsx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Data/Group_life_premiums data.xlsx",
         type: "excel"
       },
       {
         title: "Group Life Claims Data",
         description: "Group_life_claims_data.xlsx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Data/Group_life_claims data.xlsx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Data/Group_life_claims data.xlsx",
         type: "excel"
       }
     ],
@@ -74,25 +74,25 @@ export const module11Data = {
       {
         title: "Group Life Premium Data Clean Up Template",
         description: "Group Life Premium_Data_Clean_Up_Template.xlsx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Working Files/Group Life Premium_Data_Clean_Up_Template.xlsx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Working File/Group Life Premium_Data_Clean_Up_Template.xlsx",
         type: "template"
       },
       {
         title: "Group Life Claims Data Clean Up Template",
-        description: "Group Life Claims_Data_Clean_Up_Template.xlsx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Working Files/Group Life Claims_Data_Clean_Up_Template.xlsx",
+        description: "Group Life Claims Data_Clean_Up_Template.xlsx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Working File/Group Life Claims Data_Clean_Up_Template.xlsx",
         type: "template"
       },
       {
         title: "Group Life Business LRC Template",
         description: "Group Life Business LRC_Template.xlsx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Working Files/Group Life Business LRC_Template.xlsx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Working File/Group Life Business LRC_Template.xlsx",
         type: "template"
       },
       {
         title: "Group Life IBNR Template",
         description: "Group Life IBNR Template_2024.xlsx",
-        url: "/Training Modules/Module-11-Group-Life-Valuation/Working Files/Group Life IBNR Template_2024.xlsx",
+        url: "/Training Modules/Module 11_Group Life Valuation/Working File/Group Life IBNR Template_2024.xlsx",
         type: "template"
       }
     ]

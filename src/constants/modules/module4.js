@@ -26,7 +26,7 @@ export const module4Data = {
         title: "KAFS Internal Technical Procedures - Guidelines on Valuation for General Insurance Business",
         description: "Liability Valuation for General Insurance • 24 pages",
         icon: "📄",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Course Content/KAFS_Internal Technical Procedures_Guidelines on Valuation for General Insurance Business_2025.pdf",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Course Content/KAFS_Internal Technical Procedures_Guidelines on Valuation for General Insurance Business_2025.docx",
         fileName: "KAFS Internal Technical Procedures - Guidelines on Valuation for General Insurance Business.pdf"
       }
     ],
@@ -34,21 +34,21 @@ export const module4Data = {
       {
         id: 1,
         title: "IFRS 17 Implementation Circular",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Additional Resources/Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Additional Resources/Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf",
         fileName: "Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf",
         color: "blue"
       },
       {
         id: 2,
         title: "IFRS 17 Insurance Contracts",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Additional Resources/ifrs-17-insurance-contracts.pdf",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Additional Resources/ifrs-17-insurance-contracts.pdf",
         fileName: "ifrs-17-insurance-contracts.pdf",
         color: "purple"
       },
       {
         id: 3,
         title: "General Insurance Technical Provisions Valuation Guidelines (2017)",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Additional Resources/The Insurancce (Valuation of Technical Provisions for General Insurance Business) Guidelines 2017.pdf",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Additional Resources/The Insurancce (Valuation of Technical Provisions for General Insurance Business) Guidelines 2017.pdf",
         fileName: "The Insurance (Valuation of Technical Provisions for General Insurance Business) Guidelines 2017.pdf",
         color: "green"
       }
@@ -73,7 +73,7 @@ export const module4Data = {
         title: "Premium Register",
         description: "Excel • Premium data for reserve analysis",
         icon: "📊",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Data/Premium Register_TRAINING.xlsx",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Data/Premium Register_TRAINING.xlsx",
         fileName: "Premium Register_TRAINING.xlsx"
       },
       {
@@ -81,7 +81,7 @@ export const module4Data = {
         title: "Claims Paid",
         description: "Excel • Historical paid claims data",
         icon: "💰",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Data/Claims Paid_TRAINING.xlsx",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Data/Claims Paid_TRAINING.xlsx",
         fileName: "Claims Paid_TRAINING.xlsx"
       },
       {
@@ -89,7 +89,7 @@ export const module4Data = {
         title: "Claims Outstanding",
         description: "Excel • Reported claims awaiting settlement",
         icon: "📈",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Data/Claims Outstanding_TRAINING.xlsx",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Data/Claims Outstanding_TRAINING.xlsx",
         fileName: "Claims Outstanding_TRAINING.xlsx"
       },
       {
@@ -97,7 +97,7 @@ export const module4Data = {
         title: "NSE Yield Curve",
         description: "Excel • Discount rates for IFRS 17 calculations",
         icon: "📉",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Data/FY24_NSE Yield Curve.xlsx",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Data/FY24_NSE Yield Curve.xlsx",
         fileName: "FY24_NSE Yield Curve.xlsx"
       }
     ],
@@ -107,7 +107,7 @@ export const module4Data = {
         title: "IBNR Computation Training",
         description: "Excel • IBNR Computation Training",
         icon: "🛠️",
-        downloadUrl: "/Training Modules/Module-4-General-Insurance-Valuation/Working Files/IBNR Computation Training.xlsx",
+        downloadUrl: "/Training Modules/Module 4_General Insurance Valuation/Working Files/IBNR Computation Training.xlsx",
         fileName: "IBNR Computation Training.xlsx"
       }
     ]

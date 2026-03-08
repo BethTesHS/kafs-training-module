@@ -38,7 +38,7 @@ export const module17Data = {
       {
         title: "IFRS 17 Insurance Contracts Standard",
         description: "IFRS17 Insurance Contracts.pdf",
-        url: "/Training Modules/Module-17-IFRS-17/Course Content/IFRS17 Insurance Contracts.pdf",
+        url: "/Training Modules/Module 17_IFRS 17/Course Content/IFRS17 Insurance Contracts.pdf",
         type: "document",
         icon: "📄"
       }
@@ -47,7 +47,7 @@ export const module17Data = {
       {
         title: "Implementation of IFRS-17 Standard - Regulatory Circular",
         description: "Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf",
-        url: "/Training Modules/Module-17-IFRS-17/Additional Resources/Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf",
+        url: "/Training Modules/Module 17_IFRS 17/Additional Resources/Circular No. COFN_IRA_00_001_03 - Implementation of IFRS-17 Standard.pdf",
         type: "guidelines",
         icon: "📋"
       }
@@ -59,7 +59,7 @@ export const module17Data = {
       {
         title: "IFRS 4 Balance Sheet Data",
         description: "IFRS4_BalanceSheet.pdf",
-        url: "/Training Modules/Module-17-IFRS-17/Data/IFRS4_BalanceSheet.pdf",
+        url: "/Training Modules/Module 17_IFRS 17/Data/IFRS4_BalanceSheet.pdf",
         type: "document"
       }
     ],
@@ -67,7 +67,7 @@ export const module17Data = {
       {
         title: "IFRS 17 Balance Sheet Working File",
         description: "Balance Sheet_IFRS_17_Working File.xlsx",
-        url: "/Training Modules/Module-17-IFRS-17/Working Files/Balance Sheet_IFRS_17_Working File.xlsx",
+        url: "/Training Modules/Module 17_IFRS 17/Working Files/Balance Sheet_IFRS_17_Working File.xlsx",
         type: "template"
       }
     ]
