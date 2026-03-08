@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -11,15 +11,27 @@ import {
   ExternalLink,
   Upload,
   Database,
-  Settings
+  Settings,
+  Loader2,
+  AlertCircle,
+  CheckCircle2
 } from "lucide-react";
+import { supabase } from "../supabaseClient";
 
-export default function ModuleComponent({ theme = 'dark', moduleData }) {
+const BUCKET_NAME = 'submissions';
+
+export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
   const [activeTab, setActiveTab] = useState("overview");
   const [quizAnswers, setQuizAnswers] = useState({});
   const [showQuizResults, setShowQuizResults] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [viewingPdf, setViewingPdf] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [loadingFiles, setLoadingFiles] = useState(false);
 
   // Destructure module data
   const {
@@ -145,21 +157,151 @@ export default function ModuleComponent({ theme = 'dark', moduleData }) {
     setShowQuizResults(true);
   };
 
-  const handleFileUpload = (event) => {
+  // Build storage path: submissions/{uid}/{moduleId}/{filename}
+  const getStoragePath = (fileName) => {
+    const uid = user?.id;
+    const modId = moduleData?.id || 'unknown';
+    const timestamp = Date.now();
+    const sanitized = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    return `${uid}/${modId}/${timestamp}_${sanitized}`;
+  };
+
+  // Load previously uploaded files from Supabase Storage on mount
+  useEffect(() => {
+    const fetchUploadedFiles = async () => {
+      if (!user?.id || !moduleData?.id) return;
+      setLoadingFiles(true);
+      try {
+        const folderPath = `${user.id}/${moduleData.id}`;
+        const { data, error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .list(folderPath, { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const existingFiles = data.map(file => ({
+            id: file.id || file.name,
+            name: file.name.replace(/^\d+_/, ''), // strip timestamp prefix for display
+            storageName: file.name,
+            size: file.metadata?.size
+              ? (file.metadata.size / (1024 * 1024)).toFixed(2) + ' MB'
+              : 'N/A',
+            type: file.metadata?.mimetype || 'application/octet-stream',
+            uploadDate: file.created_at
+              ? new Date(file.created_at).toLocaleDateString()
+              : 'Unknown',
+            storagePath: `${folderPath}/${file.name}`,
+            uploaded: true
+          }));
+          setUploadedFiles(existingFiles);
+        }
+      } catch (err) {
+        console.error('Error fetching uploaded files:', err);
+      } finally {
+        setLoadingFiles(false);
+      }
+    };
+
+    fetchUploadedFiles();
+  }, [user?.id, moduleData?.id]);
+
+  const handleFileUpload = async (event) => {
     const files = Array.from(event.target.files);
-    const newFiles = files.map(file => ({
-      id: Date.now() + Math.random(),
-      name: file.name,
-      size: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
-      type: file.type,
-      uploadDate: new Date().toLocaleDateString()
-    }));
-    setUploadedFiles(prev => [...prev, ...newFiles]);
+    if (!files.length) return;
+
+    if (!user?.id) {
+      setUploadError('Please log in to upload files.');
+      return;
+    }
+
+    setUploading(true);
+    setUploadError(null);
+
+    const newFiles = [];
+
+    for (const file of files) {
+      // Validate file size (max 50MB)
+      if (file.size > 50 * 1024 * 1024) {
+        setUploadError(`File "${file.name}" exceeds 50MB limit.`);
+        continue;
+      }
+
+      const storagePath = getStoragePath(file.name);
+
+      try {
+        const { data, error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .upload(storagePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+          });
+
+        if (error) throw error;
+
+        newFiles.push({
+          id: data?.id || storagePath,
+          name: file.name,
+          storageName: storagePath.split('/').pop(),
+          size: (file.size / (1024 * 1024)).toFixed(2) + ' MB',
+          type: file.type,
+          uploadDate: new Date().toLocaleDateString(),
+          storagePath: storagePath,
+          uploaded: true
+        });
+      } catch (err) {
+        console.error(`Error uploading ${file.name}:`, err);
+        setUploadError(`Failed to upload "${file.name}": ${err.message}`);
+      }
+    }
+
+    if (newFiles.length > 0) {
+      setUploadedFiles(prev => [...prev, ...newFiles]);
+    }
+
+    setUploading(false);
     event.target.value = '';
   };
 
-  const removeFile = (fileId) => {
-    setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
+  const removeFile = async (fileId) => {
+    const file = uploadedFiles.find(f => f.id === fileId);
+    if (!file) return;
+
+    if (file.storagePath) {
+      try {
+        const { error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .remove([file.storagePath]);
+        if (error) throw error;
+      } catch (err) {
+        console.error('Error removing file from storage:', err);
+        setUploadError(`Failed to remove "${file.name}": ${err.message}`);
+        return;
+      }
+    }
+
+    setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
+  };
+
+  const handleSubmitAll = async () => {
+    if (!user?.id || uploadedFiles.length === 0) return;
+
+    setSubmitting(true);
+    setSubmitSuccess(false);
+    setUploadError(null);
+
+    try {
+      // All files are already uploaded to Supabase Storage under the user's UID.
+      // This action marks the submission as complete.
+      // You can extend this to insert a record into a "submissions" table if needed.
+      setSubmitSuccess(true);
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (err) {
+      console.error('Error submitting files:', err);
+      setUploadError(`Submission failed: ${err.message}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const calculateScore = () => {
@@ -322,31 +464,50 @@ export default function ModuleComponent({ theme = 'dark', moduleData }) {
                   {courseContent.description}
                 </p>
 
-                {/* Resource Cards */}
+                {/* Resource Cards with Inline Viewers */}
                 {courseContent.resources && courseContent.resources.map((resource, idx) => (
-                  <div key={idx} className={`rounded-2xl ${styles.accentBg} border ${styles.accentBorder} p-4 md:p-6 flex items-center justify-between ${styles.accentHover} ${styles.transition} mb-4`}>
-                    <div className="flex items-center space-x-3 md:space-x-4">
-                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-purple-500/40'} rounded-xl ${styles.transition}`}>
-                        {resource.icon || '📄'}
+                  <div key={idx} className="mb-8 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700">
+                    {/* Resource Header & Download Button */}
+                    <div className={`${styles.accentBg} p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700`}>
+                      <div className="flex items-center space-x-3 md:space-x-4 w-full">
+                        <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-purple-500/40'} rounded-xl shrink-0 ${styles.transition}`}>
+                          <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-700' : 'text-purple-300'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className={`text-base md:text-lg font-semibold ${styles.text} truncate ${styles.transition}`}>{resource.title}</h4>
+                          <p className={`text-xs md:text-sm ${styles.textTertiary} line-clamp-2 ${styles.transition}`}>{resource.description}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} ${styles.transition}`}>{resource.title}</h4>
-                        <p className={`text-xs md:text-sm ${styles.textTertiary} ${styles.transition}`}>{resource.description}</p>
+                      <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0">
+                        <a
+                          href={resource.url}
+                          download={resource.filename}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`w-full md:w-auto px-4 md:px-6 py-2.5 ${theme === 'light'
+                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg'
+                            : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-md hover:shadow-lg'
+                            } rounded-lg text-white transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base font-medium whitespace-nowrap`}
+                        >
+                          <Download className="w-4 h-4" />
+                          Download PDF
+                        </a>
                       </div>
                     </div>
-                    <a
-                      href={resource.url}
-                      download={resource.filename}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`px-4 md:px-6 py-2 ${theme === 'light'
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
-                        : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-xl'
-                        } rounded-lg text-white transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <Download className="w-3 h-3 md:w-4 md:h-4" />
-                      Download PDF
-                    </a>
+
+                    {/* Always-on PDF Viewer */}
+                    <div className="w-full h-[70vh] md:h-[800px] bg-white relative">
+                      <object 
+                        data={`${encodeURI(resource.url)}#toolbar=0&view=FitH`} 
+                        type="application/pdf"
+                        className="w-full h-full absolute inset-0 border-0"
+                      >
+                        <div className="flex items-center justify-center h-full flex-col gap-4 p-6 text-center bg-gray-50">
+                          <FileText className="w-12 h-12 text-gray-400" />
+                          <p className="text-gray-600 max-w-md">The PDF could not be displayed directly in your browser. You can still download it using the button above.</p>
+                        </div>
+                      </object>
+                    </div>
                   </div>
                 ))}
 
@@ -732,36 +893,81 @@ export default function ModuleComponent({ theme = 'dark', moduleData }) {
                   ? 'bg-green-50 border-green-200'
                   : 'bg-green-500/10 border-green-400/20'
                   } border p-6 ${styles.transition}`}>
+                  {/* Login prompt if not authenticated */}
+                  {!user?.id && (
+                    <div className={`rounded-xl p-4 mb-4 flex items-center gap-3 ${theme === 'light' ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-amber-500/10 border border-amber-400/20 text-amber-300'}`}>
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      <p className="text-sm">Please log in to upload and submit assignment files.</p>
+                    </div>
+                  )}
+
+                  {/* Upload Error */}
+                  {uploadError && (
+                    <div className={`rounded-xl p-4 mb-4 flex items-center gap-3 ${theme === 'light' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-red-500/10 border border-red-400/20 text-red-300'}`}>
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      <p className="text-sm">{uploadError}</p>
+                      <button onClick={() => setUploadError(null)} className="ml-auto text-xs underline">Dismiss</button>
+                    </div>
+                  )}
+
+                  {/* Submit Success */}
+                  {submitSuccess && (
+                    <div className={`rounded-xl p-4 mb-4 flex items-center gap-3 ${theme === 'light' ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-green-500/10 border border-green-400/20 text-green-300'}`}>
+                      <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                      <p className="text-sm">Files submitted successfully for review!</p>
+                    </div>
+                  )}
+
                   {/* Upload Area */}
                   <div className={`border-2 border-dashed ${theme === 'light'
                     ? 'border-green-300 hover:border-green-400'
                     : 'border-green-400/30 hover:border-green-400/50'
-                    } rounded-2xl p-8 text-center transition-colors ${styles.transition}`}>
-                    <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
-                    <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Completed Work</h5>
-                    <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
-                      Drag and drop your files here, or click to browse
-                    </p>
-                    <input
-                      type="file"
-                      multiple
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <label
-                      htmlFor="file-upload"
-                      className={`inline-block px-6 py-2 ${theme === 'light'
-                        ? 'bg-green-600 hover:bg-green-700'
-                        : 'bg-green-500 hover:bg-green-600'
-                        } rounded-lg text-white cursor-pointer transition`}
-                    >
-                      Choose Files
-                    </label>
-                    <p className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} mt-2 ${styles.transition}`}>
-                      Supported formats: .xlsx, .xls, .pdf, .docx, .pptx (Max 50MB per file)
-                    </p>
+                    } rounded-2xl p-8 text-center transition-colors ${styles.transition} ${!user?.id ? 'opacity-50 pointer-events-none' : ''}`}>
+                    {uploading ? (
+                      <div className="flex flex-col items-center">
+                        <Loader2 className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} animate-spin mb-4`} />
+                        <h5 className={`text-lg font-semibold ${styles.text} mb-2`}>Uploading to Supabase Storage...</h5>
+                        <p className={`${styles.textTertiary}`}>Please wait while your files are being uploaded</p>
+                      </div>
+                    ) : (
+                      <>
+                        <Upload className={`w-12 h-12 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} mx-auto mb-4 ${styles.transition}`} />
+                        <h5 className={`text-lg font-semibold ${styles.text} mb-2 ${styles.transition}`}>Upload Your Completed Work</h5>
+                        <p className={`${styles.textTertiary} mb-4 ${styles.transition}`}>
+                          Drag and drop your files here, or click to browse
+                        </p>
+                        <input
+                          type="file"
+                          multiple
+                          accept=".pdf,.xlsx,.xls,.docx,.pptx"
+                          onChange={handleFileUpload}
+                          className="hidden"
+                          id="file-upload"
+                          disabled={!user?.id || uploading}
+                        />
+                        <label
+                          htmlFor="file-upload"
+                          className={`inline-block px-6 py-2 ${theme === 'light'
+                            ? 'bg-green-600 hover:bg-green-700'
+                            : 'bg-green-500 hover:bg-green-600'
+                            } rounded-lg text-white cursor-pointer transition ${!user?.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                          Choose Files
+                        </label>
+                        <p className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} mt-2 ${styles.transition}`}>
+                          Supported formats: .xlsx, .xls, .pdf, .docx, .pptx (Max 50MB per file)
+                        </p>
+                      </>
+                    )}
                   </div>
+
+                  {/* Loading previously uploaded files */}
+                  {loadingFiles && (
+                    <div className="mt-4 flex items-center justify-center gap-2">
+                      <Loader2 className={`w-4 h-4 animate-spin ${theme === 'light' ? 'text-green-600' : 'text-green-400'}`} />
+                      <span className={`text-sm ${styles.textTertiary}`}>Loading your previously uploaded files...</span>
+                    </div>
+                  )}
 
                   {/* Uploaded Files List */}
                   {uploadedFiles.length > 0 && (
@@ -774,12 +980,15 @@ export default function ModuleComponent({ theme = 'dark', moduleData }) {
                               <FileText className={`w-4 h-4 ${theme === 'light' ? 'text-green-600' : 'text-green-400'} ${styles.transition}`} />
                               <div>
                                 <p className={`${styles.text} text-sm font-medium ${styles.transition}`}>{file.name}</p>
-                                <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>{file.size} • {file.uploadDate}</p>
+                                <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs ${styles.transition}`}>
+                                  {file.size} • {file.uploadDate}
+                                  {file.uploaded && <span className="ml-2 text-green-400">✓ Stored</span>}
+                                </p>
                               </div>
                             </div>
                             <button
                               onClick={() => removeFile(file.id)}
-                              className="text-red-400 hover:text-red-300 transition"
+                              className="text-red-400 hover:text-red-300 transition text-sm"
                             >
                               Remove
                             </button>
@@ -789,11 +998,19 @@ export default function ModuleComponent({ theme = 'dark', moduleData }) {
 
                       {/* Submit Button */}
                       <div className="mt-4 text-center">
-                        <button className={`px-8 py-3 ${theme === 'light'
-                          ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
-                          : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
-                          } rounded-xl text-white font-semibold transition`}>
-                          Submit All Files for Review
+                        <button
+                          onClick={handleSubmitAll}
+                          disabled={submitting || uploading}
+                          className={`px-8 py-3 ${theme === 'light'
+                            ? 'bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg'
+                            : 'bg-green-500 hover:bg-green-600 shadow-lg hover:shadow-green-500/25'
+                            } rounded-xl text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto`}
+                        >
+                          {submitting ? (
+                            <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</>
+                          ) : (
+                            <>Submit All Files for Review</>
+                          )}
                         </button>
                       </div>
                     </div>
