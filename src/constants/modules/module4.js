@@ -112,6 +112,35 @@ export const module4Data = {
       }
     ]
   },
+
+  aiQuizQuestions: [
+    {
+      id: "aq1",
+      question: "Compare and contrast the Chain Ladder method and the Bornhuetter-Ferguson method for estimating IBNR reserves. Under what circumstances would you prefer one method over the other?",
+      hint: "Consider data maturity, credibility of historical development patterns, and reliance on prior loss ratio assumptions when choosing between the two methods."
+    },
+    {
+      id: "aq2",
+      question: "Explain the purpose of discounting insurance cashflows under IFRS 17. How do you select an appropriate discount rate, and what is the impact of discounting on the reported reserves?",
+      hint: "Think about the time value of money, the use of risk-free yield curves (e.g., NSE yield curve), and how discounting reduces the nominal reserve to its present value."
+    },
+    {
+      id: "aq3",
+      question: "Describe the concept of risk margin (risk adjustment) under IFRS 17. How is it calculated, and what role does it play in the valuation of general insurance liabilities?",
+      hint: "Focus on the confidence level approach, cost-of-capital method, and how the risk margin compensates for the uncertainty inherent in non-financial risks."
+    },
+    {
+      id: "aq4",
+      question: "How would you assess reserve adequacy for a general insurance portfolio? Discuss the role of sensitivity testing and scenario analysis in evaluating the uncertainty around reserve estimates.",
+      hint: "Consider varying key assumptions such as development factors, loss ratios, and discount rates to test how reserves respond to different scenarios."
+    },
+    {
+      id: "aq5",
+      question: "Explain the difference between outstanding claims reserves, IBNR reserves, and total claims reserves. Why is it important to distinguish between these components in a valuation report?",
+      hint: "Think about reported vs. unreported claims, how case estimates differ from statistical projections, and the transparency required in actuarial reporting."
+    }
+  ],
+
   quizTitle: "Quiz: Valuation, Discounting & Risk Margin",
   quizQuestions: [
     {

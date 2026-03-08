@@ -95,6 +95,35 @@ export const module5Data = {
       }
     ]
   },
+
+  aiQuizQuestions: [
+    {
+      id: "aq1",
+      question: "Explain the difference between Available Capital and Required Capital under the IRA's capital adequacy framework. How are Tier 1 and Tier 2 capital components classified?",
+      hint: "Consider core capital (share capital, retained earnings) vs. supplementary capital (subordinated debt, revaluation reserves) and the limits on Tier 2 capital."
+    },
+    {
+      id: "aq2",
+      question: "Describe the process of identifying and deducting inadmissible assets when calculating Available Capital. Provide examples of assets that are typically deemed inadmissible.",
+      hint: "Think about assets such as intangible assets, related-party receivables, and aged debtors that regulators exclude from Available Capital due to their illiquidity or uncertainty."
+    },
+    {
+      id: "aq3",
+      question: "Explain how Required Capital is determined for a general insurer under the IRA guidelines. Discuss the key risk charges (insurance risk, market risk, credit risk, and operational risk) and how they are aggregated.",
+      hint: "Focus on how each risk charge is calculated from balance sheet and P&L items, and whether diversification benefits or correlation adjustments apply when aggregating."
+    },
+    {
+      id: "aq4",
+      question: "What is the Capital Adequacy Ratio (CAR), and what are the regulatory thresholds set by the IRA? Discuss the supervisory actions that may be triggered at different CAR levels.",
+      hint: "Consider the minimum CAR requirement, the supervisory ladder of intervention, and actions such as corrective orders, restrictions on dividends, or revocation of licence."
+    },
+    {
+      id: "aq5",
+      question: "Compare the capital adequacy assessment for a life insurer versus a general insurer. What are the key differences in risk charges and balance sheet considerations?",
+      hint: "Think about how life insurers face different insurance risk profiles (longevity, mortality) compared to general insurers (catastrophe, premium risk), and how this affects Required Capital."
+    }
+  ],
+
   quizTitle: "Quiz: Capital Adequacy Analysis",
   quizQuestions: [
     {

@@ -7,4 +7,6 @@ module.exports = {
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 };

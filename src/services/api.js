@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Base configuration
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-const JWT_TOKEN_KEY = 'auth_token';
+const JWT_TOKEN_KEY = 'authToken';
 
 // Create axios instance
 const apiClient = axios.create({

@@ -7,6 +7,7 @@ const filesRoutes = require('./files');
 const progressRoutes = require('./progress');
 const discussionRoutes = require('./discussion');
 const adminRoutes = require('./admin');
+const aiQuizRoutes = require('./ai-quiz');
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use('/files', filesRoutes);
 router.use('/progress', progressRoutes);
 router.use('/discussion', discussionRoutes);
 router.use('/admin', adminRoutes);
+router.use('/ai-quiz', aiQuizRoutes);
 
 module.exports = router;
