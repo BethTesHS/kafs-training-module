@@ -1,0 +1,222 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Modules table
+model Module {
+  id                    String   @id @default(cuid())
+  title                 String
+  description           String?
+  orderNumber           Int
+  colorCode             String   @default("#9333EA")
+  thumbnailUrl          String?
+  difficultyLevel       String   @default("intermediate") // beginner, intermediate, advanced
+  estimatedDurationHours Int     @default(2)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  content               ModuleContent?
+  quizQuestions         QuizQuestion[]
+  resources             Resource[]
+  assignments           Assignment[]
+  userProgress          UserProgress[]
+  quizResults           QuizResult[]
+  fileUploads           FileUpload[]
+  discussionPosts       DiscussionPost[]
+
+  @@index([orderNumber])
+}
+
+// Module Content table
+model ModuleContent {
+  id                  String   @id @default(cuid())
+  moduleId            String   @unique
+  overview            String
+  learningObjectives  String[] // Array of learning objectives
+  keyConcepts         String[] // Array of key concepts
+  estimatedTime       Int?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  // Relations
+  module              Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+// Quiz Questions table
+model QuizQuestion {
+  id              String   @id @default(cuid())
+  moduleId        String
+  questionText    String
+  questionType    String   @default("multiple_choice") // multiple_choice, true_false, short_answer
+  options         Json?    // For multiple choice: ["Option A", "Option B", "Option C", "Option D"]
+  correctAnswer   String
+  explanation     String?
+  difficultyLevel String   @default("intermediate")
+  orderNumber     Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  quizResults     QuizResult[]
+
+  @@index([moduleId])
+  @@index([orderNumber])
+}
+
+// User Progress table
+model UserProgress {
+  id                String   @id @default(cuid())
+  userId            String
+  moduleId          String
+  status            String   @default("not_started") // not_started, in_progress, completed
+  progressPercentage Int    @default(0)
+  quizScore         Float?
+  timeSpentMinutes  Int      @default(0)
+  completedAt       DateTime?
+  startedAt         DateTime @default(now())
+
+  // Relations
+  module            Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
+  @@index([userId])
+  @@index([moduleId])
+}
+
+// Quiz Results table
+model QuizResult {
+  id              String   @id @default(cuid())
+  userId          String
+  moduleId        String
+  questionId      String
+  totalQuestions  Int
+  correctAnswers  Int
+  score           Float
+  timeTakenMinutes Int
+  userAnswers     Json     // Store user's answers
+  submittedAt     DateTime @default(now())
+
+  // Relations
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  question        QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([moduleId])
+}
+
+// Resources table
+model Resource {
+  id              String   @id @default(cuid())
+  moduleId        String
+  title           String
+  description     String?
+  fileUrl         String
+  fileType        String   // pdf, doc, video, etc.
+  fileSizeBytes   BigInt?
+  orderNumber     Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@index([moduleId])
+}
+
+// File Uploads table
+model FileUpload {
+  id              String   @id @default(cuid())
+  userId          String
+  moduleId        String?
+  fileName        String
+  fileUrl         String
+  fileSizeBytes   BigInt
+  fileType        String
+  uploadedAt      DateTime @default(now())
+
+  // Relations
+  module          Module?  @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([moduleId])
+}
+
+// Assignments table
+model Assignment {
+  id              String   @id @default(cuid())
+  moduleId        String
+  title           String
+  description     String
+  dueDate         DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  submissions     AssignmentSubmission[]
+
+  @@index([moduleId])
+}
+
+// Assignment Submissions table
+model AssignmentSubmission {
+  id              String   @id @default(cuid())
+  assignmentId    String
+  userId          String
+  submittedFileUrl String?
+  status          String   @default("pending") // pending, submitted, graded
+  grade           Float?
+  feedback        String?
+  submittedAt     DateTime @default(now())
+  gradedAt        DateTime?
+
+  // Relations
+  assignment      Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, userId])
+  @@index([assignmentId])
+  @@index([userId])
+}
+
+// Discussion Posts table
+model DiscussionPost {
+  id              String   @id @default(cuid())
+  moduleId        String
+  userId          String
+  title           String
+  content         String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  module          Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  replies         DiscussionReply[]
+
+  @@index([moduleId])
+  @@index([userId])
+}
+
+// Discussion Replies table
+model DiscussionReply {
+  id              String   @id @default(cuid())
+  postId          String
+  userId          String
+  content         String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  post            DiscussionPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([userId])
+}
