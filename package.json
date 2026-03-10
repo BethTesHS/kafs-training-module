@@ -7,7 +7,7 @@
     "start": "vite",
     "dev": "vite",
     "dev:backend": "cd backend && nodemon server.js",
-    "build": "echo \"No build step\"",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",

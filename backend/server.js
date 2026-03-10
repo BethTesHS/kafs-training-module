@@ -44,23 +44,29 @@ app.use((req, res) => {
 });
 
 // ===== START SERVER =====
-const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-  console.log(`🔗 API Health: http://localhost:${PORT}/health`);
-  console.log(`📚 API Endpoints:`);
-  console.log(`   - POST /api/auth/register`);
-  console.log(`   - POST /api/auth/login`);
-  console.log(`   - GET /api/modules`);
-  console.log(`   - GET /api/quiz/:moduleId/questions`);
-  console.log(`   - POST /api/files/upload`);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-    process.exit(0);
+// Only listen when not running as a Vercel serverless function
+if (process.env.VERCEL !== '1') {
+  const PORT = process.env.PORT || 3000;
+  const server = app.listen(PORT, () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+    console.log(`🔗 API Health: http://localhost:${PORT}/health`);
+    console.log(`📚 API Endpoints:`);
+    console.log(`   - POST /api/auth/register`);
+    console.log(`   - POST /api/auth/login`);
+    console.log(`   - GET /api/modules`);
+    console.log(`   - GET /api/quiz/:moduleId/questions`);
+    console.log(`   - POST /api/files/upload`);
   });
-});
+
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM signal received: closing HTTP server');
+    server.close(() => {
+      console.log('HTTP server closed');
+      process.exit(0);
+    });
+  });
+}
+
+// Export for Vercel serverless
+module.exports = app;
