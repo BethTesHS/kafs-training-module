@@ -24,8 +24,8 @@ dist-ssr
 *.sw?
 
 # Ignore large training files
-public/Training Modules/
-*.pdf
+# public/Training Modules/
+# *.pdf
 *.docx
 *.xlsx
 *.xlsm
@@ -37,3 +37,5 @@ public/Training Modules/
 .env.local
 .env.production
 .env.staging
+
+module1 Quiz.txt
