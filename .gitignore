@@ -27,8 +27,8 @@ dist-ssr
 # public/Training Modules/
 # *.pdf
 # *.docx
-# *.xlsx
-*.xlsm
+*.xlsx
+# *.xlsm
 *.mp4
 
 /todo
