@@ -62,6 +62,9 @@ export default function ModulePage({ theme = 'dark', user }) {
   const [assignments, setAssignments] = useState([]);
   const [discussions, setDiscussions] = useState([]);
 
+  // Flag to check if we should show API related prompts
+  const useApiMode = true; 
+
   // Fetch module data from API or constants
   useEffect(() => {
     const fetchModuleData = async () => {
@@ -143,7 +146,10 @@ export default function ModulePage({ theme = 'dark', user }) {
     };
 
     fetchModuleData();
-  }, [moduleId, user]);
+    
+    // DEPENDENCY FIX: Only re-run if the moduleId changes or the actual user ID changes. 
+    // Watching the whole 'user' object causes re-renders when the tab regains focus.
+  }, [moduleId, user?.id]);
 
   // Handle quiz submission
   const handleQuizSubmit = async (answers) => {
