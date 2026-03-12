@@ -24,7 +24,8 @@ dist-ssr
 *.sw?
 
 # Ignore large training files
-public/Training Modules/
+/public/Training Modules/
+/public/Training Module/
 *.pdf
 *.docx
 *.xlsx
