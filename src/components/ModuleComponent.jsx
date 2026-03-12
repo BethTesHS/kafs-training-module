@@ -50,6 +50,9 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
   const [gradingError, setGradingError] = useState(null);
   const [expandedResults, setExpandedResults] = useState({});
   const [quizSubTab, setQuizSubTab] = useState('multiple-choice');
+  
+  // Multiple Choice Quiz Fetching State
+  const [isFetchingQuiz, setIsFetchingQuiz] = useState(false);
 
   // Destructure module data
   const {
@@ -109,6 +112,79 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
   };
 
   const styles = getThemeStyles();
+
+  // Fetch previous multiple choice quiz submission
+  useEffect(() => {
+    const fetchPreviousSubmission = async () => {
+      if (!user?.id || !moduleData?.id || activeTab !== 'quiz' || quizSubTab !== 'multiple-choice') return;
+
+      setIsFetchingQuiz(true);
+      try {
+        const { data, error } = await supabase
+          .from('quiz_submissions')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('module_id', String(moduleData.id))
+          .single();
+
+        // PGRST116 means no rows found, which is completely fine for users taking it the first time
+        if (error && error.code !== 'PGRST116') {
+          throw error;
+        }
+
+        if (data) {
+          setQuizAnswers(data.answers || {});
+          setShowQuizResults(true);
+        }
+      } catch (err) {
+        console.error("Error fetching previous quiz submission:", err);
+      } finally {
+        setIsFetchingQuiz(false);
+      }
+    };
+
+    fetchPreviousSubmission();
+  }, [user?.id, moduleData?.id, activeTab, quizSubTab]);
+
+  // Load previously uploaded files from Supabase Storage on mount
+  useEffect(() => {
+    const fetchUploadedFiles = async () => {
+      if (!user?.id || !moduleData?.id) return;
+      setLoadingFiles(true);
+      try {
+        const folderPath = `${user.id}/${moduleData.id}`;
+        const { data, error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .list(folderPath, { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const existingFiles = data.map(file => ({
+            id: file.id || file.name,
+            name: file.name.replace(/^\d+_/, ''), // strip timestamp prefix for display
+            storageName: file.name,
+            size: file.metadata?.size
+              ? (file.metadata.size / (1024 * 1024)).toFixed(2) + ' MB'
+              : 'N/A',
+            type: file.metadata?.mimetype || 'application/octet-stream',
+            uploadDate: file.created_at
+              ? new Date(file.created_at).toLocaleDateString()
+              : 'Unknown',
+            storagePath: `${folderPath}/${file.name}`,
+            uploaded: true
+          }));
+          setUploadedFiles(existingFiles);
+        }
+      } catch (err) {
+        console.error('Error fetching uploaded files:', err);
+      } finally {
+        setLoadingFiles(false);
+      }
+    };
+
+    fetchUploadedFiles();
+  }, [user?.id, moduleData?.id]);
 
   // Helper functions for section display
   const getCurrentSection = (questionIndex) => {
@@ -173,7 +249,46 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     }
   };
 
-  const submitQuiz = () => {
+  const calculateScore = () => {
+    let correct = 0;
+    quizQuestions.forEach(q => {
+      if (quizAnswers[q.id] === q.correctAnswer) {
+        correct++;
+      }
+    });
+    return { correct, total: quizQuestions.length };
+  };
+
+  const submitQuiz = async () => {
+    if (!user?.id) {
+      alert("You must be logged in to save your score. Your results will be displayed but not saved.");
+      setShowQuizResults(true);
+      return;
+    }
+
+    const { correct, total } = calculateScore();
+
+    try {
+      // Upsert: Updates the record if it exists (retake), or inserts a new one if it doesn't
+      const { error } = await supabase
+        .from('quiz_submissions')
+        .upsert({
+          user_id: user.id,
+          module_id: String(moduleData.id),
+          score: correct,
+          total_questions: total,
+          answers: quizAnswers,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id, module_id'
+        });
+
+      if (error) throw error;
+    } catch (err) {
+      console.error("Error saving quiz results:", err);
+      alert("There was an error saving your quiz results to the database.");
+    }
+
     setShowQuizResults(true);
   };
 
@@ -185,46 +300,6 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     const sanitized = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
     return `${uid}/${modId}/${timestamp}_${sanitized}`;
   };
-
-  // Load previously uploaded files from Supabase Storage on mount
-  useEffect(() => {
-    const fetchUploadedFiles = async () => {
-      if (!user?.id || !moduleData?.id) return;
-      setLoadingFiles(true);
-      try {
-        const folderPath = `${user.id}/${moduleData.id}`;
-        const { data, error } = await supabase.storage
-          .from(BUCKET_NAME)
-          .list(folderPath, { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          const existingFiles = data.map(file => ({
-            id: file.id || file.name,
-            name: file.name.replace(/^\d+_/, ''), // strip timestamp prefix for display
-            storageName: file.name,
-            size: file.metadata?.size
-              ? (file.metadata.size / (1024 * 1024)).toFixed(2) + ' MB'
-              : 'N/A',
-            type: file.metadata?.mimetype || 'application/octet-stream',
-            uploadDate: file.created_at
-              ? new Date(file.created_at).toLocaleDateString()
-              : 'Unknown',
-            storagePath: `${folderPath}/${file.name}`,
-            uploaded: true
-          }));
-          setUploadedFiles(existingFiles);
-        }
-      } catch (err) {
-        console.error('Error fetching uploaded files:', err);
-      } finally {
-        setLoadingFiles(false);
-      }
-    };
-
-    fetchUploadedFiles();
-  }, [user?.id, moduleData?.id]);
 
   const handleFileUpload = async (event) => {
     const files = Array.from(event.target.files);
@@ -241,7 +316,6 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     const newFiles = [];
 
     for (const file of files) {
-      // Validate file size (max 50MB)
       if (file.size > 50 * 1024 * 1024) {
         setUploadError(`File "${file.name}" exceeds 50MB limit.`);
         continue;
@@ -311,9 +385,6 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     setUploadError(null);
 
     try {
-      // All files are already uploaded to Supabase Storage under the user's UID.
-      // This action marks the submission as complete.
-      // You can extend this to insert a record into a "submissions" table if needed.
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (err) {
@@ -322,16 +393,6 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const calculateScore = () => {
-    let correct = 0;
-    quizQuestions.forEach(q => {
-      if (quizAnswers[q.id] === q.correctAnswer) {
-        correct++;
-      }
-    });
-    return { correct, total: quizQuestions.length };
   };
 
   const isAnswerCorrect = (questionId) => {
@@ -374,7 +435,7 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
           learningOutcomes,
           courseContent,
           assignments,
-          quizQuestions: quizQuestions?.slice(0, 10), // Send limited quiz context
+          quizQuestions: quizQuestions?.slice(0, 10), 
         },
         questions: aiQuizQuestions,
         answers: aiQuizAnswers,
@@ -382,13 +443,11 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
 
       if (response.success) {
         setGradingResults(response.data);
-        // Auto-expand all results
         const expanded = {};
         response.data.results?.forEach(r => {
           expanded[r.questionId] = true;
         });
         setExpandedResults(expanded);
-        // Scroll to top of results
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setGradingError(response.error || 'Grading failed. Please try again.');
@@ -421,10 +480,8 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
 
   return (
     <div className={`min-h-screen relative ${styles.transition}`}>
-      {/* Fullscreen PDF Viewer Modal */}
       {viewingPdf && (
         <div className="fixed inset-0 z-50 flex flex-col bg-black/90 backdrop-blur-sm">
-          {/* Modal Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-gray-900/95 border-b border-gray-700">
             <h4 className="text-white font-semibold text-sm md:text-base truncate mr-4">{viewingPdf.title}</h4>
             <div className="flex items-center gap-2">
@@ -441,13 +498,11 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
               <button
                 onClick={() => setViewingPdf(null)}
                 className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white transition-colors duration-200"
-                aria-label="Close full view"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
           </div>
-          {/* Full View PDF */}
           <div className="flex-1 w-full bg-white">
             <object
               data={`${encodeURI(viewingPdf.url)}#toolbar=1&view=FitH`}
@@ -463,12 +518,9 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
         </div>
       )}
 
-      {/* Background */}
       <div
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-all duration-500"
-        style={{
-          backgroundImage: `url('/src/assets/bground.jpg')`,
-        }}
+        style={{ backgroundImage: `url('/src/assets/bground.jpg')` }}
       >
         <div
           className="absolute inset-0 transition-all duration-500"
@@ -476,25 +528,22 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
             background: theme === 'light'
               ? 'linear-gradient(135deg, rgba(77, 98, 190, 0.56) 0%, rgba(148, 64, 232, 0.53) 100%)'
               : 'linear-gradient(135deg, rgba(31, 43, 95, 0.5) 0%, rgba(94, 51, 138, 0.61) 100%)',
-            backdropFilter: theme === 'dark' ? 'blur(2px)' : 'blur(2px)',
+            backdropFilter: 'blur(2px)',
           }}
         />
       </div>
 
       <main className={`relative z-10 max-w-6xl mx-auto px-4 pt-8 pb-8 ${styles.transition}`}>
-        {/* Back Button */}
         <Link
           to="/modules"
           className={`fixed left-4 top-24 z-20 flex items-center justify-center w-10 h-10 rounded-full ${theme === 'light'
             ? 'bg-white hover:bg-gray-50 text-gray-900 hover:text-gray-950 shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-200'
             : 'bg-white/30 hover:bg-white/40 text-white hover:text-white backdrop-blur-md border-2 border-white/40 hover:border-white/60 shadow-2xl'
             } transition-all duration-300 hover:scale-110 ${styles.transition}`}
-          aria-label="Back to Training Modules"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
 
-        {/* Module Hero Container */}
         <div
           className={`rounded-[40px] overflow-hidden mb-6 relative ${theme === 'light'
             ? 'bg-white/95 shadow-2xl shadow-purple-500/10 border border-white/30'
@@ -506,26 +555,24 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
               <div className={`inline-block p-4 rounded-full ${theme === 'light'
                 ? 'bg-gradient-to-br from-purple-400 to-blue-500'
                 : 'bg-gradient-to-br from-purple-500/40 to-blue-500/40 border border-purple-400/40'
-                } ${styles.transition} flex-shrink-0`}>
-                <Book className={`w-9 h-9 ${theme === 'light' ? 'text-white' : 'text-white'} ${styles.transition}`} />
+                } flex-shrink-0`}>
+                <Book className="w-9 h-9 text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <h1 className={`text-2xl md:text-3xl font-bold leading-tight ${theme === 'light'
-                  ? 'bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent bg-origin-padding'
+                  ? 'bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent'
                   : 'bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent'
-                  } ${styles.transition}`}>
+                  }`}>
                   {title}
                 </h1>
               </div>
             </div>
-
-            <p className={`text-base leading-relaxed mt-4 md:mt-5 ${styles.textSecondary} ${styles.transition}`}>
+            <p className={`text-base leading-relaxed mt-4 md:mt-5 ${styles.textSecondary}`}>
               {shortDescription || description}
             </p>
           </div>
         </div>
 
-        {/* TAB NAVIGATION */}
         <div className="mb-8">
           <div className={`border-b ${theme === 'light' ? 'border-purple-200' : 'border-gray-500'} ${styles.transition}`}>
             <nav className="flex space-x-8">
@@ -540,7 +587,7 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
                     : theme === 'light'
                       ? 'border-transparent text-white/80 hover:text-white hover:border-white px-1'
                       : 'border-transparent text-gray-200 hover:text-white hover:border-purple-300 hover:bg-purple-500/10 px-1'
-                    } ${styles.transition}`}
+                    }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
@@ -549,28 +596,21 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
           </div>
         </div>
 
-        {/* TAB CONTENTS */}
         <div className="space-y-6">
-
           {/* OVERVIEW TAB */}
           {activeTab === 'overview' && (
-            <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} ${styles.shadow} p-6 ${styles.transition}`}>
+            <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} ${styles.shadow} p-6`}>
               <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
                 Module Objective
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600'
-                  : 'bg-gradient-to-r from-purple-400 to-blue-400'
-                  } transform translate-y-1 ${styles.transition}`}></span>
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light' ? 'bg-gradient-to-r from-purple-600 to-blue-600' : 'bg-gradient-to-r from-purple-400 to-blue-400'} transform translate-y-1`}></span>
               </h3>
-              <p className={`${styles.textSecondary} mb-6 text-sm md:text-base ${styles.transition}`}>
+              <p className={`${styles.textSecondary} mb-6 text-sm md:text-base`}>
                 {typeof objectives === 'string' ? objectives : (
                   <>
                     {objectives.intro}
                     {objectives.points && (
-                      <ul className="list-disc pl-5 mt-2 text-sm md:text-base">
-                        {objectives.points.map((point, idx) => (
-                          <li key={idx}>{point}</li>
-                        ))}
+                      <ul className="list-disc pl-5 mt-2">
+                        {objectives.points.map((point, idx) => <li key={idx}>{point}</li>)}
                       </ul>
                     )}
                     {objectives.closing && <p className="mt-2">{objectives.closing}</p>}
@@ -580,411 +620,260 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
 
               <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 relative inline-block`}>
                 Learning Outcomes
-                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light'
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600'
-                  : 'bg-gradient-to-r from-purple-400 to-blue-400'
-                  } transform translate-y-1 ${styles.transition}`}></span>
+                <span className={`absolute bottom-0 left-0 w-full h-0.5 ${theme === 'light' ? 'bg-gradient-to-r from-purple-600 to-blue-600' : 'bg-gradient-to-r from-purple-400 to-blue-400'} transform translate-y-1`}></span>
               </h3>
-              <ul className={`list-disc pl-5 ${styles.textSecondary} space-y-2 mb-6 text-sm md:text-base ${styles.transition}`}>
-                {learningOutcomes.map((outcome, idx) => (
-                  <li key={idx}>{outcome}</li>
-                ))}
+              <ul className={`list-disc pl-5 ${styles.textSecondary} space-y-2 mb-6 text-sm md:text-base`}>
+                {learningOutcomes.map((outcome, idx) => <li key={idx}>{outcome}</li>)}
               </ul>
             </div>
           )}
 
           {/* COURSE CONTENT TAB */}
           {activeTab === 'course' && (
-            <div>
-              <div className={`${styles.cardBg} backdrop-blur-md rounded-3xl p-6 md:p-8 border ${styles.border} ${styles.transition}`}>
-                <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 ${styles.transition}`}>Course Content</h3>
-                <p className={`${styles.textTertiary} mb-6 text-sm md:text-base ${styles.transition}`}>
-                  {courseContent.description}
-                </p>
+            <div className={`${styles.cardBg} backdrop-blur-md rounded-3xl p-6 md:p-8 border ${styles.border}`}>
+              <h3 className={`text-lg md:text-xl font-bold ${styles.text} mb-4`}>Course Content</h3>
+              <p className={`${styles.textTertiary} mb-6 text-sm md:text-base`}>
+                {courseContent.description}
+              </p>
 
-                {/* Resource Cards with Inline Viewers */}
-                {courseContent.resources && courseContent.resources.map((resource, idx) => (
-                  <div key={idx} className="mb-8 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700">
-                    {/* Resource Header & Download Button */}
-                    <div className={`${styles.accentBg} p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700`}>
-                      <div className="flex items-center space-x-3 md:space-x-4 w-full">
-                        <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-purple-500/40'} rounded-xl shrink-0 ${styles.transition}`}>
-                          <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-700' : 'text-purple-300'}`} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className={`text-base md:text-lg font-semibold ${styles.text} truncate ${styles.transition}`}>{resource.title}</h4>
-                          <p className={`text-xs md:text-sm ${styles.textTertiary} line-clamp-2 ${styles.transition}`}>{resource.description}</p>
-                        </div>
+              {courseContent.resources && courseContent.resources.map((resource, idx) => (
+                <div key={idx} className="mb-8 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700">
+                  <div className={`${styles.accentBg} p-4 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700`}>
+                    <div className="flex items-center space-x-3 md:space-x-4 w-full">
+                      <div className={`p-3 ${theme === 'light' ? 'bg-blue-200' : 'bg-purple-500/40'} rounded-xl shrink-0`}>
+                        <FileText className={`w-5 h-5 ${theme === 'light' ? 'text-blue-700' : 'text-purple-300'}`} />
                       </div>
-                      <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0 flex flex-col sm:flex-row gap-2">
-                        <button
-                          onClick={() => setViewingPdf({ url: resource.url, title: resource.title, filename: resource.filename })}
-                          className={`w-full md:w-auto px-4 md:px-6 py-2.5 ${theme === 'light'
-                            ? 'bg-gray-200 hover:bg-gray-300 text-gray-800'
-                            : 'bg-white/10 hover:bg-white/20 text-white'
-                            } rounded-lg transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base font-medium whitespace-nowrap`}
-                        >
-                          <Maximize2 className="w-4 h-4" />
-                          Full View
-                        </button>
-                        <a
-                          href={resource.url}
-                          download={resource.filename}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`w-full md:w-auto px-4 md:px-6 py-2.5 ${theme === 'light'
-                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg'
-                            : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-md hover:shadow-lg'
-                            } rounded-lg text-white transition-all duration-200 flex items-center justify-center gap-2 text-sm md:text-base font-medium whitespace-nowrap`}
-                        >
-                          <Download className="w-4 h-4" />
-                          Download PDF
-                        </a>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`text-base md:text-lg font-semibold ${styles.text} truncate`}>{resource.title}</h4>
+                        <p className={`text-xs md:text-sm ${styles.textTertiary} line-clamp-2`}>{resource.description}</p>
                       </div>
                     </div>
-
-                    {/* Always-on PDF Viewer */}
-                    <div className="w-full h-[70vh] md:h-[800px] bg-white relative">
-                      <object 
-                        data={`${encodeURI(resource.url)}#toolbar=0&view=FitH`} 
-                        type="application/pdf"
-                        className="w-full h-full absolute inset-0 border-0"
+                    <div className="flex-shrink-0 w-full md:w-auto mt-4 md:mt-0 flex flex-col sm:flex-row gap-2">
+                      <button
+                        onClick={() => setViewingPdf({ url: resource.url, title: resource.title, filename: resource.filename })}
+                        className={`w-full md:w-auto px-4 md:px-6 py-2.5 ${theme === 'light' ? 'bg-gray-200 hover:bg-gray-300 text-gray-800' : 'bg-white/10 hover:bg-white/20 text-white'} rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium`}
                       >
-                        <div className="flex items-center justify-center h-full flex-col gap-4 p-6 text-center bg-gray-50">
-                          <FileText className="w-12 h-12 text-gray-400" />
-                          <p className="text-gray-600 max-w-md">The PDF could not be displayed directly in your browser. You can still download it using the button above.</p>
-                        </div>
-                      </object>
+                        <Maximize2 className="w-4 h-4" /> Full View
+                      </button>
+                      <a
+                        href={resource.url}
+                        download={resource.filename}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-full md:w-auto px-4 md:px-6 py-2.5 ${theme === 'light' ? 'bg-gradient-to-r from-purple-600 to-blue-600 shadow-md hover:shadow-lg' : 'bg-gradient-to-r from-purple-500 to-blue-500 shadow-md hover:shadow-lg'} rounded-lg text-white transition-all flex items-center justify-center gap-2 text-sm font-medium`}
+                      >
+                        <Download className="w-4 h-4" /> Download PDF
+                      </a>
                     </div>
                   </div>
-                ))}
-
-                {courseContent.aboutText && (
-                  <div className={`mt-4 md:mt-6 p-3 md:p-4 ${styles.inputBg} rounded-lg border ${styles.border} ${styles.transition}`}>
-                    <h5 className={`${styles.text} font-semibold mb-2 text-sm md:text-base ${styles.transition}`}>About This Resource:</h5>
-                    <p className={`${styles.textTertiary} text-xs md:text-sm ${styles.transition}`}>
-                      {courseContent.aboutText.intro}
-                    </p>
-                    {courseContent.aboutText.points && (
-                      <ul className={`list-disc pl-5 mt-2 ${styles.textTertiary} text-xs md:text-sm ${styles.transition}`}>
-                        {courseContent.aboutText.points.map((point, idx) => (
-                          <li key={idx}>{point}</li>
-                        ))}
-                      </ul>
-                    )}
+                  <div className="w-full h-[70vh] md:h-[800px] bg-white relative">
+                    <object data={`${encodeURI(resource.url)}#toolbar=0&view=FitH`} type="application/pdf" className="w-full h-full absolute inset-0 border-0">
+                      <div className="flex items-center justify-center h-full flex-col gap-4 p-6 text-center bg-gray-50">
+                        <FileText className="w-12 h-12 text-gray-400" />
+                        <p className="text-gray-600 max-w-md">The PDF could not be displayed directly in your browser. You can still download it using the button above.</p>
+                      </div>
+                    </object>
                   </div>
-                )}
-              </div>
+                </div>
+              ))}
             </div>
           )}
 
           {/* QUIZ TAB */}
           {activeTab === 'quiz' && (
-            <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6 ${styles.transition}`}>
-              {/* Quiz Sub-Tab Navigation */}
+            <div className={`rounded-3xl ${styles.cardBg} backdrop-blur-xl border ${styles.border} p-6`}>
               <div className="mb-6">
-                <div className={`flex gap-2 p-1 rounded-xl ${theme === 'light' ? 'bg-gray-100' : 'bg-white/5'} ${styles.transition}`}>
+                <div className={`flex gap-2 p-1 rounded-xl ${theme === 'light' ? 'bg-gray-100' : 'bg-white/5'}`}>
                   <button
                     onClick={() => setQuizSubTab('multiple-choice')}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       quizSubTab === 'multiple-choice'
-                        ? theme === 'light'
-                          ? 'bg-white text-indigo-700 shadow-md'
-                          : 'bg-indigo-500/20 text-white border border-indigo-400/30'
-                        : theme === 'light'
-                          ? 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
-                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        ? theme === 'light' ? 'bg-white text-indigo-700 shadow-md' : 'bg-indigo-500/20 text-white border border-indigo-400/30'
+                        : theme === 'light' ? 'text-gray-500 hover:text-gray-700 hover:bg-white/50' : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
-                    <FileText className="w-4 h-4" />
-                    Multiple Choice
+                    <FileText className="w-4 h-4" /> Multiple Choice
                   </button>
                   <button
                     onClick={() => setQuizSubTab('ai-graded')}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       quizSubTab === 'ai-graded'
-                        ? theme === 'light'
-                          ? 'bg-white text-purple-700 shadow-md'
-                          : 'bg-purple-500/20 text-white border border-purple-400/30'
-                        : theme === 'light'
-                          ? 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
-                          : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        ? theme === 'light' ? 'bg-white text-purple-700 shadow-md' : 'bg-purple-500/20 text-white border border-purple-400/30'
+                        : theme === 'light' ? 'text-gray-500 hover:text-gray-700 hover:bg-white/50' : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
-                    <Brain className="w-4 h-4" />
-                    AI-Graded
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${theme === 'light' ? 'bg-purple-100 text-purple-600' : 'bg-purple-500/20 text-purple-300'}`}>AI</span>
+                    <Brain className="w-4 h-4" /> AI-Graded
                   </button>
                 </div>
               </div>
 
-              {/* Multiple Choice Sub-Tab */}
-              {quizSubTab === 'multiple-choice' && quizQuestions && quizQuestions.length > 0 && (
-              <>
-              {!showQuizResults ? (
-                <>
-                  {/* Quiz Header */}
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className={`text-lg md:text-xl font-bold ${styles.text} ${styles.transition}`}>{quizTitle || 'Quiz'}</h3>
-                    <div className={`${styles.textTertiary} text-sm md:text-base ${styles.transition}`}>
-                      Question {currentQuestionIndex + 1} of {quizQuestions.length}
-                    </div>
+              {quizSubTab === 'multiple-choice' && (
+                isFetchingQuiz ? (
+                  <div className="flex flex-col justify-center items-center py-16 gap-4">
+                    <Loader2 className={`w-10 h-10 animate-spin ${theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'}`} />
+                    <p className={`${styles.textSecondary}`}>Loading your previous results...</p>
                   </div>
-
-                  {/* Progress Bar */}
-                  <div className={`w-full ${theme === 'light' ? 'bg-gray-200' : 'bg-white/10'} rounded-full h-2 mb-6 ${styles.transition}`}>
-                    <div
-                      className={`h-2 rounded-full transition-all duration-300`}
-                      style={{
-                        width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`,
-                        backgroundColor: '#6366f1'
-                      }}
-                    />
-                  </div>
-
-                  {/* Section Progress Indicator */}
-                  {quizQuestions[currentQuestionIndex]?.section && (
-                    <div className="mb-6">
-                      <div className={`p-4 rounded-lg border-2 shadow-md ${theme === 'light'
-                        ? 'bg-white/80 border-gray-300'
-                        : 'bg-white/10 border-white/20'
-                        } ${styles.transition}`}>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className={`text-sm font-semibold ${styles.text} ${styles.transition}`}>
-                              {getCurrentSection(currentQuestionIndex)}
-                            </p>
-                            <p className={`text-xs font-medium ${styles.textSecondary} mt-1 ${styles.transition}`}>
-                              {getSectionProgress(currentQuestionIndex)}
-                            </p>
-                          </div>
-                          <div className={`text-xs font-semibold px-3 py-1.5 rounded ${theme === 'light'
-                            ? 'bg-gray-200 text-gray-800'
-                            : 'bg-white/15 text-white'
-                            }`}>
-                            Section {getCurrentSectionNumber(currentQuestionIndex)}/{new Set(quizQuestions.map(q => q.section)).size}
+                ) : (
+                  quizQuestions && quizQuestions.length > 0 ? (
+                    <>
+                    {!showQuizResults ? (
+                      <>
+                        <div className="flex justify-between items-center mb-6">
+                          <h3 className={`text-lg md:text-xl font-bold ${styles.text}`}>{quizTitle || 'Quiz'}</h3>
+                          <div className={`${styles.textTertiary} text-sm md:text-base`}>
+                            Question {currentQuestionIndex + 1} of {quizQuestions.length}
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  )}
 
-                  {/* Question Card */}
-                  <div className={`${styles.inputBg} rounded-2xl p-4 md:p-6 mb-6 border ${styles.border} ${styles.transition}`}>
-                    <h4 className={`text-base md:text-lg font-medium ${styles.text} mb-4 ${styles.transition}`}>
-                      {quizQuestions[currentQuestionIndex].question}
-                    </h4>
-
-                    <div className="space-y-2.5">
-                      {quizQuestions[currentQuestionIndex].options.map((option) => (
-                        <label
-                          key={option}
-                          className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${quizAnswers[quizQuestions[currentQuestionIndex].id] === option
-                            ? theme === 'light'
-                              ? 'bg-indigo-100 border-2 border-indigo-500'
-                              : 'bg-indigo-500/30 border-2 border-indigo-400'
-                            : theme === 'light'
-                              ? 'bg-white border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
-                              : 'bg-white/5 border-2 border-white/10 hover:bg-white/10 hover:border-white/20'
-                            } ${styles.transition}`}
-                        >
-                          <input
-                            type="radio"
-                            name={`question-${quizQuestions[currentQuestionIndex].id}`}
-                            value={option}
-                            checked={quizAnswers[quizQuestions[currentQuestionIndex].id] === option}
-                            onChange={() => handleAnswerSelect(quizQuestions[currentQuestionIndex].id, option)}
-                            className="mr-3 w-4 h-4"
+                        <div className={`w-full ${theme === 'light' ? 'bg-gray-200' : 'bg-white/10'} rounded-full h-2 mb-6`}>
+                          <div
+                            className={`h-2 rounded-full transition-all duration-300`}
+                            style={{ width: `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`, backgroundColor: '#6366f1' }}
                           />
-                          <span className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>{option}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
+                        </div>
 
-                  {/* Navigation Buttons */}
-                  <div className="flex justify-between items-center">
-                    <button
-                      onClick={goToPreviousQuestion}
-                      disabled={currentQuestionIndex === 0}
-                      className={`px-4 md:px-6 py-3 ${theme === 'light'
-                        ? 'bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200'
-                        : 'bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800'
-                        } disabled:cursor-not-allowed disabled:opacity-50 ${theme === 'light' ? 'text-gray-900' : 'text-white'
-                        } rounded-lg transition flex items-center gap-2 text-sm md:text-base`}
-                    >
-                      <ArrowLeft className="w-3 h-3 md:w-4 md:h-4" />
-                      Previous
-                    </button>
-
-                    <div className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs md:text-sm ${styles.transition}`}>
-                      {Object.keys(quizAnswers).length} of {quizQuestions.length} answered
-                    </div>
-
-                    {currentQuestionIndex < quizQuestions.length - 1 ? (
-                      <button
-                        onClick={goToNextQuestion}
-                        className={`px-4 md:px-6 py-3 bg-indigo-600 hover:bg-indigo-700 shadow-lg hover:shadow-xl text-white rounded-lg transition-all duration-200 flex items-center gap-2 text-sm md:text-base`}
-                      >
-                        Next
-                        <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 rotate-180" />
-                      </button>
-                    ) : (
-                      <button
-                        onClick={submitQuiz}
-                        disabled={Object.keys(quizAnswers).length !== quizQuestions.length}
-                        className={`px-6 md:px-8 py-3 ${theme === 'light'
-                          ? 'bg-green-600 hover:bg-green-700 disabled:bg-gray-400 shadow-lg hover:shadow-xl'
-                          : 'bg-green-600 hover:bg-green-700 disabled:bg-gray-600'
-                          } disabled:cursor-not-allowed disabled:opacity-50 text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
-                      >
-                        Submit Quiz
-                      </button>
-                    )}
-                  </div>
-                </>
-              ) : (
-                /* Results View */
-                <div className="space-y-6 md:space-y-8">
-                  {/* Score Card */}
-                  <div className={`${theme === 'light'
-                    ? 'bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200'
-                    : 'bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-400/30'
-                    } rounded-2xl p-6 md:p-8 text-center ${styles.transition}`}>
-                    <Award className={`w-12 h-12 md:w-16 md:h-16 ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mx-auto mb-4`} />
-                    <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
-                    <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mb-2`}>
-                      {calculateScore().correct}/{calculateScore().total}
-                    </div>
-                    <p className={`text-base md:text-lg ${styles.textTertiary} ${styles.transition}`}>
-                      {calculateScore().correct === calculateScore().total
-                        ? 'Perfect Score! Excellent work!'
-                        : calculateScore().correct >= calculateScore().total * 0.7
-                          ? 'Great job! You passed!'
-                          : 'Keep studying and try again!'}
-                    </p>
-                    <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm md:text-base ${styles.transition}`}>
-                      Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
-                    </div>
-                  </div>
-
-                  {/* Answer Review */}
-                  <div>
-                    <h4 className={`text-lg md:text-xl font-bold ${styles.text} mb-4 md:mb-6 ${styles.transition}`}>Answer Review</h4>
-                    <div className="space-y-4">
-                      {(() => {
-                        let currentSection = null;
-                        return quizQuestions.map((q, index) => {
-                          const showSectionHeader = q.section ? q.section !== currentSection : false;
-                          currentSection = q.section;
-                          
-                          return (
-                            <div key={q.id} className="space-y-3">
-                              {showSectionHeader && (
-                                <div className={`py-3 px-5 rounded-lg bg-gradient-to-r from-purple-600/30 to-blue-600/30 backdrop-blur-sm border ${theme === 'light'
-                                  ? 'border-purple-400/20'
-                                  : 'border-purple-400/15'
-                                  } shadow-sm`}>
-                                  <div className="flex items-center gap-3">
-                                    <h5 className={`font-semibold text-base md:text-lg tracking-wide ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                      {q.section}
-                                    </h5>
-                                    <span className={`text-xs ml-auto font-medium ${theme === 'light' ? 'text-gray-700' : 'text-white/70'}`}>
-                                      {quizQuestions.filter(item => item.section === q.section).length} questions
-                                    </span>
-                                  </div>
+                        {quizQuestions[currentQuestionIndex]?.section && (
+                          <div className="mb-6">
+                            <div className={`p-4 rounded-lg border-2 shadow-md ${theme === 'light' ? 'bg-white/80 border-gray-300' : 'bg-white/10 border-white/20'}`}>
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className={`text-sm font-semibold ${styles.text}`}>{getCurrentSection(currentQuestionIndex)}</p>
+                                  <p className={`text-xs font-medium ${styles.textSecondary} mt-1`}>{getSectionProgress(currentQuestionIndex)}</p>
                                 </div>
-                              )}
-                              
-                              <div className={`rounded-xl p-4 md:p-6 border-2 ${isAnswerCorrect(q.id)
-                                ? theme === 'light'
-                                  ? 'bg-green-50 border-green-400'
-                                  : 'bg-green-500/10 border-green-400/30'
-                                : theme === 'light'
-                                  ? 'bg-red-50 border-red-400'
-                                  : 'bg-red-500/10 border-red-400/30'
-                                } ${styles.transition}`}>
-                                <div className="flex items-start gap-3 mb-4">
-                                  <div className={`flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${isAnswerCorrect(q.id)
-                                    ? theme === 'light'
-                                      ? 'bg-green-200 text-green-700'
-                                      : 'bg-green-500/30 text-green-400'
-                                    : theme === 'light'
-                                      ? 'bg-red-200 text-red-700'
-                                      : 'bg-red-500/30 text-red-400'
-                                    } ${styles.transition}`}>
-                                    {isAnswerCorrect(q.id) ? (
-                                      <Check className="w-3 h-3 md:w-4 md:h-4" />
-                                    ) : (
-                                      <span className="text-base md:text-lg font-bold">✗</span>
-                                    )}
-                                  </div>
-                                  <div className="flex-1">
-                                    <h5 className={`text-base md:text-lg font-semibold ${styles.text} mb-3 ${styles.transition}`}>
-                                      Question {index + 1}: {q.question}
-                                    </h5>
+                              </div>
+                            </div>
+                          </div>
+                        )}
 
-                                    {!isAnswerCorrect(q.id) && (
-                                      <div className={`mb-3 p-3 ${theme === 'light' ? 'bg-red-100' : 'bg-red-500/20'
-                                        } rounded-lg ${styles.transition}`}>
-                                        <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-red-800' : 'text-red-300'} ${styles.transition}`}>
-                                          <span className="font-semibold">Your answer:</span> {quizAnswers[q.id]}
-                                        </p>
-                                      </div>
-                                    )}
+                        <div className={`${styles.inputBg} rounded-2xl p-4 md:p-6 mb-6 border ${styles.border}`}>
+                          <h4 className={`text-base md:text-lg font-medium ${styles.text} mb-4`}>
+                            {quizQuestions[currentQuestionIndex].question}
+                          </h4>
 
-                                    <div className={`mb-3 p-3 ${theme === 'light' ? 'bg-green-100' : 'bg-green-500/20'
-                                      } rounded-lg ${styles.transition}`}>
-                                      <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-green-800' : 'text-green-300'} ${styles.transition}`}>
-                                        <span className="font-semibold">Correct answer:</span> {q.correctAnswer}
-                                      </p>
+                          <div className="space-y-2.5">
+                            {quizQuestions[currentQuestionIndex].options.map((option) => (
+                              <label
+                                key={option}
+                                className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${quizAnswers[quizQuestions[currentQuestionIndex].id] === option
+                                  ? theme === 'light' ? 'bg-indigo-100 border-2 border-indigo-500' : 'bg-indigo-500/30 border-2 border-indigo-400'
+                                  : theme === 'light' ? 'bg-white border-2 border-gray-200 hover:bg-gray-50' : 'bg-white/5 border-2 border-white/10 hover:bg-white/10'
+                                }`}
+                              >
+                                <input
+                                  type="radio"
+                                  name={`question-${quizQuestions[currentQuestionIndex].id}`}
+                                  value={option}
+                                  checked={quizAnswers[quizQuestions[currentQuestionIndex].id] === option}
+                                  onChange={() => handleAnswerSelect(quizQuestions[currentQuestionIndex].id, option)}
+                                  className="mr-3 w-4 h-4"
+                                />
+                                <span className={`${styles.textSecondary} text-sm md:text-base`}>{option}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <button
+                            onClick={goToPreviousQuestion}
+                            disabled={currentQuestionIndex === 0}
+                            className={`px-4 md:px-6 py-3 ${theme === 'light' ? 'bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 text-gray-900' : 'bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 text-white'} disabled:cursor-not-allowed disabled:opacity-50 rounded-lg flex items-center gap-2`}
+                          >
+                            <ArrowLeft className="w-3 h-3 md:w-4 md:h-4" /> Previous
+                          </button>
+
+                          <div className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} text-xs md:text-sm`}>
+                            {Object.keys(quizAnswers).length} of {quizQuestions.length} answered
+                          </div>
+
+                          {currentQuestionIndex < quizQuestions.length - 1 ? (
+                            <button
+                              onClick={goToNextQuestion}
+                              className={`px-4 md:px-6 py-3 bg-indigo-600 hover:bg-indigo-700 shadow-lg text-white rounded-lg flex items-center gap-2`}
+                            >
+                              Next <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 rotate-180" />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={submitQuiz}
+                              disabled={Object.keys(quizAnswers).length !== quizQuestions.length}
+                              className={`px-6 md:px-8 py-3 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white rounded-lg font-semibold`}
+                            >
+                              Submit Quiz
+                            </button>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="space-y-6 md:space-y-8">
+                        <div className={`${theme === 'light' ? 'bg-indigo-50 border-indigo-200' : 'bg-purple-500/20 border-purple-400/30'} rounded-2xl p-6 text-center border`}>
+                          <Award className={`w-12 h-12 mx-auto mb-4 ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'}`} />
+                          <h3 className={`text-xl md:text-2xl font-bold ${styles.text} mb-2`}>Quiz Complete!</h3>
+                          <div className={`text-3xl md:text-5xl font-extrabold ${theme === 'light' ? 'text-indigo-600' : 'text-purple-300'} mb-2`}>
+                            {calculateScore().correct}/{calculateScore().total}
+                          </div>
+                          <p className={`text-base md:text-lg ${styles.textTertiary}`}>
+                            {calculateScore().correct === calculateScore().total ? 'Perfect Score!' : 'Keep studying!'}
+                          </p>
+                          <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm`}>
+                            Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className={`text-lg md:text-xl font-bold ${styles.text} mb-4`}>Answer Review</h4>
+                          <div className="space-y-4">
+                            {quizQuestions.map((q, index) => (
+                              <div key={q.id} className="space-y-3">
+                                <div className={`rounded-xl p-4 md:p-6 border-2 ${isAnswerCorrect(q.id) ? (theme === 'light' ? 'bg-green-50 border-green-400' : 'bg-green-500/10 border-green-400/30') : (theme === 'light' ? 'bg-red-50 border-red-400' : 'bg-red-500/10 border-red-400/30')}`}>
+                                  <div className="flex items-start gap-3 mb-4">
+                                    <div className={`flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${isAnswerCorrect(q.id) ? (theme === 'light' ? 'bg-green-200 text-green-700' : 'bg-green-500/30 text-green-400') : (theme === 'light' ? 'bg-red-200 text-red-700' : 'bg-red-500/30 text-red-400')}`}>
+                                      {isAnswerCorrect(q.id) ? <Check className="w-3 h-3 md:w-4 md:h-4" /> : <span className="font-bold">✗</span>}
                                     </div>
-
-                                    <div className={`p-3 md:p-4 ${theme === 'light'
-                                      ? 'bg-blue-50 border border-blue-200'
-                                      : 'bg-purple-500/10 border border-purple-400/20'
-                                      } rounded-lg ${styles.transition}`}>
-                                      <p className={`${theme === 'light' ? 'text-blue-700' : 'text-purple-300'} font-medium mb-2 text-sm md:text-base ${styles.transition}`}>Explanation:</p>
-                                      <p className={`${styles.textSecondary} text-sm md:text-base ${styles.transition}`}>{q.explanation}</p>
+                                    <div className="flex-1">
+                                      <h5 className={`text-base font-semibold ${styles.text} mb-3`}>Question {index + 1}: {q.question}</h5>
+                                      {!isAnswerCorrect(q.id) && (
+                                        <div className={`mb-3 p-3 rounded-lg ${theme === 'light' ? 'bg-red-100' : 'bg-red-500/20'}`}>
+                                          <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-red-800' : 'text-red-300'}`}><span className="font-semibold">Your answer:</span> {quizAnswers[q.id]}</p>
+                                        </div>
+                                      )}
+                                      <div className={`mb-3 p-3 rounded-lg ${theme === 'light' ? 'bg-green-100' : 'bg-green-500/20'}`}>
+                                        <p className={`text-xs md:text-sm ${theme === 'light' ? 'text-green-800' : 'text-green-300'} `}><span className="font-semibold">Correct answer:</span> {q.correctAnswer}</p>
+                                      </div>
+                                      <div className={`p-3 md:p-4 rounded-lg ${theme === 'light' ? 'bg-blue-50 border border-blue-200' : 'bg-purple-500/10 border border-purple-400/20'}`}>
+                                        <p className={`${theme === 'light' ? 'text-blue-700' : 'text-purple-300'} font-medium mb-2 text-sm`}>Explanation:</p>
+                                        <p className={`${styles.textSecondary} text-sm`}>{q.explanation}</p>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          );
-                        });
-                      })()}
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="text-center pt-4">
+                          <button
+                            onClick={() => {
+                              setShowQuizResults(false);
+                              setQuizAnswers({});
+                              setCurrentQuestionIndex(0);
+                            }}
+                            className={`px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl`}
+                          >
+                            Retake Quiz
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    </>
+                  ) : (
+                    <div className={`text-center py-12 ${styles.textTertiary}`}>
+                      <FileText className="w-12 h-12 mx-auto mb-4" />
+                      <p className="text-lg font-medium">No multiple choice questions available yet.</p>
                     </div>
-                  </div>
-
-                  {/* Retake Button */}
-                  <div className="text-center pt-4">
-                    <button
-                      onClick={() => {
-                        setShowQuizResults(false);
-                        setQuizAnswers({});
-                        setCurrentQuestionIndex(0);
-                      }}
-                      className={`px-6 md:px-8 py-3 ${theme === 'light'
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl'
-                        : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 shadow-lg hover:shadow-xl'
-                        } text-white rounded-lg transition-all duration-200 font-semibold text-sm md:text-base`}
-                    >
-                      Retake Quiz
-                    </button>
-                  </div>
-                </div>
-              )}
-              </>
-              )}
-
-              {/* Multiple Choice - No Questions */}
-              {quizSubTab === 'multiple-choice' && (!quizQuestions || quizQuestions.length === 0) && (
-                <div className={`text-center py-12 ${styles.textTertiary}`}>
-                  <FileText className={`w-12 h-12 mx-auto mb-4 ${theme === 'light' ? 'text-gray-300' : 'text-gray-600'}`} />
-                  <p className="text-lg font-medium">No multiple choice questions available yet.</p>
-                  <p className="text-sm mt-2">Check back later or try the AI-Graded quiz.</p>
-                </div>
+                  )
+                )
               )}
 
               {/* AI-Graded Sub-Tab */}
@@ -1446,7 +1335,6 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
               </div>
             </div>
           )}
-
         </div>
       </main>
     </div>
