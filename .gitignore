@@ -24,11 +24,11 @@ dist-ssr
 *.sw?
 
 # Ignore large training files
-# public/Training Modules/
-# *.pdf
-# *.docx
-# *.xlsx
-# *.xlsm
+public/Training Modules/
+*.pdf
+*.docx
+*.xlsx
+*.xlsm
 *.mp4
 
 /todo
