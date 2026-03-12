@@ -818,7 +818,20 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
                           <div className={`mt-4 ${theme === 'light' ? 'text-gray-600' : 'text-white'} text-sm`}>
                             Score: {Math.round((calculateScore().correct / calculateScore().total) * 100)}%
                           </div>
+                          <div className="text-center pt-4">
+                            <button
+                              onClick={() => {
+                                setShowQuizResults(false);
+                                setQuizAnswers({});
+                                setCurrentQuestionIndex(0);
+                              }}
+                              className={`px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl`}
+                            >
+                              Retake Quiz
+                            </button>
+                          </div>
                         </div>
+                        
 
                         <div>
                           <h4 className={`text-lg md:text-xl font-bold ${styles.text} mb-4`}>Answer Review</h4>
@@ -850,19 +863,6 @@ export default function ModuleComponent({ theme = 'dark', moduleData, user }) {
                               </div>
                             ))}
                           </div>
-                        </div>
-
-                        <div className="text-center pt-4">
-                          <button
-                            onClick={() => {
-                              setShowQuizResults(false);
-                              setQuizAnswers({});
-                              setCurrentQuestionIndex(0);
-                            }}
-                            className={`px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl`}
-                          >
-                            Retake Quiz
-                          </button>
                         </div>
                       </div>
                     )}
