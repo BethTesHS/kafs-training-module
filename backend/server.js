@@ -53,9 +53,9 @@ if (process.env.VERCEL !== '1') {
     console.log(`📚 API Endpoints:`);
     console.log(`   - POST /api/auth/register`);
     console.log(`   - POST /api/auth/login`);
-    console.log(`   - GET /api/modules`);
-    console.log(`   - GET /api/quiz/:moduleId/questions`);
-    console.log(`   - POST /api/files/upload`);
+    // console.log(`   - GET /api/modules`);
+    // console.log(`   - GET /api/quiz/:moduleId/questions`);
+    // console.log(`   - POST /api/files/upload`);
   });
 
   // Graceful shutdown
