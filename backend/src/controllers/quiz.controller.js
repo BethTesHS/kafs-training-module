@@ -1,114 +1,51 @@
 const quizService = require('../services/quiz.service');
 
 class QuizController {
-  async getQuizQuestions(req, res) {
-    try {
-      const questions = await quizService.getQuizQuestions(req.params.moduleId);
-      
-      res.status(200).json({
-        message: 'Quiz questions retrieved successfully',
-        data: questions,
-        total: questions.length
-      });
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  }
-
+  // Handle saving/updating a quiz
   async submitQuiz(req, res) {
     try {
-      const { answers, timeTaken } = req.body;
-      
-      if (!answers || typeof answers !== 'object') {
-        return res.status(400).json({ error: 'Invalid answers format' });
+      const { user_id, module_id, score, total_questions, answers } = req.body;
+
+      if (!user_id || !module_id || score === undefined || !total_questions) {
+        return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      if (!timeTaken || typeof timeTaken !== 'number') {
-        return res.status(400).json({ error: 'Time taken is required' });
+      const submission = await quizService.submitQuiz(
+        user_id,
+        module_id,
+        score,
+        total_questions,
+        answers
+      );
+
+      res.status(200).json({ success: true, data: submission });
+    } catch (error) {
+      console.error('Error submitting quiz:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  // Handle fetching a previous submission
+  async getSubmission(req, res) {
+    try {
+      const { moduleId } = req.params;
+      const { user_id } = req.query; // Usually passed as a query param if not using an auth middleware
+
+      if (!user_id || !moduleId) {
+        return res.status(400).json({ error: 'Missing user_id or module_id' });
       }
 
-      const result = await quizService.submitQuiz(
-        req.user.userId,
-        req.params.moduleId,
-        answers,
-        timeTaken
-      );
-
-      res.status(201).json({
-        message: 'Quiz submitted successfully',
-        data: result
-      });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  }
-
-  async getResults(req, res) {
-    try {
-      const results = await quizService.getQuizResults(
-        req.user.userId,
-        req.query.moduleId || null
-      );
-
-      res.status(200).json({
-        message: 'Quiz results retrieved successfully',
-        data: results,
-        total: results.length
-      });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  }
-
-  async getResultDetails(req, res) {
-    try {
-      const result = await quizService.getQuizResultDetails(
-        req.params.resultId,
-        req.user.userId
-      );
-
-      res.status(200).json({
-        message: 'Quiz result details retrieved successfully',
-        data: result
-      });
-    } catch (error) {
-      res.status(404).json({ error: error.message });
-    }
-  }
-
-  async createQuestion(req, res) {
-    try {
-      const question = await quizService.createQuestion(req.body);
+      const submission = await quizService.getSubmission(user_id, moduleId);
       
-      res.status(201).json({
-        message: 'Question created successfully',
-        data: question
-      });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  }
+      if (!submission) {
+        // Return 404 so the frontend knows they haven't taken it yet
+        return res.status(404).json({ message: 'No previous submission found' });
+      }
 
-  async updateQuestion(req, res) {
-    try {
-      const question = await quizService.updateQuestion(req.params.id, req.body);
-      
-      res.status(200).json({
-        message: 'Question updated successfully',
-        data: question
-      });
+      res.status(200).json({ success: true, data: submission });
     } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  }
-
-  async deleteQuestion(req, res) {
-    try {
-      const result = await quizService.deleteQuestion(req.params.id);
-      
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+      console.error('Error fetching quiz submission:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 }
